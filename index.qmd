@@ -12,13 +12,9 @@ format:
     help: true
     include-in-header: meta-tags.html
     link-external-newwindow: true
-    mermaid-format: png
     footer: "Effective Claude Code Usage — Indrajeet Patil"
 revealjs-plugins:
   - fontawesome
-execute:
-  echo: false
-  eval: true
 keywords: ["claude-code", "ai-agents", "cli", "anthropic", "software-engineering"]
 description-meta: "A comprehensive guide to using Claude Code effectively as a CLI agent. Learn about tools, slash commands, context management, subagents, planning mode, and more."
 license: "CC0 1.0 Universal"
@@ -30,7 +26,6 @@ dir: "ltr"
 image: "media/social-media-card.png"
 image-alt: "Preview image for Effective Claude Code Usage presentation"
 canonical-url: "https://indrajeetpatil.github.io/effective-claude-code-usage/"
-jupyter: python3
 ---
 
 ## Effective Claude Code Usage {style="margin-top: 1.2em;"}
@@ -159,39 +154,7 @@ You have Claude Code installed and can run `claude` in a terminal.
 
 ## Intelligence Spectrum {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 11
-%%| fig-height: 3.2
-flowchart LR
-    subgraph TAB["Tab Completion"]
-        T1["Predict\nnext token"]
-        T2["No context\nunderstanding"]
-    end
-    subgraph CHAT["Chatbot"]
-        C1["Understand\nquestion"]
-        C2["Generate\nresponse"]
-    end
-    subgraph AGENT["Agent — Claude Code"]
-        A1["Perceive\nenvironment"]
-        A2["Use\ntools"]
-        A3["Observe\n& loop"]
-    end
-
-    TAB --> CHAT --> AGENT
-
-    style TAB  fill:#1c2128,color:#8b949e
-    style CHAT fill:#0c2a3a,color:#7dd3fc
-    style AGENT fill:#0f2d1a,color:#86efac
-    style T1 fill:#21262d,color:#8b949e
-    style T2 fill:#21262d,color:#8b949e
-    style C1 fill:#0f3550,color:#7dd3fc
-    style C2 fill:#0f3550,color:#7dd3fc
-    style A1 fill:#14532d,color:#86efac
-    style A2 fill:#14532d,color:#86efac
-    style A3 fill:#14532d,color:#86efac
-```
+![](media/diag-01-intelligence-spectrum.png){fig-align="center" fig-alt="Three-column diagram showing the intelligence spectrum from tab completion to chatbot to agent"}
 
 . . .
 
@@ -219,34 +182,9 @@ Acts → observes → iterates
 
 ## ReAct Agent Loop {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 6.5
-%%| fig-height: 5.2
-flowchart TD
-    TASK["New Task"]
-    P["Perceive\n(files, tools, history)"]
-    T["Think\n(reason about next step)"]
-    A["Act\n(call a tool)"]
-    O["Observe\n(read tool output)"]
-    D{"Task\ncomplete?"}
-    R["Return result"]
+![](media/diag-02-react-loop.png){fig-align="center" fig-alt="Diagram showing the ReAct agent loop: perceive, think, act, observe, repeat"}
 
-    TASK --> P --> T --> A --> O --> D
-    D -->|No| T
-    D -->|Yes| R
-
-    style TASK fill:#2d1b69,color:#c4b5fd
-    style P    fill:#0c2a3a,color:#7dd3fc
-    style T    fill:#1e3a2f,color:#86efac
-    style A    fill:#3a2400,color:#fcd34d
-    style O    fill:#0c2a3a,color:#7dd3fc
-    style D    fill:#1c2128,color:#e6edf3
-    style R    fill:#14532d,color:#bbf7d0
-```
-
-::: {.card-amber style="font-size:0.82em; margin-top:0.5em;"}
+::: {.card-amber style="font-size:0.82em; margin-top:0.4em;"}
 Claude Code can run 10–100+ tool calls per turn, reading test output, fixing errors, and re-running until done.
 :::
 
@@ -256,33 +194,7 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 
 ## Tool Ecosystem {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 11
-%%| fig-height: 3.2
-flowchart LR
-    ROOT(("Claude\nCode"))
-
-    ROOT --> FILE
-    ROOT --> SHELL
-    ROOT --> SEARCH
-    ROOT --> AGENT
-    ROOT --> MCP
-
-    FILE["File I/O\nRead · Write · Edit · Glob"]
-    SHELL["Shell\nBash · Commands"]
-    SEARCH["Search\nGrep · WebSearch · WebFetch"]
-    AGENT["Agents\nTask · Subagents · NotebookEdit"]
-    MCP["MCP\nGitHub · Jira · Postgres · Custom"]
-
-    style ROOT   fill:#14532d,color:#bbf7d0
-    style FILE   fill:#0c2a3a,color:#7dd3fc
-    style SHELL  fill:#3a2400,color:#fcd34d
-    style SEARCH fill:#2d1b69,color:#c4b5fd
-    style AGENT  fill:#1e3a2f,color:#86efac
-    style MCP    fill:#3a1515,color:#fca5a5
-```
+![](media/diag-03-tool-ecosystem.png){fig-align="center" fig-alt="Hub-and-spoke diagram showing Claude Code connected to File I/O, Shell, Search, Agents, and MCP tools"}
 
 ## Tool Categories {.smaller}
 
@@ -364,36 +276,7 @@ flowchart LR
 
 ## What Fills the Context? {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 10.5
-%%| fig-height: 3.0
-flowchart LR
-    CM["CLAUDE.md\n(persistent memory)"]
-    CH["Conversation\nHistory"]
-    FC["File Contents\n(read by tools)"]
-    TO["Tool Outputs\n(bash, search)"]
-    IMG["Images &\nScreenshots"]
-
-    CM  --> CW
-    CH  --> CW
-    FC  --> CW
-    TO  --> CW
-    IMG --> CW
-
-    CW{{"Context Window\n~200K tokens"}}
-
-    CW --> MODEL["Model reasons\nover all of this"]
-
-    style CM    fill:#2d1b69,color:#c4b5fd
-    style CH    fill:#0c2a3a,color:#7dd3fc
-    style FC    fill:#1e3a2f,color:#86efac
-    style TO    fill:#3a2400,color:#fcd34d
-    style IMG   fill:#3a1515,color:#fca5a5
-    style CW    fill:#14532d,color:#bbf7d0
-    style MODEL fill:#1c2128,color:#e6edf3
-```
+![](media/diag-04-context-window.png){fig-align="center" fig-alt="Diagram showing five inputs flowing into the context window: CLAUDE.md, history, files, tool outputs, images"}
 
 . . .
 
@@ -419,39 +302,7 @@ flowchart LR
 
 ## How CLAUDE.md Is Loaded {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 8
-%%| fig-height: 4.8
-flowchart TD
-    INVOKE["claude invoked"]
-
-    INVOKE --> G
-    INVOKE --> P
-
-    G["~/.claude/CLAUDE.md\n(global)"]
-    P["./CLAUDE.md\n(project root)"]
-    S["Subdirectory CLAUDE.md\n(if cwd is a subdir)"]
-    IMP["@import snippets\n(shared files)"]
-
-    P --> S
-    P --> IMP
-
-    G   --> SYS
-    P   --> SYS
-    S   --> SYS
-    IMP --> SYS
-
-    SYS{{"Merged System Prompt\n(injected every turn)"}}
-
-    style INVOKE fill:#2d1b69,color:#c4b5fd
-    style G      fill:#0c2a3a,color:#7dd3fc
-    style P      fill:#1e3a2f,color:#86efac
-    style S      fill:#3a2400,color:#fcd34d
-    style IMP    fill:#0c2a3a,color:#7dd3fc
-    style SYS    fill:#14532d,color:#bbf7d0
-```
+![](media/diag-05-claude-md-loading.png){fig-align="center" fig-alt="Diagram showing how global, project-root, subdirectory CLAUDE.md files and @imports merge into the system prompt"}
 
 ## CLAUDE.md Anatomy {.smaller}
 
@@ -504,39 +355,7 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 ## Subagent Orchestration {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 10
-%%| fig-height: 4.2
-flowchart TD
-    ORC["Orchestrator\n(main Claude session)"]
-
-    ORC --> T1 & T2 & T3 & T4
-
-    T1["Write\nunit tests"]
-    T2["Update\ndocs"]
-    T3["Refactor\nauth module"]
-    T4["Check\ndependencies"]
-
-    T1 --> A1["Subagent 1\nisolated context"]
-    T2 --> A2["Subagent 2\nisolated context"]
-    T3 --> A3["Subagent 3\nisolated context"]
-    T4 --> A4["Subagent 4\nisolated context"]
-
-    A1 & A2 & A3 & A4 --> MERGE["Merge Results"]
-
-    style ORC   fill:#2d1b69,color:#c4b5fd
-    style T1    fill:#0c2a3a,color:#7dd3fc
-    style T2    fill:#0c2a3a,color:#7dd3fc
-    style T3    fill:#0c2a3a,color:#7dd3fc
-    style T4    fill:#0c2a3a,color:#7dd3fc
-    style A1    fill:#1e3a2f,color:#86efac
-    style A2    fill:#1e3a2f,color:#86efac
-    style A3    fill:#1e3a2f,color:#86efac
-    style A4    fill:#1e3a2f,color:#86efac
-    style MERGE fill:#14532d,color:#bbf7d0
-```
+![](media/diag-06-subagent-orchestration.png){fig-align="center" fig-alt="Diagram showing orchestrator fanning out to four parallel subagents and merging results"}
 
 ## When to Use Subagents {.smaller}
 
@@ -582,29 +401,7 @@ flowchart TD
 
 ## Planning Mode Workflow {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 11
-%%| fig-height: 3.0
-flowchart LR
-    REQ["Request"] --> PLAN
-    PLAN["/plan mode\n(read-only)"]
-    PLAN --> EXP["Explore\ncodebase"]
-    EXP --> DRAFT["Draft\nplan"]
-    DRAFT --> REV["Human\nReview"]
-    REV -->|Approve| EXEC["Execute\nchanges"]
-    REV -->|Refine| DRAFT
-    EXEC --> DONE["Done ✓"]
-
-    style REQ   fill:#2d1b69,color:#c4b5fd
-    style PLAN  fill:#1e3a2f,color:#86efac
-    style EXP   fill:#0c2a3a,color:#7dd3fc
-    style DRAFT fill:#3a2400,color:#fcd34d
-    style REV   fill:#1c2128,color:#e6edf3
-    style EXEC  fill:#14532d,color:#bbf7d0
-    style DONE  fill:#14532d,color:#bbf7d0
-```
+![](media/diag-07-planning-mode.png){fig-align="center" fig-alt="Horizontal workflow diagram: request, /plan, explore, draft, human review, execute, done"}
 
 ::: {.card-green style="font-size:0.82em; margin-top:0.5em;"}
 In **planning mode** Claude reads and reasons but **cannot write, edit, or delete files**. Validate the plan before any change lands.
@@ -686,42 +483,7 @@ Model explores, adapts, and makes better decisions with full context.
 
 ## CLI vs MCP Token Cost {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 11
-%%| fig-height: 3.5
-flowchart LR
-    TASK["Same Task:\nList open PRs"] --> CLI & MCP
-
-    subgraph CLI["CLI Path  ✓"]
-        direction TB
-        C1["gh pr list --json number,title"]
-        C2["~100 tokens\nclean JSON output"]
-        C1 --> C2
-    end
-
-    subgraph MCP["MCP Path  ✗"]
-        direction TB
-        M1["GitHub MCP server call"]
-        M2["Protocol envelope\n+ schema + metadata"]
-        M3["Full API response\n~2,000+ tokens"]
-        M1 --> M2 --> M3
-    end
-
-    CLI --> RESULT["Same result\nfor Claude"]
-    MCP --> RESULT
-
-    style TASK   fill:#2d1b69,color:#c4b5fd
-    style CLI    fill:#0f2d1a,color:#86efac
-    style MCP    fill:#3a1515,color:#fca5a5
-    style C1     fill:#14532d,color:#86efac
-    style C2     fill:#14532d,color:#86efac
-    style M1     fill:#450a0a,color:#fca5a5
-    style M2     fill:#450a0a,color:#fca5a5
-    style M3     fill:#450a0a,color:#fca5a5
-    style RESULT fill:#1c2128,color:#e6edf3
-```
+![](media/diag-08-cli-vs-mcp.png){fig-align="center" fig-alt="Side-by-side diagram showing CLI path at ~100 tokens vs MCP path at 2000+ tokens for the same task"}
 
 ## CLI vs MCP Decision Guide {.smaller}
 
@@ -745,45 +507,9 @@ flowchart LR
 
 ## Effective Usage: Mental Model {.smaller}
 
-```{mermaid}
-%%| eval: true
-%%| echo: false
-%%| fig-width: 8
-%%| fig-height: 5.2
-flowchart TD
-    START["New Task"] --> CHECK
+![](media/diag-09-mental-model.png){fig-align="center" fig-alt="Decision tree for effective Claude Code usage: check CLAUDE.md, assess task size, choose approach, manage context"}
 
-    CHECK{"CLAUDE.md\nup to date?"}
-    CHECK -->|No| UPDATE["Update / run /init"]
-    CHECK -->|Yes| SIZE
-
-    UPDATE --> SIZE
-    SIZE{"Task\ncomplexity?"}
-
-    SIZE -->|Simple| DIRECT["Direct prompt\n+ clear outcome"]
-    SIZE -->|Medium| PLANM["/plan first\nthen execute"]
-    SIZE -->|Large| SUB["Subagents\nvia Task tool"]
-
-    DIRECT & PLANM & SUB --> CTX
-
-    CTX{"Context\nfull?"}
-    CTX -->|Yes| COMPACT["/compact"]
-    CTX -->|No| DONE["Done ✓"]
-    COMPACT --> DONE
-
-    style START   fill:#2d1b69,color:#c4b5fd
-    style CHECK   fill:#0c2a3a,color:#7dd3fc
-    style UPDATE  fill:#3a2400,color:#fcd34d
-    style SIZE    fill:#0c2a3a,color:#7dd3fc
-    style DIRECT  fill:#1e3a2f,color:#86efac
-    style PLANM   fill:#1e3a2f,color:#86efac
-    style SUB     fill:#1e3a2f,color:#86efac
-    style CTX     fill:#0c2a3a,color:#7dd3fc
-    style COMPACT fill:#3a2400,color:#fcd34d
-    style DONE    fill:#14532d,color:#bbf7d0
-```
-
-::: {.card-green style="font-size:0.75em;"}
+::: {.card-green style="font-size:0.75em; margin-top:0.4em;"}
 CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work · `/compact` when context fills · CLI > MCP for token efficiency · Intent over instructions
 :::
 
