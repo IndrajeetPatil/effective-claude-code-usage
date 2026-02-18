@@ -1,0 +1,48 @@
+name: Build Presentation
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-presentation:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: pre-release
+
+      - name: Install Quarto extensions
+        run: |
+          quarto --version
+          quarto install extension quarto-ext/fontawesome --no-prompt
+
+      - name: Install dependencies
+        run: uv sync --frozen --no-install-project
+
+      - name: Render slides
+        run: uv run --no-project quarto render index.qmd --execute-daemon-restart
+
+      - name: Deploy to GitHub pages 🚀
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4.8.0
+        with:
+          branch: docs
+          folder: .
+          clean: true

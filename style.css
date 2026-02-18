@@ -1,0 +1,440 @@
+/* ============================================================
+   EFFECTIVE CLAUDE CODE USAGE — Dark Terminal Theme
+   Fonts: Space Grotesk (body) + Space Mono (code/terminal)
+   Inspired by: loot-drop.io aesthetic
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* ── CSS Custom Properties ────────────────────────────────── */
+:root {
+  --bg-primary:    #0d1117;
+  --bg-secondary:  #161b22;
+  --bg-card:       #1c2128;
+  --bg-card-hover: #21262d;
+  --accent-green:  #22c55e;
+  --accent-blue:   #38bdf8;
+  --accent-amber:  #f59e0b;
+  --accent-purple: #a78bfa;
+  --accent-red:    #f87171;
+  --text-primary:  #e6edf3;
+  --text-muted:    #8b949e;
+  --border-subtle: #30363d;
+  --glow-green:    0 0 18px rgba(34, 197, 94, 0.28);
+  --glow-blue:     0 0 18px rgba(56, 189, 248, 0.28);
+  --glow-amber:    0 0 18px rgba(245, 158, 11, 0.22);
+  --glow-purple:   0 0 18px rgba(167, 139, 250, 0.28);
+  --font-body:     'Space Grotesk', system-ui, sans-serif;
+  --font-mono:     'Space Mono', 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Slide Background & Base ──────────────────────────────── */
+.reveal-viewport,
+.reveal,
+.reveal .slides {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-body) !important;
+}
+
+.reveal .slides section {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-body) !important;
+}
+
+/* ── Typography ───────────────────────────────────────────── */
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  font-family: var(--font-body) !important;
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.reveal h1 {
+  font-size: 2.1em;
+  color: var(--accent-green) !important;
+  text-shadow: var(--glow-green) !important;
+}
+
+/* Section divider slides */
+.reveal .slides section.level1 h1 {
+  color: var(--accent-purple) !important;
+  text-shadow: var(--glow-purple) !important;
+  font-size: 1.9em;
+}
+
+.reveal h2 {
+  font-size: 1.45em;
+  color: var(--accent-blue) !important;
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+.reveal h3 {
+  font-size: 1.1em;
+  color: var(--accent-amber) !important;
+  font-weight: 600;
+}
+
+.reveal p,
+.reveal li {
+  color: var(--text-primary);
+  font-family: var(--font-body) !important;
+  line-height: 1.6;
+}
+
+.reveal .slides section blockquote {
+  background: var(--bg-card);
+  border-left: 4px solid var(--accent-purple);
+  border-radius: 0 8px 8px 0;
+  padding: 0.8em 1.4em;
+  color: var(--text-muted);
+  font-style: italic;
+  font-family: var(--font-body) !important;
+  box-shadow: none;
+  width: 88%;
+  margin: 0.8em auto;
+}
+
+/* ── Links ────────────────────────────────────────────────── */
+.reveal a {
+  color: var(--accent-blue) !important;
+  text-decoration: none;
+}
+
+.reveal a:hover {
+  color: var(--accent-green) !important;
+  text-decoration: underline;
+}
+
+/* ── Progress Bar ─────────────────────────────────────────── */
+.reveal .progress {
+  background: var(--border-subtle);
+  height: 3px;
+}
+
+.reveal .progress span {
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+  box-shadow: var(--glow-green);
+}
+
+/* ── Slide Numbers ────────────────────────────────────────── */
+.reveal .slide-number {
+  background: var(--bg-card);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: var(--font-mono) !important;
+  font-size: 0.6em;
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.reveal .footer > p {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: var(--font-body) !important;
+}
+
+/* ── Code & Monospace ─────────────────────────────────────── */
+.reveal code,
+.reveal pre code {
+  background: var(--bg-card) !important;
+  color: var(--accent-green) !important;
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
+  font-family: var(--font-mono) !important;
+  font-size: 0.82em;
+}
+
+.reveal pre {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.9em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  font-family: var(--font-mono) !important;
+}
+
+.reveal pre code {
+  border: none;
+}
+
+/* ── Image Overflow Prevention ────────────────────────────── */
+.reveal .slides section img {
+  max-height: 58vh;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Mermaid PNG wrapper */
+.reveal .mermaid img,
+.reveal .cell img {
+  max-height: 56vh;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ── Tables ───────────────────────────────────────────────── */
+.reveal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8em;
+  font-family: var(--font-body) !important;
+  background: var(--bg-card);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+
+.reveal table thead tr {
+  background: var(--bg-secondary) !important;
+  border-bottom: 2px solid var(--accent-blue);
+}
+
+.reveal table thead th {
+  color: var(--accent-blue) !important;
+  font-weight: 700;
+  padding: 0.6em 0.9em;
+  text-align: left;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.82em;
+  font-family: var(--font-body) !important;
+}
+
+.reveal table tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.reveal table tbody tr:hover {
+  background: var(--bg-card-hover) !important;
+}
+
+.reveal table tbody td {
+  padding: 0.55em 0.9em;
+  color: var(--text-primary);
+  vertical-align: top;
+  font-family: var(--font-body) !important;
+}
+
+.reveal table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* ── Callout Blocks ───────────────────────────────────────── */
+.reveal .callout {
+  background: var(--bg-card) !important;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  margin: 0.6em 0;
+}
+
+.reveal .callout-tip  { border-left: 4px solid var(--accent-green)  !important; }
+.reveal .callout-note { border-left: 4px solid var(--accent-blue)   !important; }
+.reveal .callout-warning   { border-left: 4px solid var(--accent-amber)  !important; }
+.reveal .callout-important { border-left: 4px solid var(--accent-red)    !important; }
+
+/* ── Card Components ──────────────────────────────────────── */
+.card-green {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-green);
+  border-left: 4px solid var(--accent-green);
+  border-radius: 8px;
+  padding: 0.75em 1.1em;
+  box-shadow: var(--glow-green);
+  margin: 0.4em 0;
+  font-family: var(--font-body);
+}
+
+.card-blue {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-blue);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 0.75em 1.1em;
+  box-shadow: var(--glow-blue);
+  margin: 0.4em 0;
+  font-family: var(--font-body);
+}
+
+.card-amber {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-amber);
+  border-left: 4px solid var(--accent-amber);
+  border-radius: 8px;
+  padding: 0.75em 1.1em;
+  box-shadow: var(--glow-amber);
+  margin: 0.4em 0;
+  font-family: var(--font-body);
+}
+
+.card-purple {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-purple);
+  border-left: 4px solid var(--accent-purple);
+  border-radius: 8px;
+  padding: 0.75em 1.1em;
+  box-shadow: var(--glow-purple);
+  margin: 0.4em 0;
+  font-family: var(--font-body);
+}
+
+.card-subtle {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.75em 1.1em;
+  margin: 0.4em 0;
+  font-family: var(--font-body);
+}
+
+/* ── Terminal Box ─────────────────────────────────────────── */
+.terminal-box {
+  background: #090d12;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: var(--font-mono) !important;
+  font-size: 0.78em;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+  margin: 0.4em 0;
+}
+
+.terminal-box::before {
+  content: "● ● ●";
+  display: block;
+  background: #1c2128;
+  color: #58a6ff;
+  padding: 0.45em 1em;
+  font-size: 1em;
+  border-bottom: 1px solid var(--border-subtle);
+  letter-spacing: 0.28em;
+  font-family: var(--font-mono) !important;
+}
+
+.terminal-box pre,
+.terminal-box code {
+  display: block;
+  background: transparent !important;
+  color: var(--accent-green) !important;
+  padding: 0.85em 1.1em;
+  margin: 0;
+  border: none !important;
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.65;
+  font-family: var(--font-mono) !important;
+}
+
+/* ── Badge/Pill Components ────────────────────────────────── */
+.badge-green {
+  display: inline-block;
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
+}
+
+.badge-blue {
+  display: inline-block;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+
+.badge-amber {
+  display: inline-block;
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--accent-amber);
+  border: 1px solid var(--accent-amber);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+
+/* ── Section Divider Slides ───────────────────────────────── */
+.reveal .slides section.level1 {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.reveal .slides section.level1 blockquote {
+  font-size: 0.88em;
+  max-width: 72%;
+}
+
+/* ── List Styling ─────────────────────────────────────────── */
+.reveal ul {
+  list-style: none;
+  padding-left: 0.4em;
+}
+
+.reveal ul > li::before {
+  content: "▸ ";
+  color: var(--accent-green);
+  font-weight: bold;
+}
+
+.reveal ul ul > li::before {
+  content: "◦ ";
+  color: var(--accent-blue);
+}
+
+.reveal ol > li {
+  color: var(--text-primary);
+  padding-left: 0.3em;
+}
+
+/* ── Smaller text utility ─────────────────────────────────── */
+.reveal .slides .smaller { font-size: 0.85em; }
+.reveal .slides .small   { font-size: 0.75em; }
+
+/* ── Fragment animations ──────────────────────────────────── */
+.reveal .fragment {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.reveal .fragment.visible { opacity: 1; }
+
+/* ── Fontawesome icons ────────────────────────────────────── */
+.reveal .fa,
+.reveal .fab,
+.reveal .fas {
+  color: var(--accent-blue);
+}
+
+/* ── Callout code blocks ──────────────────────────────────── */
+.reveal .slides section div.callout pre.sourceCode {
+  font-size: 0.75em !important;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }

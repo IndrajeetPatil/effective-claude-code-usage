@@ -1,0 +1,815 @@
+---
+format:
+  revealjs:
+    css: style.css
+    theme: black
+    transition: fade
+    slide-number: true
+    code-line-numbers: false
+    preview-links: auto
+    keyboard: true
+    touch: true
+    help: true
+    include-in-header: meta-tags.html
+    link-external-newwindow: true
+    mermaid-format: png
+    footer: "Effective Claude Code Usage — Indrajeet Patil"
+revealjs-plugins:
+  - fontawesome
+execute:
+  echo: false
+  eval: true
+keywords: ["claude-code", "ai-agents", "cli", "anthropic", "software-engineering"]
+description-meta: "A comprehensive guide to using Claude Code effectively as a CLI agent. Learn about tools, slash commands, context management, subagents, planning mode, and more."
+license: "CC0 1.0 Universal"
+pagetitle: "Effective Claude Code Usage"
+author-meta: "Indrajeet Patil"
+date-meta: "2026-02-18"
+lang: "en"
+dir: "ltr"
+image: "media/social-media-card.png"
+image-alt: "Preview image for Effective Claude Code Usage presentation"
+canonical-url: "https://indrajeetpatil.github.io/effective-claude-code-usage/"
+jupyter: python3
+---
+
+## Effective Claude Code Usage {style="margin-top: 1.2em;"}
+
+:::: {.columns}
+
+::: {.column width="62%"}
+
+::: {style="color: #38bdf8; font-weight: 600; font-size: 0.95em; letter-spacing: 0.04em; margin-bottom: 1em;"}
+From CLI to Cognitive Partner
+:::
+
+::: {style="font-size: 0.72em; color: #8b949e;"}
+Indrajeet Patil &nbsp;·&nbsp; 2026
+:::
+
+::: {style="font-size: 0.65em; color: #8b949e; margin-top: 2em;"}
+Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-usage/)
+:::
+
+:::
+
+::: {.column width="38%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;">$</span> claude
+<span style="color:#22c55e;">✓</span> Claude Code v1.x
+
+<span style="color:#8b949e;"># Your AI pair programmer</span>
+<span style="color:#8b949e;"># in the terminal</span>
+
+<span style="color:#38bdf8;">&gt;</span> How can I help?
+</code></pre>
+:::
+
+:::
+
+::::
+
+## What you'll learn {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+
+- **Agents vs chatbots** — what Claude Code actually is
+- **Tools** — what Claude can call and why it matters
+- **Slash commands** — session control and automation
+- **Context window** — what fills it and how to manage it
+- **CLAUDE.md** — persistent project memory
+- **Subagents** — parallelising complex work
+- **Planning mode** — explore before you edit
+- **Prompting for agents** — intent over instructions
+- **CLI vs MCP** — token efficiency in integrations
+
+:::
+
+::: {.column width="45%"}
+
+::: {.card-green}
+**Goal**
+
+Turn Claude Code from a smart autocomplete into a capable cognitive partner that handles complex engineering tasks autonomously.
+:::
+
+::: {.card-subtle style="margin-top: 0.8em; font-size: 0.85em;"}
+**Prerequisite**
+
+You have Claude Code installed and can run `claude` in a terminal.
+:::
+
+:::
+
+::::
+
+# What Is Claude Code?
+
+> *"It's not a chatbot in a terminal. It's an agent that reads, writes, searches, and executes — and loops until the task is done."*
+
+## Claude Code is a CLI Agent {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+
+::: {.card-subtle style="margin-bottom: 0.5em;"}
+**CLI-first** · runs in your terminal, next to your shell, your files, your Git history
+:::
+
+::: {.card-subtle style="margin-bottom: 0.5em;"}
+**Agentic** · not one-shot Q&A — it loops: perceive → plan → act → observe → repeat
+:::
+
+::: {.card-subtle}
+**Tool-using** · reads files, writes code, runs bash, searches the web, spawns subagents
+:::
+
+::: {.card-blue style="margin-top: 0.8em; font-size: 0.88em;"}
+**Key insight** · the model decides *which* tools to use, *in what order*, and *how many times* until the task is done.
+:::
+
+:::
+
+::: {.column width="45%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;">$</span> claude "add unit tests
+  for src/auth.ts"
+
+<span style="color:#22c55e;">●</span> Reading src/auth.ts
+<span style="color:#22c55e;">●</span> Scanning test patterns
+<span style="color:#22c55e;">●</span> Writing tests/auth.test.ts
+<span style="color:#22c55e;">●</span> Running: npm test
+
+<span style="color:#22c55e;">✓</span> 12 tests passing
+</code></pre>
+:::
+
+:::
+
+::::
+
+# Agents vs. Everything Else
+
+> *"The difference between a chatbot and an agent is the difference between giving advice and doing the work."*
+
+## Intelligence Spectrum {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 11
+%%| fig-height: 3.2
+flowchart LR
+    subgraph TAB["Tab Completion"]
+        T1["Predict\nnext token"]
+        T2["No context\nunderstanding"]
+    end
+    subgraph CHAT["Chatbot"]
+        C1["Understand\nquestion"]
+        C2["Generate\nresponse"]
+    end
+    subgraph AGENT["Agent — Claude Code"]
+        A1["Perceive\nenvironment"]
+        A2["Use\ntools"]
+        A3["Observe\n& loop"]
+    end
+
+    TAB --> CHAT --> AGENT
+
+    style TAB  fill:#1c2128,color:#8b949e
+    style CHAT fill:#0c2a3a,color:#7dd3fc
+    style AGENT fill:#0f2d1a,color:#86efac
+    style T1 fill:#21262d,color:#8b949e
+    style T2 fill:#21262d,color:#8b949e
+    style C1 fill:#0f3550,color:#7dd3fc
+    style C2 fill:#0f3550,color:#7dd3fc
+    style A1 fill:#14532d,color:#86efac
+    style A2 fill:#14532d,color:#86efac
+    style A3 fill:#14532d,color:#86efac
+```
+
+. . .
+
+:::: {.columns}
+
+::: {.column width="33%"}
+::: {.card-subtle style="text-align:center; font-size:0.82em; padding:0.5em;"}
+Statistic → next token
+:::
+:::
+
+::: {.column width="33%"}
+::: {.card-blue style="text-align:center; font-size:0.82em; padding:0.5em;"}
+Understands → responds once
+:::
+:::
+
+::: {.column width="33%"}
+::: {.card-green style="text-align:center; font-size:0.82em; padding:0.5em;"}
+Acts → observes → iterates
+:::
+:::
+
+::::
+
+## ReAct Agent Loop {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 6.5
+%%| fig-height: 5.2
+flowchart TD
+    TASK["New Task"]
+    P["Perceive\n(files, tools, history)"]
+    T["Think\n(reason about next step)"]
+    A["Act\n(call a tool)"]
+    O["Observe\n(read tool output)"]
+    D{"Task\ncomplete?"}
+    R["Return result"]
+
+    TASK --> P --> T --> A --> O --> D
+    D -->|No| T
+    D -->|Yes| R
+
+    style TASK fill:#2d1b69,color:#c4b5fd
+    style P    fill:#0c2a3a,color:#7dd3fc
+    style T    fill:#1e3a2f,color:#86efac
+    style A    fill:#3a2400,color:#fcd34d
+    style O    fill:#0c2a3a,color:#7dd3fc
+    style D    fill:#1c2128,color:#e6edf3
+    style R    fill:#14532d,color:#bbf7d0
+```
+
+::: {.card-amber style="font-size:0.82em; margin-top:0.5em;"}
+Claude Code can run 10–100+ tool calls per turn, reading test output, fixing errors, and re-running until done.
+:::
+
+# Tools & Capabilities
+
+> *"A tool is a function the model can call. The model decides when — and how many times."*
+
+## Tool Ecosystem {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 11
+%%| fig-height: 3.2
+flowchart LR
+    ROOT(("Claude\nCode"))
+
+    ROOT --> FILE
+    ROOT --> SHELL
+    ROOT --> SEARCH
+    ROOT --> AGENT
+    ROOT --> MCP
+
+    FILE["File I/O\nRead · Write · Edit · Glob"]
+    SHELL["Shell\nBash · Commands"]
+    SEARCH["Search\nGrep · WebSearch · WebFetch"]
+    AGENT["Agents\nTask · Subagents · NotebookEdit"]
+    MCP["MCP\nGitHub · Jira · Postgres · Custom"]
+
+    style ROOT   fill:#14532d,color:#bbf7d0
+    style FILE   fill:#0c2a3a,color:#7dd3fc
+    style SHELL  fill:#3a2400,color:#fcd34d
+    style SEARCH fill:#2d1b69,color:#c4b5fd
+    style AGENT  fill:#1e3a2f,color:#86efac
+    style MCP    fill:#3a1515,color:#fca5a5
+```
+
+## Tool Categories {.smaller}
+
+| Category | Tools | Enables |
+|----------|-------|---------|
+| **File I/O** | `Read`, `Write`, `Edit` | Read any file; create or surgically modify code |
+| **Pattern Search** | `Glob`, `Grep` | Find files by name; search content by regex |
+| **Shell** | `Bash` | Run tests, git, npm, docker — any terminal command |
+| **Web** | `WebFetch`, `WebSearch` | Fetch docs, read changelogs, search answers |
+| **Agents** | `Task` | Spawn isolated subagents for parallel work |
+| **MCP** | Custom servers | GitHub PRs, Jira tickets, Postgres, and more |
+
+. . .
+
+::: {.card-blue style="font-size:0.82em;"}
+**Permission model** · dangerous operations (file deletion, git push) require explicit user approval. You control the blast radius.
+:::
+
+# Slash Commands
+
+> *"Slash commands are the control panel for your session."*
+
+## Slash Commands Reference {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**Session & Context**
+
+| Command | Purpose |
+|---------|---------|
+| `/clear` | Reset conversation history |
+| `/compact` | Compress history, keep summary |
+| `/memory` | Edit CLAUDE.md files |
+| `/status` | Show context window usage |
+| `/cost` | Show token cost so far |
+
+**Automation**
+
+| Command | Purpose |
+|---------|---------|
+| `/init` | Generate CLAUDE.md for this repo |
+| `/review` | Code review current changes |
+| `/pr` | Open a pull request |
+
+:::
+
+::: {.column width="50%"}
+
+**Control & Meta**
+
+| Command | Purpose |
+|---------|---------|
+| `/help` | List all commands |
+| `/doctor` | Diagnose config issues |
+| `/model` | Switch Claude model |
+
+**Modes**
+
+| Command | Purpose |
+|---------|---------|
+| `/plan` | Enter planning-only mode |
+| `/fast` | Toggle Sonnet model |
+
+. . .
+
+::: {.card-amber style="font-size:0.82em; margin-top:0.8em;"}
+**`/compact`** is your best tool in long sessions — it summarises history into fewer tokens while preserving all decisions.
+:::
+
+:::
+
+::::
+
+# Context Window
+
+> *"The context window is finite. What's in it decides what Claude can reason about."*
+
+## What Fills the Context? {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 10.5
+%%| fig-height: 3.0
+flowchart LR
+    CM["CLAUDE.md\n(persistent memory)"]
+    CH["Conversation\nHistory"]
+    FC["File Contents\n(read by tools)"]
+    TO["Tool Outputs\n(bash, search)"]
+    IMG["Images &\nScreenshots"]
+
+    CM  --> CW
+    CH  --> CW
+    FC  --> CW
+    TO  --> CW
+    IMG --> CW
+
+    CW{{"Context Window\n~200K tokens"}}
+
+    CW --> MODEL["Model reasons\nover all of this"]
+
+    style CM    fill:#2d1b69,color:#c4b5fd
+    style CH    fill:#0c2a3a,color:#7dd3fc
+    style FC    fill:#1e3a2f,color:#86efac
+    style TO    fill:#3a2400,color:#fcd34d
+    style IMG   fill:#3a1515,color:#fca5a5
+    style CW    fill:#14532d,color:#bbf7d0
+    style MODEL fill:#1c2128,color:#e6edf3
+```
+
+. . .
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {.card-amber style="font-size:0.82em;"}
+**Fills fast** · large tool outputs (full files, verbose logs) consume tokens rapidly.
+:::
+:::
+
+::: {.column width="50%"}
+::: {.card-green style="font-size:0.82em;"}
+**Fix** · use `/compact`, limit reads to relevant files, and trim bash output.
+:::
+:::
+
+::::
+
+# CLAUDE.md
+
+> *"CLAUDE.md is persistent memory — what Claude should always know, even after `/clear`."*
+
+## How CLAUDE.md Is Loaded {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 8
+%%| fig-height: 4.8
+flowchart TD
+    INVOKE["claude invoked"]
+
+    INVOKE --> G
+    INVOKE --> P
+
+    G["~/.claude/CLAUDE.md\n(global)"]
+    P["./CLAUDE.md\n(project root)"]
+    S["Subdirectory CLAUDE.md\n(if cwd is a subdir)"]
+    IMP["@import snippets\n(shared files)"]
+
+    P --> S
+    P --> IMP
+
+    G   --> SYS
+    P   --> SYS
+    S   --> SYS
+    IMP --> SYS
+
+    SYS{{"Merged System Prompt\n(injected every turn)"}}
+
+    style INVOKE fill:#2d1b69,color:#c4b5fd
+    style G      fill:#0c2a3a,color:#7dd3fc
+    style P      fill:#1e3a2f,color:#86efac
+    style S      fill:#3a2400,color:#fcd34d
+    style IMP    fill:#0c2a3a,color:#7dd3fc
+    style SYS    fill:#14532d,color:#bbf7d0
+```
+
+## CLAUDE.md Anatomy {.smaller}
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;"># My Project CLAUDE.md</span>
+
+<span style="color:#a78bfa;">## Stack</span>
+<span style="color:#e6edf3;">TypeScript monorepo, Node 22, pnpm</span>
+
+<span style="color:#a78bfa;">## Conventions</span>
+<span style="color:#e6edf3;">- ESM only (no require())</span>
+<span style="color:#e6edf3;">- Tests: Vitest + @testing-library</span>
+<span style="color:#e6edf3;">- Branch: feat/&lt;ticket&gt;-description</span>
+
+<span style="color:#a78bfa;">## Commands</span>
+<span style="color:#22c55e;">- Test:  pnpm test</span>
+<span style="color:#22c55e;">- Build: pnpm build</span>
+
+<span style="color:#a78bfa;">## Never</span>
+<span style="color:#f87171;">- Push directly to main</span>
+<span style="color:#f87171;">- Commit .env files</span>
+</code></pre>
+:::
+
+:::
+
+::: {.column width="40%"}
+
+::: {.card-green style="font-size:0.85em;"}
+**Auto-generate**
+
+Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md for you. Edit it to add conventions and "never do" rules.
+:::
+
+::: {.card-subtle style="font-size:0.82em; margin-top:0.6em;"}
+**It compounds** · add a rule once, Claude follows it forever.
+:::
+
+:::
+
+::::
+
+# Subagents
+
+> *"Why do one thing sequentially when you can do four in parallel?"*
+
+## Subagent Orchestration {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 10
+%%| fig-height: 4.2
+flowchart TD
+    ORC["Orchestrator\n(main Claude session)"]
+
+    ORC --> T1 & T2 & T3 & T4
+
+    T1["Write\nunit tests"]
+    T2["Update\ndocs"]
+    T3["Refactor\nauth module"]
+    T4["Check\ndependencies"]
+
+    T1 --> A1["Subagent 1\nisolated context"]
+    T2 --> A2["Subagent 2\nisolated context"]
+    T3 --> A3["Subagent 3\nisolated context"]
+    T4 --> A4["Subagent 4\nisolated context"]
+
+    A1 & A2 & A3 & A4 --> MERGE["Merge Results"]
+
+    style ORC   fill:#2d1b69,color:#c4b5fd
+    style T1    fill:#0c2a3a,color:#7dd3fc
+    style T2    fill:#0c2a3a,color:#7dd3fc
+    style T3    fill:#0c2a3a,color:#7dd3fc
+    style T4    fill:#0c2a3a,color:#7dd3fc
+    style A1    fill:#1e3a2f,color:#86efac
+    style A2    fill:#1e3a2f,color:#86efac
+    style A3    fill:#1e3a2f,color:#86efac
+    style A4    fill:#1e3a2f,color:#86efac
+    style MERGE fill:#14532d,color:#bbf7d0
+```
+
+## When to Use Subagents {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+::: {.card-green}
+**Use when**
+
+- Tasks are genuinely independent
+- Work can run in parallel (different modules)
+- Context isolation is an asset
+- Large codebase exploration across multiple dirs
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: {.card-amber}
+**Avoid when**
+
+- Tasks have sequential dependencies
+- Shared files risk merge conflicts
+- Task is simple and fast
+- You need one coherent decision across all changes
+:::
+
+:::
+
+::::
+
+. . .
+
+::: {.card-blue style="font-size:0.82em; margin-top: 0.6em;"}
+**How** · use the `Task` tool or ask Claude to "do X and Y in parallel." Each subagent gets an isolated context copy; the orchestrator merges results.
+:::
+
+# Planning Mode
+
+> *"Measure twice, cut once."*
+
+## Planning Mode Workflow {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 11
+%%| fig-height: 3.0
+flowchart LR
+    REQ["Request"] --> PLAN
+    PLAN["/plan mode\n(read-only)"]
+    PLAN --> EXP["Explore\ncodebase"]
+    EXP --> DRAFT["Draft\nplan"]
+    DRAFT --> REV["Human\nReview"]
+    REV -->|Approve| EXEC["Execute\nchanges"]
+    REV -->|Refine| DRAFT
+    EXEC --> DONE["Done ✓"]
+
+    style REQ   fill:#2d1b69,color:#c4b5fd
+    style PLAN  fill:#1e3a2f,color:#86efac
+    style EXP   fill:#0c2a3a,color:#7dd3fc
+    style DRAFT fill:#3a2400,color:#fcd34d
+    style REV   fill:#1c2128,color:#e6edf3
+    style EXEC  fill:#14532d,color:#bbf7d0
+    style DONE  fill:#14532d,color:#bbf7d0
+```
+
+::: {.card-green style="font-size:0.82em; margin-top:0.5em;"}
+In **planning mode** Claude reads and reasons but **cannot write, edit, or delete files**. Validate the plan before any change lands.
+:::
+
+## When Planning Mode Pays Off {.smaller}
+
+| Situation | Without Planning | With Planning |
+|-----------|-----------------|---------------|
+| Refactor across 20 files | Broken imports, partial changes | Coherent strategy, clean execution |
+| Add auth to existing app | Picks wrong pattern for codebase | Existing patterns understood first |
+| Multi-service change | Inconsistent API contracts | All surfaces identified upfront |
+| Mysterious bug | Treats symptoms, not cause | Root-cause analysis before editing |
+
+. . .
+
+::: {.card-amber style="font-size:0.82em;"}
+**Rule of thumb** · if the task touches >3 files or crosses service boundaries, plan first. ~5 minutes of planning saves 1–2 hours of rework.
+:::
+
+# Trust the Model
+
+> *"Claude Opus 4.6 is a reasoning engine. Give it intent, not step-by-step instructions."*
+
+## Let the Model Orchestrate {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+::: {.card-amber}
+**Micromanaging**
+
+*"First read auth.ts. Then check the test file. Then look for mocks. Then write a test for login using the existing mock pattern. Don't use jest.fn() directly."*
+
+Over-constrained — model can't adapt when file structure differs from your assumption.
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: {.card-green}
+**Intent-driven**
+
+*"Add comprehensive unit tests for the auth module. Follow existing patterns. Cover edge cases and error paths."*
+
+Model explores, adapts, and makes better decisions with full context.
+:::
+
+:::
+
+::::
+
+. . .
+
+::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
+**Mental shift** · you are the product manager, Claude is the senior engineer. Tell it *what* and *why* — not step-by-step *how*.
+:::
+
+## Prompting for Agents {.smaller}
+
+| Principle | Chatbot Prompt | Agent Prompt |
+|-----------|---------------|--------------|
+| **Scope** | Single question | Full task with acceptance criteria |
+| **Context** | Self-contained | "Follow existing patterns in the codebase" |
+| **Error handling** | Re-prompt manually | "If tests fail, diagnose and fix before returning" |
+| **Verification** | Read the reply | "Run tests and show me the output" |
+
+. . .
+
+::: {.card-green style="font-size:0.82em;"}
+**End with a definition of done** · *"Task complete when: (1) tests pass, (2) no lint errors, (3) PR description written."* Prevents premature stopping.
+:::
+
+# CLI over MCPs
+
+> *"Not all integrations are equal. CLI calls are often 20× cheaper than MCP protocol overhead."*
+
+## CLI vs MCP Token Cost {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 11
+%%| fig-height: 3.5
+flowchart LR
+    TASK["Same Task:\nList open PRs"] --> CLI & MCP
+
+    subgraph CLI["CLI Path  ✓"]
+        direction TB
+        C1["gh pr list --json number,title"]
+        C2["~100 tokens\nclean JSON output"]
+        C1 --> C2
+    end
+
+    subgraph MCP["MCP Path  ✗"]
+        direction TB
+        M1["GitHub MCP server call"]
+        M2["Protocol envelope\n+ schema + metadata"]
+        M3["Full API response\n~2,000+ tokens"]
+        M1 --> M2 --> M3
+    end
+
+    CLI --> RESULT["Same result\nfor Claude"]
+    MCP --> RESULT
+
+    style TASK   fill:#2d1b69,color:#c4b5fd
+    style CLI    fill:#0f2d1a,color:#86efac
+    style MCP    fill:#3a1515,color:#fca5a5
+    style C1     fill:#14532d,color:#86efac
+    style C2     fill:#14532d,color:#86efac
+    style M1     fill:#450a0a,color:#fca5a5
+    style M2     fill:#450a0a,color:#fca5a5
+    style M3     fill:#450a0a,color:#fca5a5
+    style RESULT fill:#1c2128,color:#e6edf3
+```
+
+## CLI vs MCP Decision Guide {.smaller}
+
+| Situation | Prefer CLI | Prefer MCP |
+|-----------|-----------|------------|
+| **GitHub PRs / issues** | `gh pr list` — minimal tokens | Real-time webhooks needed |
+| **Database queries** | `psql -c "SELECT..."` — direct | Connection pool / auth managed |
+| **Jira / Linear** | `curl` + API key — simple | OAuth, token refresh required |
+| **File operations** | Native `Read`/`Write`/`Bash` | Almost never needed |
+| **Complex auth flows** | When API is simple | SSO, multi-step OAuth |
+
+. . .
+
+::: {.card-green style="font-size:0.82em;"}
+**Default rule** · if a CLI tool (`gh`, `psql`, `curl`, `kubectl`) can do the job, use `Bash`. Reach for MCP only when persistent auth state, rate-limit handling, or real-time events are required.
+:::
+
+# Summary
+
+> *"Claude Code is most powerful when you treat it as a partner, not a search engine."*
+
+## Effective Usage: Mental Model {.smaller}
+
+```{mermaid}
+%%| eval: true
+%%| echo: false
+%%| fig-width: 8
+%%| fig-height: 5.2
+flowchart TD
+    START["New Task"] --> CHECK
+
+    CHECK{"CLAUDE.md\nup to date?"}
+    CHECK -->|No| UPDATE["Update / run /init"]
+    CHECK -->|Yes| SIZE
+
+    UPDATE --> SIZE
+    SIZE{"Task\ncomplexity?"}
+
+    SIZE -->|Simple| DIRECT["Direct prompt\n+ clear outcome"]
+    SIZE -->|Medium| PLANM["/plan first\nthen execute"]
+    SIZE -->|Large| SUB["Subagents\nvia Task tool"]
+
+    DIRECT & PLANM & SUB --> CTX
+
+    CTX{"Context\nfull?"}
+    CTX -->|Yes| COMPACT["/compact"]
+    CTX -->|No| DONE["Done ✓"]
+    COMPACT --> DONE
+
+    style START   fill:#2d1b69,color:#c4b5fd
+    style CHECK   fill:#0c2a3a,color:#7dd3fc
+    style UPDATE  fill:#3a2400,color:#fcd34d
+    style SIZE    fill:#0c2a3a,color:#7dd3fc
+    style DIRECT  fill:#1e3a2f,color:#86efac
+    style PLANM   fill:#1e3a2f,color:#86efac
+    style SUB     fill:#1e3a2f,color:#86efac
+    style CTX     fill:#0c2a3a,color:#7dd3fc
+    style COMPACT fill:#3a2400,color:#fcd34d
+    style DONE    fill:#14532d,color:#bbf7d0
+```
+
+::: {.card-green style="font-size:0.75em;"}
+CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work · `/compact` when context fills · CLI > MCP for token efficiency · Intent over instructions
+:::
+
+## Thank You
+
+<br>
+
+::: {style="text-align: center; font-size: 0.82em; color: #8b949e; margin-bottom: 1.2em;"}
+Other [slide decks](https://sites.google.com/site/indrajeetspatilmorality/presentations) on software engineering practices
+:::
+
+::: {style="text-align: center; font-size: 1.1em;"}
+
+[{{< fa brands linkedin >}}](https://www.linkedin.com/in/indrajeet-patil-ph-d-397865174/)
+&nbsp;&nbsp;&nbsp;
+[{{< fa brands github >}}](http://github.com/IndrajeetPatil)
+&nbsp;&nbsp;&nbsp;
+[{{< fa solid envelope >}}](mailto:patilindrajeet.science@gmail.com)
+
+:::
+
+<br>
+
+::: {.terminal-box style="max-width: 400px; margin: 0 auto;"}
+<pre><code><span style="color:#38bdf8;">$</span> claude --help
+<span style="color:#22c55e;">Claude Code</span> — AI pair programmer
+<span style="color:#8b949e;">Use it well. Ship great software.</span>
+</code></pre>
+:::
