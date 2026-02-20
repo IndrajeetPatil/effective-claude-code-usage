@@ -484,8 +484,8 @@ def make_09():
 # (no group_bg so no occlusion issues), then a row of item boxes.
 # ═══════════════════════════════════════════════════════════════
 def make_10():
-    fig, ax = new_fig(11, 8.5)
-    title(ax, 11, 8.5, 'Quality Guardrails — Three Layers')
+    fig, ax = new_fig(11, 9.5)
+    title(ax, 11, 9.5, 'Quality Guardrails — Three Layers')
 
     xs = [1.20, 3.30, 5.50, 7.70, 9.80]   # x centres for 5-item rows
     bw_item = 1.90                          # item box width
