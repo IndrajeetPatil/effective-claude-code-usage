@@ -19,4 +19,8 @@ ENV/
 # Quarto
 /.quarto/
 _site/
+index.html
+index_files/
 README.html
+
+**/*.quarto_ipynb
