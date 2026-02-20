@@ -156,30 +156,6 @@ You have Claude Code installed and can run `claude` in a terminal.
 
 ![](media/diag-01-intelligence-spectrum.png){fig-align="center" fig-alt="Three-column diagram showing the intelligence spectrum from tab completion to chatbot to agent"}
 
-. . .
-
-:::: {.columns}
-
-::: {.column width="33%"}
-::: {.card-subtle style="text-align:center; font-size:0.82em; padding:0.5em;"}
-Statistic → next token
-:::
-:::
-
-::: {.column width="33%"}
-::: {.card-blue style="text-align:center; font-size:0.82em; padding:0.5em;"}
-Understands → responds once
-:::
-:::
-
-::: {.column width="33%"}
-::: {.card-green style="text-align:center; font-size:0.82em; padding:0.5em;"}
-Acts → observes → iterates
-:::
-:::
-
-::::
-
 ## ReAct Agent Loop {.smaller}
 
 ![](media/diag-02-react-loop.png){fig-align="center" fig-alt="Diagram showing the ReAct agent loop: perceive, think, act, observe, repeat"}

@@ -200,8 +200,8 @@ def make_02():
 # 3 — Tool Ecosystem
 # ═══════════════════════════════════════════════════════════════
 def make_03():
-    fig, ax = new_fig(11, 5.8)
-    title(ax, 11, 5.8, 'Tool Ecosystem')
+    fig, ax = new_fig(11, 6.8)
+    title(ax, 11, 6.8, 'Tool Ecosystem')
 
     cx, cy = 5.5, 2.80
     box(ax, cx, cy, 2.1, 1.15, DGRN, 'Claude\nCode', fs=26, tc=GRN, lw=2.8)
@@ -232,8 +232,8 @@ def make_03():
 # 4 — Context Window
 # ═══════════════════════════════════════════════════════════════
 def make_04():
-    fig, ax = new_fig(11, 5.0)
-    title(ax, 11, 5.0, 'What Fills the Context Window?')
+    fig, ax = new_fig(11, 5.8)
+    title(ax, 11, 5.8, 'What Fills the Context Window?')
 
     inputs = [
         (1.40, 3.90, DPUR, PUR, 'CLAUDE.md'),
