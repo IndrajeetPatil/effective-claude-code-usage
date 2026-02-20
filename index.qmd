@@ -501,6 +501,98 @@ Model explores, adapts, and makes better decisions with full context.
 **Default rule** · if a CLI tool (`gh`, `psql`, `curl`, `kubectl`) can do the job, use `Bash`. Reach for MCP only when persistent auth state, rate-limit handling, or real-time events are required.
 :::
 
+# Quality Guardrails
+
+> *"An agent that can write code can also write bad code. Scaffolding is what keeps quality up when you hand the keyboard to a machine."*
+
+## The Risk of Unconstrained Agents {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+::: {.card-amber}
+**Without guardrails**
+
+- Agent skips tests when they slow it down
+- Inconsistent style creeps in across files
+- "Works on my machine" — no CI enforcement
+- One bad tool call deletes an untracked file
+- Conventions drift as prompts change
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: {.card-green}
+**With guardrails**
+
+- CLAUDE.md codifies non-negotiable rules
+- Local QA tools catch errors before commit
+- CI/CD is the last line of defence
+- Agent *loops* on failures until green
+- Quality is structural, not prompt-dependent
+:::
+
+:::
+
+::::
+
+. . .
+
+::: {.card-blue style="font-size:0.82em;"}
+**Key insight** · the agent is only as disciplined as your tooling forces it to be. Guardrails don't slow down Claude — they make its output trustworthy.
+:::
+
+## Three-Layer Quality Scaffold {.smaller}
+
+![](media/diag-10-qa-scaffold.png){fig-align="center" fig-alt="Three-layer diagram: agent instructions in CLAUDE.md, local QA tools (lint/type/test), and CI/CD safety net"}
+
+## CLAUDE.md as a Quality Contract {.smaller}
+
+:::: {.columns}
+
+::: {.column width="52%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;"># CLAUDE.md — Quality Rules</span>
+
+<span style="color:#a78bfa;">## Non-Negotiables</span>
+<span style="color:#f87171;">- Never commit with failing tests</span>
+<span style="color:#f87171;">- Never skip lint / type checks</span>
+<span style="color:#f87171;">- Never use `any` in TypeScript</span>
+<span style="color:#f87171;">- Never push directly to main</span>
+
+<span style="color:#a78bfa;">## Definition of Done</span>
+<span style="color:#22c55e;">1. pnpm test passes</span>
+<span style="color:#22c55e;">2. pnpm lint passes</span>
+<span style="color:#22c55e;">3. pnpm typecheck passes</span>
+<span style="color:#22c55e;">4. PR description written</span>
+</code></pre>
+:::
+
+:::
+
+::: {.column width="48%"}
+
+::: {.card-green style="font-size:0.85em;"}
+**Agent behaviour**
+
+Claude reads these rules every turn. When tests fail, it diagnoses and fixes — not skips. When lint errors appear, it resolves them before declaring done.
+:::
+
+. . .
+
+::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
+**Prompt pattern** · end every task with:
+*"Task complete only when: tests green, lint clean, no type errors."*
+:::
+
+:::
+
+::::
+
 # Summary
 
 > *"Claude Code is most powerful when you treat it as a partner, not a search engine."*

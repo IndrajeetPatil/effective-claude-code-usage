@@ -746,6 +746,80 @@
 </div>
 </section></section>
 <section>
+<section id="quality-guardrails" class="title-slide slide level1 center">
+<h1>Quality Guardrails</h1>
+<blockquote>
+<p><em>“An agent that can write code can also write bad code. Scaffolding is what keeps quality up when you hand the keyboard to a machine.”</em></p>
+</blockquote>
+</section>
+<section id="the-risk-of-unconstrained-agents" class="slide level2 smaller">
+<h2>The Risk of Unconstrained Agents</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="card-amber">
+<p><strong>Without guardrails</strong></p>
+<ul>
+<li>Agent skips tests when they slow it down</li>
+<li>Inconsistent style creeps in across files</li>
+<li>“Works on my machine” — no CI enforcement</li>
+<li>One bad tool call deletes an untracked file</li>
+<li>Conventions drift as prompts change</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="card-green">
+<p><strong>With guardrails</strong></p>
+<ul>
+<li>CLAUDE.md codifies non-negotiable rules</li>
+<li>Local QA tools catch errors before commit</li>
+<li>CI/CD is the last line of defence</li>
+<li>Agent <em>loops</em> on failures until green</li>
+<li>Quality is structural, not prompt-dependent</li>
+</ul>
+</div>
+</div></div>
+<div class="fragment">
+<div class="card-blue" style="font-size:0.82em;">
+<p><strong>Key insight</strong> · the agent is only as disciplined as your tooling forces it to be. Guardrails don’t slow down Claude — they make its output trustworthy.</p>
+</div>
+</div>
+</section>
+<section id="three-layer-quality-scaffold" class="slide level2 smaller">
+<h2>Three-Layer Quality Scaffold</h2>
+
+<img data-src="media/diag-10-qa-scaffold.png" class="quarto-figure quarto-figure-center r-stretch" alt="Three-layer diagram: agent instructions in CLAUDE.md, local QA tools (lint/type/test), and CI/CD safety net"></section>
+<section id="claude.md-as-a-quality-contract" class="slide level2 smaller">
+<h2>CLAUDE.md as a Quality Contract</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="terminal-box">
+<pre><code><span style="color:#38bdf8;"># CLAUDE.md — Quality Rules</span>
+
+<span style="color:#a78bfa;">## Non-Negotiables</span>
+<span style="color:#f87171;">- Never commit with failing tests</span>
+<span style="color:#f87171;">- Never skip lint / type checks</span>
+<span style="color:#f87171;">- Never use `any` in TypeScript</span>
+<span style="color:#f87171;">- Never push directly to main</span>
+
+<span style="color:#a78bfa;">## Definition of Done</span>
+<span style="color:#22c55e;">1. pnpm test passes</span>
+<span style="color:#22c55e;">2. pnpm lint passes</span>
+<span style="color:#22c55e;">3. pnpm typecheck passes</span>
+<span style="color:#22c55e;">4. PR description written</span>
+</code></pre>
+</div>
+</div><div class="column" style="width:48%;">
+<div class="card-green" style="font-size:0.85em;">
+<p><strong>Agent behaviour</strong></p>
+<p>Claude reads these rules every turn. When tests fail, it diagnoses and fixes — not skips. When lint errors appear, it resolves them before declaring done.</p>
+</div>
+<p>. . .</p>
+<div class="card-blue" style="font-size:0.82em; margin-top:0.6em;">
+<p><strong>Prompt pattern</strong> · end every task with: <em>“Task complete only when: tests green, lint clean, no type errors.”</em></p>
+</div>
+</div></div>
+</section></section>
+<section>
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
 <blockquote>
