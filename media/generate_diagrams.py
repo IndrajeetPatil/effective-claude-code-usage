@@ -543,10 +543,78 @@ def make_10():
 
 
 # ═══════════════════════════════════════════════════════════════
+# 11 — Git Worktrees: Parallel Isolation
+# Layout: w=11, h=9.0
+#   title at y=8.45 (h-0.55)
+#   safe zone: top edge ≤ 9.0-1.05 = 7.95
+#   git store center y=7.5, top=7.925 ≤ 7.95 ✓
+#   worktrees center y=5.8, h=1.2, top=6.4
+#   sessions center y=3.5, h=0.85, top=3.925
+#   annotation at y=2.2
+
+def make_11():
+    fig, ax = new_fig(11, 9.0)
+    title(ax, 11, 9.0, 'Git Worktrees — Parallel Isolation')
+
+    # ── Shared git object store ───────────────────────────────────
+    # center y=7.5, h=0.85 → top=7.925 ≤ 7.95 ✓, bottom=7.075
+    box(ax, 5.5, 7.50, 6.0, 0.85, CARD,
+        '.git/  ·  shared objects, refs, history, remote connections',
+        fs=20, tc=TXT, lw=2.0, ec=MUT)
+
+    # ── Arrows: git store → worktrees (fan out) ──────────────────
+    # worktree tops = 5.8 + 0.60 = 6.40
+    arr(ax, 3.0, 7.075, 1.8, 6.40, col=MUT, lw=1.8, rad=-0.22)
+    arr(ax, 5.5, 7.075, 5.5, 6.40, col=MUT, lw=1.8)
+    arr(ax, 8.0, 7.075, 9.2, 6.40, col=MUT, lw=1.8, rad=0.22)
+
+    # ── Worktree directory boxes ──────────────────────────────────
+    # center y=5.8, h=1.2, top=6.4, bottom=5.2
+    wt_xs     = [1.8,           5.5,                  9.2]
+    wt_labels = ['main\nbranch: main',
+                 'feature-auth\nbranch: feature-auth',
+                 'bugfix-123\nbranch: bugfix-123']
+    wt_cols   = [(DGRN, GRN), (DBLU, BLU), (DAMB, AMB)]
+
+    for wx, wlbl, (wfc, wec) in zip(wt_xs, wt_labels, wt_cols):
+        box(ax, wx, 5.80, 2.80, 1.20, wfc, wlbl, fs=20, tc=wec, lw=2.2, ec=wec)
+
+    # ── Arrows: worktrees → sessions ─────────────────────────────
+    # worktree bottom = 5.2, session top = 3.5 + 0.425 = 3.925
+    for wx in wt_xs:
+        arr(ax, wx, 5.20, wx, 3.925, col=MUT, lw=1.8)
+
+    # ── Claude Code session boxes ─────────────────────────────────
+    # center y=3.5, h=0.85, top=3.925, bottom=3.075
+    sess_labels = ['claude -w main',
+                   'claude -w\nfeature-auth',
+                   'claude -w\nbugfix-123']
+
+    for wx, slbl, (sfc, sec) in zip(wt_xs, sess_labels, wt_cols):
+        box(ax, wx, 3.50, 2.80, 0.85, sfc, slbl, fs=20, tc=sec, lw=2.2, ec=sec)
+
+    # ── Column labels — standalone text above each worktree ───────
+    col_header_y = 6.85  # above worktree tops (6.40), below git bottom (7.075)
+    for wx, (_, wec), lbl_txt in zip(wt_xs, wt_cols,
+                                      ['Session A', 'Session B', 'Session C']):
+        ax.text(wx, col_header_y, lbl_txt,
+                ha='center', va='center', fontsize=18, color=wec,
+                fontweight='bold', alpha=0.70, zorder=5)
+
+    # ── Bottom annotation ─────────────────────────────────────────
+    ax.text(5.5, 2.22,
+            'Isolated files · own branch · no conflicts · shared history',
+            ha='center', va='center', fontsize=19, color=MUT,
+            style='italic', zorder=5)
+
+    save(fig, 'diag-11-worktrees.png')
+
+
+# ═══════════════════════════════════════════════════════════════
 if __name__ == '__main__':
     print('Generating diagrams...')
     make_01(); make_02(); make_03()
     make_04(); make_05(); make_06()
     make_07(); make_08(); make_09()
-    make_10()
+    make_10(); make_11()
     print('All done.')

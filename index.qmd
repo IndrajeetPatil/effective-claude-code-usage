@@ -80,6 +80,7 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 - **Planning mode** — explore before you edit
 - **Prompting for agents** — intent over instructions
 - **CLI vs MCP** — token efficiency in integrations
+- **Git worktrees** — true parallel Claude sessions
 
 :::
 
@@ -563,6 +564,107 @@ Claude reads these rules every turn. When tests fail, it diagnoses and fixes —
 ::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
 **Prompt pattern** · end every task with:
 *"Task complete only when: tests green, lint clean, no type errors."*
+:::
+
+:::
+
+::::
+
+# Git Worktrees
+
+> *"When two Claude sessions edit the same files, you don't get double the speed — you get merge conflicts. Worktrees give each session its own universe."*
+
+## Why Parallel Sessions Need Isolation {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+::: {.card-amber}
+**Without worktrees**
+
+- Two Claude sessions share the same working directory
+- Session A edits `auth.ts` while Session B rewrites `auth.ts`
+- Uncommitted changes bleed across sessions
+- One `/compact` or context reset can overwrite the other's work
+- Stash/pop gymnastics just to switch tasks
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: {.card-green}
+**With worktrees**
+
+- Each session gets its own directory and branch
+- File edits, builds, and tool calls are fully isolated
+- Sessions share commit history and remote connections
+- Switch between tasks without saving state
+- Merge when both are done — on your schedule
+:::
+
+:::
+
+::::
+
+. . .
+
+::: {.card-blue style="font-size:0.82em;"}
+**The key insight** · a git worktree is a second checkout of the same repo — same `.git/` database, different working tree. Claude Code creates and manages them with a single flag.
+:::
+
+## Worktrees — How They Work {.smaller}
+
+![](media/diag-11-worktrees.png){fig-align="center" fig-alt="Diagram showing a single shared .git/ object store at the top with three isolated worktree directories and three parallel Claude Code sessions below"}
+
+## Using Worktrees with Claude Code {.smaller}
+
+:::: {.columns}
+
+::: {.column width="52%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;"># Create a worktree + start Claude in it</span>
+<span style="color:#22c55e;">$</span> claude --worktree feature-auth
+<span style="color:#8b949e;"># creates .claude/worktrees/feature-auth/</span>
+<span style="color:#8b949e;"># branch: worktree-feature-auth</span>
+
+<span style="color:#38bdf8;"># In a second terminal — another task</span>
+<span style="color:#22c55e;">$</span> claude --worktree bugfix-123
+
+<span style="color:#38bdf8;"># Auto-generate a name</span>
+<span style="color:#22c55e;">$</span> claude --worktree
+<span style="color:#8b949e;"># e.g. bright-running-fox</span>
+
+<span style="color:#38bdf8;"># Or ask Claude mid-session</span>
+<span style="color:#22c55e;">&gt;</span> work in a worktree
+</code></pre>
+:::
+
+:::
+
+::: {.column width="48%"}
+
+::: {.card-green style="font-size:0.85em;"}
+**Automatic cleanup**
+
+On exit, Claude checks for changes:
+
+- **No changes** → worktree + branch deleted automatically
+- **Changes exist** → Claude prompts: keep or discard?
+:::
+
+. . .
+
+::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
+**Pro tip** · add `.claude/worktrees/` to `.gitignore` — worktree directories appear as untracked files in the main repo without it.
+:::
+
+. . .
+
+::: {.card-subtle style="font-size:0.82em; margin-top:0.6em;"}
+**Manual control** · use `git worktree add`, `git worktree list`, and `git worktree remove` for precise placement and branch selection.
 :::
 
 :::
