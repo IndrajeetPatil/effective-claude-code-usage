@@ -336,31 +336,35 @@ def make_07():
     title(ax, 11, 4.5, 'Planning Mode Workflow')
 
     nodes = [
-        (0.80,  2.20, DPUR, PUR, 'Request'),
-        (2.40,  2.20, DGRN, GRN, '/plan\nread-only'),
-        (4.00,  2.20, DBLU, BLU, 'Explore\ncodebase'),
-        (5.60,  2.20, DAMB, AMB, 'Draft\nplan'),
-        (7.20,  2.20, CARD, TXT, 'Human\nReview'),
-        (8.80,  2.20, DGRN, GRN, 'Execute\nchanges'),
-        (10.40, 2.20, DGRN, GRN, 'Done!'),
+        (0.70,  2.20, DPUR, PUR, 'Request'),
+        (2.10,  2.20, DGRN, GRN, '/plan\nread-only'),
+        (3.50,  2.20, DBLU, BLU, 'Research\ncodebase'),
+        (4.90,  2.20, DAMB, AMB, 'Draft\nplan'),
+        (6.30,  2.20, CARD, TXT, 'Annotate\n+ Revise'),
+        (7.70,  2.20, DGRN, GRN, 'Execute\nchanges'),
+        (9.10,  2.20, DGRN, GRN, 'Done!'),
     ]
-    bw, bh = 1.38, 1.02
+    bw, bh = 1.22, 1.02
     for x, y, fc, tc, lbl_text in nodes:
-        box(ax, x, y, bw, bh, fc, lbl_text, fs=20, tc=tc)
+        box(ax, x, y, bw, bh, fc, lbl_text, fs=19, tc=tc)
 
     for i in range(len(nodes) - 1):
-        col = GRN if i >= 4 else TXT
+        col = GRN if i >= 5 else TXT
         arr(ax, nodes[i][0] + bw/2, 2.20, nodes[i+1][0] - bw/2, 2.20, col=col)
 
-    # Refine loop below nodes
+    # Annotation loop below nodes (Draft → Annotate+Revise)
     ry, ry2 = 1.22, 1.69
-    ax.plot([5.60, 5.60], [ry, ry2], color=AMB, lw=2.0, zorder=2)
-    ax.plot([7.20, 7.20], [ry, ry2], color=AMB, lw=2.0, zorder=2)
-    ax.plot([5.60, 7.20], [ry, ry], color=AMB, lw=2.0, zorder=2)
-    ax.annotate('', xy=(5.60, ry2), xytext=(5.60, ry + 0.01),
+    ax.plot([4.90, 4.90], [ry, ry2], color=AMB, lw=2.0, zorder=2)
+    ax.plot([6.30, 6.30], [ry, ry2], color=AMB, lw=2.0, zorder=2)
+    ax.plot([4.90, 6.30], [ry, ry], color=AMB, lw=2.0, zorder=2)
+    ax.annotate('', xy=(4.90, ry2), xytext=(4.90, ry + 0.01),
                 arrowprops=dict(arrowstyle='->', color=AMB, lw=2.0, mutation_scale=14),
                 zorder=2)
-    lbl(ax, 6.40, 0.90, 'refine', col=AMB, fs=17)
+    lbl(ax, 5.60, 0.90, '1-6x', col=AMB, fs=17)
+
+    # Annotation below Done node
+    ax.text(9.10, 1.50, 'plan.md = living checklist', ha='center', va='center',
+            fontsize=15, color=MUT, style='italic', zorder=5)
 
     save(fig, 'diag-07-planning-mode.png')
 

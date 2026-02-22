@@ -175,14 +175,14 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 
 ## Tool Categories {.smaller}
 
-| Category | Tools | Enables |
-|----------|-------|---------|
-| **File I/O** | `Read`, `Write`, `Edit` | Read any file; create or surgically modify code |
-| **Pattern Search** | `Glob`, `Grep` | Find files by name; search content by regex |
-| **Shell** | `Bash` | Run tests, git, npm, docker — any terminal command |
-| **Web** | `WebFetch`, `WebSearch` | Fetch docs, read changelogs, search answers |
-| **Agents** | `Task` | Spawn isolated subagents for parallel work |
-| **MCP** | Custom servers | GitHub PRs, Jira tickets, Postgres, and more |
+| Category | Enables |
+|----------|---------|
+| **File I/O** | Read any file; create or surgically modify code |
+| **Pattern Search** | Find files by name; search content by regex |
+| **Shell** | Run tests, git, npm, docker — any terminal command |
+| **Web** | Fetch docs, read changelogs, search answers |
+| **Agents** | Spawn isolated subagents for parallel work |
+| **MCP** | GitHub PRs, Jira tickets, Postgres, and more |
 
 . . .
 
@@ -235,7 +235,7 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 | Command | Purpose |
 |---------|---------|
 | `/plan` | Enter planning-only mode |
-| `/fast` | Toggle Sonnet model |
+| `/fast` | Toggle faster output (same Opus model) |
 
 . . .
 
@@ -399,22 +399,70 @@ In **planning mode** Claude reads and reasons but **cannot write, edit, or delet
 **Rule of thumb** · if the task touches >3 files or crosses service boundaries, plan first. ~5 minutes of planning saves 1–2 hours of rework.
 :::
 
+## The Plan Annotation Cycle {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+
+::: {.card-subtle style="margin-bottom: 0.5em;"}
+**1. Research** · ask Claude to read and summarize the relevant parts of the codebase *before* drafting any plan.
+:::
+
+::: {.card-subtle style="margin-bottom: 0.5em;"}
+**2. Draft** · Claude writes a plan (or `plan.md`) with concrete steps.
+:::
+
+::: {.card-subtle style="margin-bottom: 0.5em;"}
+**3. Annotate** · you read the plan and add inline corrections, questions, or "no, do X instead" comments.
+:::
+
+::: {.card-subtle style="margin-bottom: 0.5em;"}
+**4. Revise** · Claude incorporates your feedback and produces an updated plan.
+:::
+
+::: {.card-subtle}
+**5. Repeat** · iterate 1–6 times until you're confident, *then* execute.
+:::
+
+:::
+
+::: {.column width="45%"}
+
+::: {.card-green style="font-size:0.85em;"}
+**Why this works**
+
+The plan becomes a shared contract. Each annotation round catches misunderstandings *before* code is written — where fixes are cheap.
+:::
+
+::: {.card-blue style="font-size:0.82em; margin-top: 0.6em;"}
+**Pro tip** · persist the plan in a `plan.md` file. Use it as a living checklist — mark tasks done as implementation progresses. It survives `/compact` and context resets.
+:::
+
+::: {.card-amber style="font-size:0.82em; margin-top: 0.6em;"}
+**One long session > many short ones** · keep research, planning, and implementation in a single conversation. The accumulated context makes Claude smarter with each step.
+:::
+
+:::
+
+::::
+
 # Trust the Model
 
 > *"Claude Opus 4.6 is a reasoning engine. Give it intent, not step-by-step instructions."*
 
-## Let the Model Orchestrate {.smaller}
+## Define the What, Not the How {.smaller}
 
 :::: {.columns}
 
 ::: {.column width="50%"}
 
 ::: {.card-amber}
-**Micromanaging**
+**Over-specified**
 
-*"First read auth.ts. Then check the test file. Then look for mocks. Then write a test for login using the existing mock pattern. Don't use jest.fn() directly."*
+*"First read auth.ts. Then check the test file. Then look for mocks. Then write a test for login using the existing mock pattern."*
 
-Over-constrained — model can't adapt when file structure differs from your assumption.
+Over-constrained — Claude already reads the codebase, finds patterns, and adapts. Step-by-step instructions limit its ability to explore.
 :::
 
 :::
@@ -422,11 +470,11 @@ Over-constrained — model can't adapt when file structure differs from your ass
 ::: {.column width="50%"}
 
 ::: {.card-green}
-**Intent-driven**
+**Clear acceptance criteria**
 
-*"Add comprehensive unit tests for the auth module. Follow existing patterns. Cover edge cases and error paths."*
+*"Add unit tests for the auth module. Done when: all public functions covered, edge cases and error paths tested, existing test conventions followed, `pnpm test` passes."*
 
-Model explores, adapts, and makes better decisions with full context.
+You define *what* done looks like. Claude figures out *how* to get there.
 :::
 
 :::
@@ -436,22 +484,21 @@ Model explores, adapts, and makes better decisions with full context.
 . . .
 
 ::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
-**Mental shift** · you are the product manager, Claude is the senior engineer. Tell it *what* and *why* — not step-by-step *how*.
+**Mental model** · you are the product manager, Claude is the senior engineer. Opus 4.6 already follows existing patterns, runs tests, and loops on failures — you don't need to ask.
 :::
 
-## Prompting for Agents {.smaller}
+## The One Prompting Rule That Still Matters {.smaller}
 
-| Principle | Chatbot Prompt | Agent Prompt |
-|-----------|---------------|--------------|
-| **Scope** | Single question | Full task with acceptance criteria |
-| **Context** | Self-contained | "Follow existing patterns in the codebase" |
-| **Error handling** | Re-prompt manually | "If tests fail, diagnose and fix before returning" |
-| **Verification** | Read the reply | "Run tests and show me the output" |
+::: {.card-blue style="font-size:0.88em; margin-bottom: 0.8em;"}
+Opus 4.6 already follows codebase patterns, runs tests, and loops on failures by default. You don't need to tell it how to be an agent — it *is* one.
+:::
+
+The one thing the model can't infer is **your definition of done**.
 
 . . .
 
-::: {.card-green style="font-size:0.82em;"}
-**End with a definition of done** · *"Task complete when: (1) tests pass, (2) no lint errors, (3) PR description written."* Prevents premature stopping.
+::: {.card-green style="font-size:0.88em;"}
+**End every task with acceptance criteria** · *"Done when: (1) tests pass, (2) no lint errors, (3) PR description written."* This prevents premature stopping and gives Claude a clear finish line.
 :::
 
 # CLI over MCPs
@@ -556,14 +603,7 @@ Model explores, adapts, and makes better decisions with full context.
 ::: {.card-green style="font-size:0.85em;"}
 **Agent behaviour**
 
-Claude reads these rules every turn. When tests fail, it diagnoses and fixes — not skips. When lint errors appear, it resolves them before declaring done.
-:::
-
-. . .
-
-::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
-**Prompt pattern** · end every task with:
-*"Task complete only when: tests green, lint clean, no type errors."*
+Claude reads these rules every turn. Opus 4.6 loops on test failures and lint errors by default — CLAUDE.md makes the quality bar *explicit and permanent* rather than relying on per-prompt instructions.
 :::
 
 :::
@@ -681,6 +721,17 @@ On exit, Claude checks for changes:
 
 ::: {.card-green style="font-size:0.75em; margin-top:0.4em;"}
 CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work · `/compact` when context fills · CLI > MCP for token efficiency · Intent over instructions
+:::
+
+## Resources {.smaller}
+
+::: {style="font-size: 0.82em;"}
+
+- [Claude Code official documentation](https://docs.anthropic.com/en/docs/claude-code) — tools, slash commands, CLAUDE.md, subagents, planning mode
+- [Claude Code best practices](https://docs.anthropic.com/en/docs/claude-code/best-practices) — prompting patterns, guardrails, context management
+- [How I use Claude Code](https://boristane.com/blog/how-i-use-claude-code/) — Boris Tane — plan annotation cycle, research-first workflow, long sessions
+- [Anthropic's guide to agentic coding](https://www.anthropic.com/engineering/claude-code-best-practices) — ReAct loop, quality scaffolding, CLI vs MCP tradeoffs
+
 :::
 
 ## Thank You
