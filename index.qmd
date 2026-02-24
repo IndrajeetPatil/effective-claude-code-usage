@@ -12,7 +12,7 @@ format:
     help: true
     include-in-header: meta-tags.html
     link-external-newwindow: true
-    footer: "Effective Claude Code Usage — Indrajeet Patil"
+    footer: ""
 revealjs-plugins:
   - fontawesome
 keywords: ["claude-code", "ai-agents", "cli", "anthropic", "software-engineering"]
@@ -71,6 +71,7 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 
 ::: {.column width="55%"}
 
+::: {style="font-size: 0.88em;"}
 - **Agents vs chatbots** — what Claude Code actually is
 - **Tools** — what Claude can call and why it matters
 - **Slash commands** — session control and automation
@@ -78,24 +79,21 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 - **CLAUDE.md** — persistent project memory
 - **Subagents** — parallelising complex work
 - **Planning mode** — explore before you edit
-- **Prompting for agents** — intent over instructions
-- **CLI vs MCP** — token efficiency in integrations
-- **Git worktrees** — true parallel Claude sessions
+- **Prompting** — intent over instructions
+- **CLI vs MCP** — token efficiency
+- **Git worktrees** — parallel Claude sessions
+:::
 
 :::
 
 ::: {.column width="45%"}
 
-::: {.card-green}
-**Goal**
-
-Turn Claude Code from a smart autocomplete into a capable cognitive partner that handles complex engineering tasks autonomously.
+::: {.card-green .card-compact style="font-size: 0.88em;"}
+**Goal** · turn Claude Code from a smart autocomplete into a capable cognitive partner for complex engineering tasks.
 :::
 
-::: {.card-subtle style="margin-top: 0.8em; font-size: 0.85em;"}
-**Prerequisite**
-
-You have Claude Code installed and can run `claude` in a terminal.
+::: {.card-subtle .card-compact style="margin-top: 0.5em; font-size: 0.82em;"}
+**Prerequisite** · Claude Code installed; you can run `claude` in a terminal.
 :::
 
 :::
@@ -110,27 +108,27 @@ You have Claude Code installed and can run `claude` in a terminal.
 
 :::: {.columns}
 
-::: {.column width="55%"}
+::: {.column width="50%"}
 
-::: {.card-subtle style="margin-bottom: 0.5em;"}
-**CLI-first** · runs in your terminal, next to your shell, your files, your Git history
+::: {.card-subtle .card-compact style="margin-bottom: 0.4em; font-size: 0.85em;"}
+**CLI-first** · runs in your terminal, next to your shell, files, and Git history
 :::
 
-::: {.card-subtle style="margin-bottom: 0.5em;"}
-**Agentic** · not one-shot Q&A — it loops: perceive → plan → act → observe → repeat
+::: {.card-subtle .card-compact style="margin-bottom: 0.4em; font-size: 0.85em;"}
+**Agentic** · not one-shot Q&A — loops: perceive → plan → act → observe → repeat
 :::
 
-::: {.card-subtle}
+::: {.card-subtle .card-compact style="margin-bottom: 0.4em; font-size: 0.85em;"}
 **Tool-using** · reads files, writes code, runs bash, searches the web, spawns subagents
 :::
 
-::: {.card-blue style="margin-top: 0.8em; font-size: 0.88em;"}
-**Key insight** · the model decides *which* tools to use, *in what order*, and *how many times* until the task is done.
+::: {.card-blue .card-compact style="font-size: 0.82em;"}
+**Key insight** · the model decides *which* tools to use, *in what order*, and *how many times*.
 :::
 
 :::
 
-::: {.column width="45%"}
+::: {.column width="50%"}
 
 ::: {.terminal-box}
 <pre><code><span style="color:#38bdf8;">$</span> claude "add unit tests
@@ -184,9 +182,7 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 | **Agents** | Spawn isolated subagents for parallel work |
 | **MCP** | GitHub PRs, Jira tickets, Postgres, and more |
 
-. . .
-
-::: {.card-blue style="font-size:0.82em;"}
+::: {.card-blue .card-compact style="font-size:0.78em;"}
 **Permission model** · dangerous operations (file deletion, git push) require explicit user approval. You control the blast radius.
 :::
 
@@ -194,7 +190,7 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 
 > *"Slash commands are the control panel for your session."*
 
-## Slash Commands Reference {.smaller}
+## Slash Commands — Session & Automation {.smaller}
 
 :::: {.columns}
 
@@ -210,6 +206,10 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 | `/status` | Show context window usage |
 | `/cost` | Show token cost so far |
 
+:::
+
+::: {.column width="50%"}
+
 **Automation**
 
 | Command | Purpose |
@@ -218,7 +218,17 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 | `/review` | Code review current changes |
 | `/pr` | Open a pull request |
 
+::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.8em;"}
+**`/compact`** is your best friend in long sessions — summarises history while preserving decisions.
 :::
+
+:::
+
+::::
+
+## Slash Commands — Control & Modes {.smaller}
+
+:::: {.columns}
 
 ::: {.column width="50%"}
 
@@ -230,18 +240,16 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 | `/doctor` | Diagnose config issues |
 | `/model` | Switch Claude model |
 
+:::
+
+::: {.column width="50%"}
+
 **Modes**
 
 | Command | Purpose |
 |---------|---------|
 | `/plan` | Enter planning-only mode |
 | `/fast` | Toggle faster output (same Opus model) |
-
-. . .
-
-::: {.card-amber style="font-size:0.82em; margin-top:0.8em;"}
-**`/compact`** is your best tool in long sessions — it summarises history into fewer tokens while preserving all decisions.
-:::
 
 :::
 
@@ -255,18 +263,16 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 
 ![](media/diag-04-context-window.png){fig-align="center" fig-alt="Diagram showing five inputs flowing into the context window: CLAUDE.md, history, files, tool outputs, images"}
 
-. . .
-
 :::: {.columns}
 
 ::: {.column width="50%"}
-::: {.card-amber style="font-size:0.82em;"}
+::: {.card-amber .card-compact style="font-size:0.78em;"}
 **Fills fast** · large tool outputs (full files, verbose logs) consume tokens rapidly.
 :::
 :::
 
 ::: {.column width="50%"}
-::: {.card-green style="font-size:0.82em;"}
+::: {.card-green .card-compact style="font-size:0.78em;"}
 **Fix** · use `/compact`, limit reads to relevant files, and trim bash output.
 :::
 :::
@@ -340,36 +346,32 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 ::: {.column width="50%"}
 
-::: {.card-green}
-**Use when**
+::: {.card-green .card-compact}
+[**Use when**]{style="font-size:0.95em;"}
 
-- Tasks are genuinely independent
-- Work can run in parallel (different modules)
+- Independent tasks across different modules
 - Context isolation is an asset
-- Large codebase exploration across multiple dirs
+- Large codebase exploration
 :::
 
 :::
 
 ::: {.column width="50%"}
 
-::: {.card-amber}
-**Avoid when**
+::: {.card-amber .card-compact}
+[**Avoid when**]{style="font-size:0.95em;"}
 
-- Tasks have sequential dependencies
+- Sequential dependencies between tasks
 - Shared files risk merge conflicts
-- Task is simple and fast
-- You need one coherent decision across all changes
+- Task is simple or needs one coherent decision
 :::
 
 :::
 
 ::::
 
-. . .
-
-::: {.card-blue style="font-size:0.82em; margin-top: 0.6em;"}
-**How** · use the `Task` tool or ask Claude to "do X and Y in parallel." Each subagent gets an isolated context copy; the orchestrator merges results.
+::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**How** · use the `Task` tool or ask Claude to "do X and Y in parallel." Each subagent gets an isolated context; the orchestrator merges results.
 :::
 
 # Planning Mode
@@ -393,10 +395,8 @@ In **planning mode** Claude reads and reasons but **cannot write, edit, or delet
 | Multi-service change | Inconsistent API contracts | All surfaces identified upfront |
 | Mysterious bug | Treats symptoms, not cause | Root-cause analysis before editing |
 
-. . .
-
-::: {.card-amber style="font-size:0.82em;"}
-**Rule of thumb** · if the task touches >3 files or crosses service boundaries, plan first. ~5 minutes of planning saves 1–2 hours of rework.
+::: {.card-amber .card-compact style="font-size:0.78em;"}
+**Rule of thumb** · if the task touches >3 files or crosses service boundaries, plan first. ~5 min of planning saves 1–2 hours of rework.
 :::
 
 ## The Plan Annotation Cycle {.smaller}
@@ -405,42 +405,40 @@ In **planning mode** Claude reads and reasons but **cannot write, edit, or delet
 
 ::: {.column width="55%"}
 
-::: {.card-subtle style="margin-bottom: 0.5em;"}
-**1. Research** · ask Claude to read and summarize the relevant parts of the codebase *before* drafting any plan.
+::: {.card-subtle .card-compact style="margin-bottom: 0.35em; font-size: 0.82em;"}
+**1. Research** · Claude reads the codebase before drafting anything.
 :::
 
-::: {.card-subtle style="margin-bottom: 0.5em;"}
-**2. Draft** · Claude writes a plan (or `plan.md`) with concrete steps.
+::: {.card-subtle .card-compact style="margin-bottom: 0.35em; font-size: 0.82em;"}
+**2. Draft** · Claude writes a plan with concrete steps.
 :::
 
-::: {.card-subtle style="margin-bottom: 0.5em;"}
-**3. Annotate** · you read the plan and add inline corrections, questions, or "no, do X instead" comments.
+::: {.card-subtle .card-compact style="margin-bottom: 0.35em; font-size: 0.82em;"}
+**3. Annotate** · you add inline corrections and questions.
 :::
 
-::: {.card-subtle style="margin-bottom: 0.5em;"}
-**4. Revise** · Claude incorporates your feedback and produces an updated plan.
+::: {.card-subtle .card-compact style="margin-bottom: 0.35em; font-size: 0.82em;"}
+**4. Revise** · Claude incorporates feedback, updates the plan.
 :::
 
-::: {.card-subtle}
-**5. Repeat** · iterate 1–6 times until you're confident, *then* execute.
+::: {.card-subtle .card-compact style="font-size: 0.82em;"}
+**5. Repeat** · iterate until confident, *then* execute.
 :::
 
 :::
 
 ::: {.column width="45%"}
 
-::: {.card-green style="font-size:0.85em;"}
-**Why this works**
-
-The plan becomes a shared contract. Each annotation round catches misunderstandings *before* code is written — where fixes are cheap.
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**Why this works** · the plan becomes a shared contract. Annotation rounds catch misunderstandings *before* code is written.
 :::
 
-::: {.card-blue style="font-size:0.82em; margin-top: 0.6em;"}
-**Pro tip** · persist the plan in a `plan.md` file. Use it as a living checklist — mark tasks done as implementation progresses. It survives `/compact` and context resets.
+::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Pro tip** · persist the plan in `plan.md` as a living checklist. It survives `/compact` and context resets.
 :::
 
-::: {.card-amber style="font-size:0.82em; margin-top: 0.6em;"}
-**One long session > many short ones** · keep research, planning, and implementation in a single conversation. The accumulated context makes Claude smarter with each step.
+::: {.card-amber .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**One long session > many short ones** · accumulated context makes Claude smarter with each step.
 :::
 
 :::
@@ -457,34 +455,32 @@ The plan becomes a shared contract. Each annotation round catches misunderstandi
 
 ::: {.column width="50%"}
 
-::: {.card-amber}
+::: {.card-amber .card-compact}
 **Over-specified**
 
 *"First read auth.ts. Then check the test file. Then look for mocks. Then write a test for login using the existing mock pattern."*
 
-Over-constrained — Claude already reads the codebase, finds patterns, and adapts. Step-by-step instructions limit its ability to explore.
+Step-by-step instructions limit Claude's ability to explore and adapt.
 :::
 
 :::
 
 ::: {.column width="50%"}
 
-::: {.card-green}
+::: {.card-green .card-compact}
 **Clear acceptance criteria**
 
-*"Add unit tests for the auth module. Done when: all public functions covered, edge cases and error paths tested, existing test conventions followed, `pnpm test` passes."*
+*"Add unit tests for the auth module. Done when: all public functions covered, edge cases tested, conventions followed, `pnpm test` passes."*
 
-You define *what* done looks like. Claude figures out *how* to get there.
+Define *what* done looks like. Claude figures out *how*.
 :::
 
 :::
 
 ::::
 
-. . .
-
-::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
-**Mental model** · you are the product manager, Claude is the senior engineer. Opus 4.6 already follows existing patterns, runs tests, and loops on failures — you don't need to ask.
+::: {.card-blue .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**Mental model** · you are the product manager, Claude is the senior engineer. Opus 4.6 already follows patterns, runs tests, and loops on failures.
 :::
 
 ## The One Prompting Rule That Still Matters {.smaller}
@@ -495,9 +491,7 @@ Opus 4.6 already follows codebase patterns, runs tests, and loops on failures by
 
 The one thing the model can't infer is **your definition of done**.
 
-. . .
-
-::: {.card-green style="font-size:0.88em;"}
+::: {.card-green .card-compact style="font-size:0.85em;"}
 **End every task with acceptance criteria** · *"Done when: (1) tests pass, (2) no lint errors, (3) PR description written."* This prevents premature stopping and gives Claude a clear finish line.
 :::
 
@@ -519,10 +513,8 @@ The one thing the model can't infer is **your definition of done**.
 | **File operations** | Native `Read`/`Write`/`Bash` | Almost never needed |
 | **Complex auth flows** | When API is simple | SSO, multi-step OAuth |
 
-. . .
-
-::: {.card-green style="font-size:0.82em;"}
-**Default rule** · if a CLI tool (`gh`, `psql`, `curl`, `kubectl`) can do the job, use `Bash`. Reach for MCP only when persistent auth state, rate-limit handling, or real-time events are required.
+::: {.card-green .card-compact style="font-size:0.78em;"}
+**Default rule** · if a CLI tool (`gh`, `psql`, `curl`, `kubectl`) can do the job, use `Bash`. Reach for MCP only when persistent auth, rate-limits, or real-time events are required.
 :::
 
 # Quality Guardrails
@@ -535,27 +527,23 @@ The one thing the model can't infer is **your definition of done**.
 
 ::: {.column width="50%"}
 
-::: {.card-amber}
+::: {.card-amber .card-compact style="font-size:0.82em;"}
 **Without guardrails**
 
-- Agent skips tests when they slow it down
-- Inconsistent style creeps in across files
-- "Works on my machine" — no CI enforcement
-- One bad tool call deletes an untracked file
-- Conventions drift as prompts change
+- Skips tests; inconsistent style across files
+- No CI enforcement; conventions drift
+- Bad tool calls can delete untracked files
 :::
 
 :::
 
 ::: {.column width="50%"}
 
-::: {.card-green}
+::: {.card-green .card-compact style="font-size:0.82em;"}
 **With guardrails**
 
 - CLAUDE.md codifies non-negotiable rules
-- Local QA tools catch errors before commit
-- CI/CD is the last line of defence
-- Agent *loops* on failures until green
+- Local QA catches errors before commit
 - Quality is structural, not prompt-dependent
 :::
 
@@ -563,10 +551,8 @@ The one thing the model can't infer is **your definition of done**.
 
 ::::
 
-. . .
-
-::: {.card-blue style="font-size:0.82em;"}
-**Key insight** · the agent is only as disciplined as your tooling forces it to be. Guardrails don't slow down Claude — they make its output trustworthy.
+::: {.card-blue .card-compact style="font-size:0.75em;"}
+**Key insight** · the agent is only as disciplined as your tooling forces it to be. Guardrails make output trustworthy.
 :::
 
 ## Three-Layer Quality Scaffold {.smaller}
@@ -600,10 +586,8 @@ The one thing the model can't infer is **your definition of done**.
 
 ::: {.column width="48%"}
 
-::: {.card-green style="font-size:0.85em;"}
-**Agent behaviour**
-
-Claude reads these rules every turn. Opus 4.6 loops on test failures and lint errors by default — CLAUDE.md makes the quality bar *explicit and permanent* rather than relying on per-prompt instructions.
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**Agent behaviour** · Claude reads these rules every turn. CLAUDE.md makes the quality bar *explicit and permanent* rather than relying on per-prompt instructions.
 :::
 
 :::
@@ -620,13 +604,12 @@ Claude reads these rules every turn. Opus 4.6 loops on test failures and lint er
 
 ::: {.column width="50%"}
 
-::: {.card-amber}
+::: {.card-amber .card-compact}
 **Without worktrees**
 
-- Two Claude sessions share the same working directory
-- Session A edits `auth.ts` while Session B rewrites `auth.ts`
+- Two sessions share the same working directory
 - Uncommitted changes bleed across sessions
-- One `/compact` or context reset can overwrite the other's work
+- One context reset can overwrite the other's work
 - Stash/pop gymnastics just to switch tasks
 :::
 
@@ -634,13 +617,12 @@ Claude reads these rules every turn. Opus 4.6 loops on test failures and lint er
 
 ::: {.column width="50%"}
 
-::: {.card-green}
+::: {.card-green .card-compact}
 **With worktrees**
 
 - Each session gets its own directory and branch
-- File edits, builds, and tool calls are fully isolated
-- Sessions share commit history and remote connections
-- Switch between tasks without saving state
+- Edits, builds, and tool calls are fully isolated
+- Shared commit history and remote connections
 - Merge when both are done — on your schedule
 :::
 
@@ -648,10 +630,8 @@ Claude reads these rules every turn. Opus 4.6 loops on test failures and lint er
 
 ::::
 
-. . .
-
-::: {.card-blue style="font-size:0.82em;"}
-**The key insight** · a git worktree is a second checkout of the same repo — same `.git/` database, different working tree. Claude Code creates and manages them with a single flag.
+::: {.card-blue .card-compact style="font-size:0.78em;"}
+**Key insight** · a git worktree is a second checkout of the same repo — same `.git/` database, different working tree. Claude Code manages them with a single flag.
 :::
 
 ## Worktrees — How They Work {.smaller}
@@ -665,17 +645,12 @@ Claude reads these rules every turn. Opus 4.6 loops on test failures and lint er
 ::: {.column width="52%"}
 
 ::: {.terminal-box}
-<pre><code><span style="color:#38bdf8;"># Create a worktree + start Claude in it</span>
+<pre><code><span style="color:#38bdf8;"># Create a worktree + start Claude</span>
 <span style="color:#22c55e;">$</span> claude --worktree feature-auth
-<span style="color:#8b949e;"># creates .claude/worktrees/feature-auth/</span>
-<span style="color:#8b949e;"># branch: worktree-feature-auth</span>
+<span style="color:#8b949e;"># → .claude/worktrees/feature-auth/</span>
 
-<span style="color:#38bdf8;"># In a second terminal — another task</span>
+<span style="color:#38bdf8;"># Second terminal — another task</span>
 <span style="color:#22c55e;">$</span> claude --worktree bugfix-123
-
-<span style="color:#38bdf8;"># Auto-generate a name</span>
-<span style="color:#22c55e;">$</span> claude --worktree
-<span style="color:#8b949e;"># e.g. bright-running-fox</span>
 
 <span style="color:#38bdf8;"># Or ask Claude mid-session</span>
 <span style="color:#22c55e;">&gt;</span> work in a worktree
@@ -686,25 +661,16 @@ Claude reads these rules every turn. Opus 4.6 loops on test failures and lint er
 
 ::: {.column width="48%"}
 
-::: {.card-green style="font-size:0.85em;"}
-**Automatic cleanup**
-
-On exit, Claude checks for changes:
-
-- **No changes** → worktree + branch deleted automatically
-- **Changes exist** → Claude prompts: keep or discard?
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**Automatic cleanup** · no changes → worktree deleted automatically. Changes exist → Claude prompts: keep or discard?
 :::
 
-. . .
-
-::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
-**Pro tip** · add `.claude/worktrees/` to `.gitignore` — worktree directories appear as untracked files in the main repo without it.
+::: {.card-blue .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**Pro tip** · add `.claude/worktrees/` to `.gitignore` — worktree dirs appear as untracked files without it.
 :::
 
-. . .
-
-::: {.card-subtle style="font-size:0.82em; margin-top:0.6em;"}
-**Manual control** · use `git worktree add`, `git worktree list`, and `git worktree remove` for precise placement and branch selection.
+::: {.card-subtle .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**Manual control** · `git worktree add`, `git worktree list`, `git worktree remove` for precise placement.
 :::
 
 :::

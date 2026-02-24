@@ -169,7 +169,7 @@
 
 /* ── Image Overflow Prevention ────────────────────────────── */
 .reveal .slides section img {
-  max-height: 58vh;
+  max-height: 78vh;
   max-width: 100%;
   object-fit: contain;
   display: block;
@@ -431,6 +431,17 @@
 /* ── Callout code blocks ──────────────────────────────────── */
 .reveal .slides section div.callout pre.sourceCode {
   font-size: 0.75em !important;
+}
+
+/* ── Compact card variant ────────────────────────────────── */
+.card-compact {
+  padding: 0.45em 0.9em !important;
+}
+
+/* ── Tight list spacing ─────────────────────────────────── */
+.tight-list li {
+  line-height: 1.35;
+  margin-bottom: 0.1em;
 }
 
 /* ── Scrollbar ────────────────────────────────────────────── */
