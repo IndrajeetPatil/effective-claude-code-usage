@@ -705,7 +705,7 @@ CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work
 <br>
 
 ::: {style="text-align: center; font-size: 0.82em; color: #8b949e; margin-bottom: 1.2em;"}
-Other [slide decks](https://sites.google.com/site/indrajeetspatilmorality/presentations) on software engineering practices
+Other [slide decks](https://indrajeetpatil.github.io/presentations/) on software engineering practices
 :::
 
 ::: {style="text-align: center; font-size: 1.1em;"}
