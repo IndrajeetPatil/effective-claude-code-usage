@@ -7,7 +7,7 @@ The slides can be seen here:<br>
 
 # Development
 
-This project uses Python 3.13+ with [uv](https://docs.astral.sh/uv/) for dependency management, [Quarto](https://quarto.org/) for rendering slides, and [just](https://github.com/casey/just) as a command runner.
+This project uses Python 3.14+ with [uv](https://docs.astral.sh/uv/) for dependency management, [Quarto](https://quarto.org/) for rendering slides, and [just](https://github.com/casey/just) as a command runner. GitHub Pages deployment is automatic via GitHub Actions on push to main.
 
 ## Prerequisites
 
