@@ -36,15 +36,15 @@ update:
 
 # Render slides
 render:
-    uv run quarto render index.qmd
+    uv run --no-project quarto render index.qmd
 
 # Preview with live reload
 preview:
-    uv run quarto preview index.qmd
+    uv run --no-project quarto preview index.qmd
 
 # Open rendered slides in browser (macOS)
 open:
-    open _site/index.html
+    open index.html
 
 # Clean generated files
 clean:
@@ -57,4 +57,4 @@ clean:
 
 # Check Quarto setup
 check:
-    uv run quarto check
+    uv run --no-project quarto check
