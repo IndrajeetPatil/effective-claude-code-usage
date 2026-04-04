@@ -3,7 +3,7 @@
 Slides summarising patterns for using [Claude Code](https://docs.anthropic.com/en/docs/claude-code) effectively as a CLI agent — from tool use and slash commands to subagents, planning mode, and context management.
 
 The slides can be seen here:<br>
-<https://indrajeetpatil.github.io/effective-claude-code-usage/>
+<https://www.indrapatil.com/effective-claude-code-usage/>
 
 # Development
 
