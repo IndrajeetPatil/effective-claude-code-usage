@@ -25,7 +25,7 @@ lang: "en"
 dir: "ltr"
 image: "media/social-media-card.png"
 image-alt: "Preview image for Effective Claude Code Usage presentation"
-canonical-url: "https://indrajeetpatil.github.io/effective-claude-code-usage/"
+canonical-url: "https://www.indrapatil.com/effective-claude-code-usage/"
 ---
 
 ## Effective Claude Code Usage {style="margin-top: 1.2em;"}
@@ -705,7 +705,7 @@ CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work
 <br>
 
 ::: {style="text-align: center; font-size: 0.82em; color: #8b949e; margin-bottom: 1.2em;"}
-Other [slide decks](https://indrajeetpatil.github.io/presentations/) on software engineering practices
+Other [slide decks](https://www.indrapatil.com/presentations/) on software engineering practices
 :::
 
 ::: {style="text-align: center; font-size: 1.1em;"}
