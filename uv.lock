@@ -331,9 +331,9 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ipykernel", specifier = ">=6.29.0" },
-    { name = "jupyter", specifier = ">=1.0.0" },
-    { name = "matplotlib", specifier = ">=3.8.0" },
+    { name = "ipykernel", specifier = ">=7.2.0" },
+    { name = "jupyter", specifier = ">=1.1.1" },
+    { name = "matplotlib", specifier = ">=3.10.8" },
 ]
 
 [package.metadata.requires-dev]

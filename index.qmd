@@ -79,6 +79,7 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 - **CLAUDE.md** — persistent project memory
 - **Subagents** — parallelising complex work
 - **Planning mode** — explore before you edit
+- **Hooks** — automate validation at every lifecycle event
 - **Prompting** — intent over instructions
 - **CLI vs MCP** — token efficiency
 - **Git worktrees** — parallel Claude sessions
@@ -399,55 +400,39 @@ In **planning mode** Claude reads and reasons but **cannot write, edit, or delet
 **Rule of thumb** · if the task touches >3 files or crosses service boundaries, plan first. ~5 min of planning saves 1–2 hours of rework.
 :::
 
-## The Plan Annotation Cycle {.smaller}
+## How to Brief Claude for Planning {.smaller}
 
 :::: {.columns}
 
-::: {.column width="55%"}
+::: {.column width="50%"}
 
-::: {.card-subtle .card-compact style="margin-bottom: 0.35em; font-size: 0.82em;"}
-**1. Research** · Claude reads the codebase before drafting anything.
-:::
+::: {.card-amber .card-compact style="font-size:0.82em;"}
+**Avoid**
 
-::: {.card-subtle .card-compact style="margin-bottom: 0.35em; font-size: 0.82em;"}
-**2. Draft** · Claude writes a plan with concrete steps.
-:::
-
-::: {.card-subtle .card-compact style="margin-bottom: 0.35em; font-size: 0.82em;"}
-**3. Annotate** · you add inline corrections and questions.
-:::
-
-::: {.card-subtle .card-compact style="margin-bottom: 0.35em; font-size: 0.82em;"}
-**4. Revise** · Claude incorporates feedback, updates the plan.
-:::
-
-::: {.card-subtle .card-compact style="font-size: 0.82em;"}
-**5. Repeat** · iterate until confident, *then* execute.
+Treating planning as a multi-round negotiation. Annotating and re-annotating a plan is overhead you are managing instead of work Claude is doing.
 :::
 
 :::
 
-::: {.column width="45%"}
+::: {.column width="50%"}
 
 ::: {.card-green .card-compact style="font-size:0.82em;"}
-**Why this works** · the plan becomes a shared contract. Annotation rounds catch misunderstandings *before* code is written.
-:::
+**Do this instead**
 
-::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Pro tip** · persist the plan in `plan.md` as a living checklist. It survives `/compact` and context resets.
-:::
-
-::: {.card-amber .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**One long session > many short ones** · accumulated context makes Claude smarter with each step.
+Front-load clarity: state intent, constraints, and acceptance criteria upfront. Let Claude draft the plan. Either approve it or give one round of targeted feedback — then execute.
 :::
 
 :::
 
 ::::
 
+::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Pro tip** · persist the approved plan in `plan.md`. It survives `/compact` and context resets — use it as a progress checklist, not a negotiation document.
+:::
+
 # Trust the Model
 
-> *"Claude Opus 4.6 is a reasoning engine. Give it intent, not step-by-step instructions."*
+> *"Claude Code is a reasoning engine. Give it intent, not step-by-step instructions."*
 
 ## Define the What, Not the How {.smaller}
 
@@ -480,13 +465,13 @@ Define *what* done looks like. Claude figures out *how*.
 ::::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Mental model** · you are the product manager, Claude is the senior engineer. Opus 4.6 already follows patterns, runs tests, and loops on failures.
+**Mental model** · you are the product manager, Claude is the senior engineer. Claude Code already follows patterns, runs tests, and loops on failures.
 :::
 
 ## The One Prompting Rule That Still Matters {.smaller}
 
 ::: {.card-blue style="font-size:0.88em; margin-bottom: 0.8em;"}
-Opus 4.6 already follows codebase patterns, runs tests, and loops on failures by default. You don't need to tell it how to be an agent — it *is* one.
+Claude Code already follows codebase patterns, runs tests, and loops on failures by default. You don't need to tell it how to be an agent — it *is* one.
 :::
 
 The one thing the model can't infer is **your definition of done**.
@@ -497,11 +482,11 @@ The one thing the model can't infer is **your definition of done**.
 
 # CLI over MCPs
 
-> *"Not all integrations are equal. CLI calls are often 20× cheaper than MCP protocol overhead."*
+> *"Not all integrations are equal. The right integration is the one that uses fewer tokens and less complexity."*
 
 ## CLI vs MCP Token Cost {.smaller}
 
-![](media/diag-08-cli-vs-mcp.png){fig-align="center" fig-alt="Side-by-side diagram showing CLI path at ~100 tokens vs MCP path at 2000+ tokens for the same task"}
+![](media/diag-08-cli-vs-mcp.png){fig-align="center" fig-alt="Side-by-side diagram comparing CLI path (fewer tokens, clean JSON) versus MCP path (more tokens, protocol overhead) for the same task"}
 
 ## CLI vs MCP Decision Guide {.smaller}
 
@@ -594,6 +579,48 @@ The one thing the model can't infer is **your definition of done**.
 
 ::::
 
+## Hooks — Automated Validation {.smaller}
+
+:::: {.columns}
+
+::: {.column width="52%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;"># .claude/settings.json</span>
+<span style="color:#e6edf3;">{</span>
+<span style="color:#e6edf3;">  </span><span style="color:#a78bfa;">"hooks"</span><span style="color:#e6edf3;">: {</span>
+<span style="color:#e6edf3;">    </span><span style="color:#a78bfa;">"PostToolUse"</span><span style="color:#e6edf3;">: [{</span>
+<span style="color:#a78bfa;">      "matcher"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"*"</span><span style="color:#e6edf3;">,</span>
+<span style="color:#a78bfa;">      "hooks"</span><span style="color:#e6edf3;">: [{</span>
+<span style="color:#a78bfa;">        "type"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"command"</span><span style="color:#e6edf3;">,</span>
+<span style="color:#a78bfa;">        "command"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"pnpm lint --fix"</span>
+<span style="color:#e6edf3;">      }]</span>
+<span style="color:#e6edf3;">    }]</span>
+<span style="color:#e6edf3;">  }</span>
+<span style="color:#e6edf3;">}</span>
+</code></pre>
+:::
+
+:::
+
+::: {.column width="48%"}
+
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**What hooks do** · run shell commands automatically at lifecycle events — no per-prompt reminder needed.
+:::
+
+::: {.card-subtle .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Four events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit`
+:::
+
+::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Use cases** · auto-lint after every edit · run typecheck before stopping · block dangerous tool calls · log all file writes
+:::
+
+:::
+
+::::
+
 # Git Worktrees
 
 > *"When two Claude sessions edit the same files, you don't get double the speed — you get merge conflicts. Worktrees give each session its own universe."*
@@ -646,11 +673,10 @@ The one thing the model can't infer is **your definition of done**.
 
 ::: {.terminal-box}
 <pre><code><span style="color:#38bdf8;"># Create a worktree + start Claude</span>
-<span style="color:#22c55e;">$</span> claude --worktree feature-auth
-<span style="color:#8b949e;"># → .claude/worktrees/feature-auth/</span>
+<span style="color:#22c55e;">$</span> claude -w feature-auth
 
 <span style="color:#38bdf8;"># Second terminal — another task</span>
-<span style="color:#22c55e;">$</span> claude --worktree bugfix-123
+<span style="color:#22c55e;">$</span> claude -w bugfix-123
 
 <span style="color:#38bdf8;"># Or ask Claude mid-session</span>
 <span style="color:#22c55e;">&gt;</span> work in a worktree
@@ -662,11 +688,11 @@ The one thing the model can't infer is **your definition of done**.
 ::: {.column width="48%"}
 
 ::: {.card-green .card-compact style="font-size:0.82em;"}
-**Automatic cleanup** · no changes → worktree deleted automatically. Changes exist → Claude prompts: keep or discard?
+**Isolation by design** · each session gets its own branch and working directory — edits, builds, and tool calls are fully contained.
 :::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Pro tip** · add `.claude/worktrees/` to `.gitignore` — worktree dirs appear as untracked files without it.
+**Pro tip** · add your worktree directories to `.gitignore` — they appear as untracked files without it.
 :::
 
 ::: {.card-subtle .card-compact style="font-size:0.78em; margin-top:0.4em;"}
@@ -686,7 +712,7 @@ The one thing the model can't infer is **your definition of done**.
 ![](media/diag-09-mental-model.png){fig-align="center" fig-alt="Decision tree for effective Claude Code usage: check CLAUDE.md, assess task size, choose approach, manage context"}
 
 ::: {.card-green style="font-size:0.75em; margin-top:0.4em;"}
-CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work · `/compact` when context fills · CLI > MCP for token efficiency · Intent over instructions
+CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work · `/compact` when context fills · CLI > MCP for token efficiency · Intent + acceptance criteria over instructions · Hooks for automated validation
 :::
 
 ## Resources {.smaller}
@@ -695,7 +721,7 @@ CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work
 
 - [Claude Code official documentation](https://docs.anthropic.com/en/docs/claude-code) — tools, slash commands, CLAUDE.md, subagents, planning mode
 - [Claude Code best practices](https://docs.anthropic.com/en/docs/claude-code/best-practices) — prompting patterns, guardrails, context management
-- [How I use Claude Code](https://boristane.com/blog/how-i-use-claude-code/) — Boris Tane — plan annotation cycle, research-first workflow, long sessions
+- [How I use Claude Code](https://boristane.com/blog/how-i-use-claude-code/) — Boris Tane — research-first workflow, real-world Claude Code patterns
 - [Anthropic's guide to agentic coding](https://www.anthropic.com/engineering/claude-code-best-practices) — ReAct loop, quality scaffolding, CLI vs MCP tradeoffs
 
 :::

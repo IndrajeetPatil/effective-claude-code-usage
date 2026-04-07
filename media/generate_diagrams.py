@@ -386,7 +386,7 @@ def make_08():
 
     cli_y = 3.50
     box(ax, 3.60, cli_y, 2.50, 0.85, DGRN, 'gh pr list\n--json ...', fs=21, tc=GRN)
-    box(ax, 6.50, cli_y, 2.50, 0.85, DGRN, '~100 tokens\nclean JSON', fs=21, tc=GRN)
+    box(ax, 6.50, cli_y, 2.50, 0.85, DGRN, 'Fewer tokens\nclean JSON', fs=21, tc=GRN)
     arr(ax, 1.93, 2.80, 2.35, cli_y, col=GRN)
     arr(ax, 4.85, cli_y, 5.25, cli_y, col=GRN)
 
@@ -398,7 +398,7 @@ def make_08():
     mcp_y = 1.45
     box(ax, 3.60, mcp_y, 2.50, 0.85, DRED, 'MCP server\ncall', fs=21, tc=RED)
     box(ax, 6.50, mcp_y, 2.50, 0.85, DRED, 'Protocol +\nschema wrap', fs=21, tc=RED)
-    box(ax, 9.40, mcp_y, 2.50, 0.85, DRED, '2,000+\ntokens', fs=21, tc=RED)
+    box(ax, 9.40, mcp_y, 2.50, 0.85, DRED, 'More tokens\nprotocol overhead', fs=21, tc=RED)
     arr(ax, 1.93, 2.80, 2.35, mcp_y, col=RED)
     arr(ax, 4.85, mcp_y, 5.25, mcp_y, col=RED)
     arr(ax, 7.75, mcp_y, 8.15, mcp_y, col=RED)
