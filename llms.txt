@@ -1,0 +1,30 @@
+# Effective Claude Code Usage
+
+> A Quarto RevealJS presentation by Indrajeet Patil about using Claude Code effectively as a CLI agent for software engineering work.
+
+This presentation explains how to use Claude Code as an agentic coding partner rather than a terminal chatbot. It covers tools, slash commands, context management, CLAUDE.md files, subagents, planning mode, hooks, prompting strategies, MCP, and Git worktrees.
+
+## Primary URL
+
+- [Slides](https://www.indrapatil.com/effective-claude-code-usage/)
+
+## Source
+
+- [GitHub repository](https://github.com/IndrajeetPatil/effective-claude-code-usage/)
+
+## Topics
+
+- Claude Code
+- Agentic coding
+- CLI-based AI agents
+- Tool use and slash commands
+- Context window management
+- CLAUDE.md project memory
+- Subagents and planning mode
+- Hooks and validation workflows
+- Model Context Protocol
+- Git worktrees for parallel agent sessions
+
+## Machine-readable companion
+
+- [Full agent summary](https://www.indrapatil.com/effective-claude-code-usage/llms-full.txt)

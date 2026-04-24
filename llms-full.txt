@@ -1,0 +1,43 @@
+# Effective Claude Code Usage
+
+Author: Indrajeet Patil
+Format: Quarto RevealJS presentation
+Canonical URL: https://www.indrapatil.com/effective-claude-code-usage/
+Source: https://github.com/IndrajeetPatil/effective-claude-code-usage/
+License: CC0 1.0 Universal
+Publication date: 2026-02-18
+Language: English
+
+## Summary
+
+This slide deck presents practical patterns for using Claude Code effectively as a CLI agent. Its core framing is that Claude Code is not just a chatbot in a terminal: it can read, write, search, execute, use tools, and iterate through software engineering tasks.
+
+The talk is aimed at software developers who want to use Claude Code for complex engineering work. It explains how to treat the tool as a capable cognitive partner while keeping workflows auditable, validated, and grounded in project context.
+
+## Learning goals
+
+- Understand the difference between chatbots, autocomplete, and CLI agents.
+- Learn how Claude Code uses tools and why tool access changes the interaction model.
+- Use slash commands for session control and repeatable workflows.
+- Manage the context window deliberately and avoid filling it with low-signal content.
+- Use CLAUDE.md files as durable project memory.
+- Apply subagents when parallel exploration or independent subtasks are valuable.
+- Use planning mode to explore before editing.
+- Use hooks and validation steps to make agentic work safer.
+- Prompt with intent and constraints rather than brittle step-by-step instructions.
+- Understand when MCP is useful and when CLI tools are more token-efficient.
+- Use Git worktrees for parallel Claude Code sessions.
+
+## Core recommendations
+
+- Treat Claude Code as an agent that loops through perception, planning, action, observation, and revision.
+- Keep project instructions explicit and close to the codebase.
+- Give agents enough context to make good decisions, but avoid dumping unnecessary context.
+- Prefer validated workflows where commands, tests, linting, and review checks provide feedback.
+- Use subagents for bounded, independent work rather than as a substitute for clear task design.
+- Use planning mode when the cost of premature edits is high.
+- Use worktrees to isolate concurrent agent sessions.
+
+## Retrieval notes
+
+The canonical HTML page is the primary version of the presentation. This text file exists to give search engines, answer engines, and agentic assistants a concise, non-JavaScript-dependent summary of the deck's content and citation metadata.

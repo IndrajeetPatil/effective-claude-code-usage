@@ -1,0 +1,7 @@
+# Effective Claude Code Usage
+
+> A Quarto RevealJS presentation by Indrajeet Patil about using Claude Code effectively as a CLI agent.
+
+Canonical slides: https://www.indrapatil.com/effective-claude-code-usage/
+Full agent summary: https://www.indrapatil.com/effective-claude-code-usage/llms-full.txt
+Source: https://github.com/IndrajeetPatil/effective-claude-code-usage/
