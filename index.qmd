@@ -52,7 +52,7 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 
 ::: {.terminal-box}
 <pre><code><span style="color:#38bdf8;">$</span> claude
-<span style="color:#22c55e;">✓</span> Claude Code v1.x
+<span style="color:#22c55e;">✓</span> Claude Code v2.x
 
 <span style="color:#8b949e;"># Your AI pair programmer</span>
 <span style="color:#8b949e;"># in the terminal</span>
@@ -81,7 +81,7 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 - **Planning mode** — explore before you edit
 - **Hooks** — automate validation at every lifecycle event
 - **Prompting** — intent over instructions
-- **CLI vs MCP** — token efficiency
+- **CLI vs MCP** — choose the simpler integration
 - **Git worktrees** — parallel Claude sessions
 :::
 
@@ -218,6 +218,7 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 | `/init` | Generate CLAUDE.md for this repo |
 | `/review` | Code review current changes |
 | `/pr` | Open a pull request |
+| `/skillname` | Run a named skill (reusable prompt playbook) |
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.8em;"}
 **`/compact`** is your best friend in long sessions — summarises history while preserving decisions.
@@ -250,7 +251,7 @@ Claude Code can run 10–100+ tool calls per turn, reading test output, fixing e
 | Command | Purpose |
 |---------|---------|
 | `/plan` | Enter planning-only mode |
-| `/fast` | Toggle faster output (same Opus model) |
+| `/fast` | Toggle faster output mode |
 
 :::
 
@@ -327,6 +328,10 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 ::: {.card-subtle style="font-size:0.82em; margin-top:0.6em;"}
 **It compounds** · add a rule once, Claude follows it forever.
+:::
+
+::: {.card-blue style="font-size:0.78em; margin-top:0.6em;"}
+**Automatic memory** · Claude also builds persistent memories across sessions automatically — no `/memory` command needed. Opt out per-project in settings.
 :::
 
 :::
@@ -480,26 +485,22 @@ The one thing the model can't infer is **your definition of done**.
 **End every task with acceptance criteria** · *"Done when: (1) tests pass, (2) no lint errors, (3) PR description written."* This prevents premature stopping and gives Claude a clear finish line.
 :::
 
-# CLI over MCPs
+# CLI vs MCP
 
-> *"Not all integrations are equal. The right integration is the one that uses fewer tokens and less complexity."*
-
-## CLI vs MCP Token Cost {.smaller}
-
-![](media/diag-08-cli-vs-mcp.png){fig-align="center" fig-alt="Side-by-side diagram comparing CLI path (fewer tokens, clean JSON) versus MCP path (more tokens, protocol overhead) for the same task"}
+> *"Not all integrations are equal. The right integration is the one that uses the least complexity."*
 
 ## CLI vs MCP Decision Guide {.smaller}
 
 | Situation | Prefer CLI | Prefer MCP |
 |-----------|-----------|------------|
-| **GitHub PRs / issues** | `gh pr list` — minimal tokens | Real-time webhooks needed |
-| **Database queries** | `psql -c "SELECT..."` — direct | Connection pool / auth managed |
+| **GitHub PRs / issues** | `gh pr list` — direct, scriptable | Real-time webhooks needed |
+| **Database queries** | `psql -c "SELECT..."` — transparent | Connection pool / auth managed |
 | **Jira / Linear** | `curl` + API key — simple | OAuth, token refresh required |
 | **File operations** | Native `Read`/`Write`/`Bash` | Almost never needed |
 | **Complex auth flows** | When API is simple | SSO, multi-step OAuth |
 
 ::: {.card-green .card-compact style="font-size:0.78em;"}
-**Default rule** · if a CLI tool (`gh`, `psql`, `curl`, `kubectl`) can do the job, use `Bash`. Reach for MCP only when persistent auth, rate-limits, or real-time events are required.
+**Default rule** · if a CLI tool (`gh`, `psql`, `curl`, `kubectl`) can do the job, use `Bash`. Reach for MCP when persistent auth, rate-limits, or real-time events make the CLI path awkward.
 :::
 
 # Quality Guardrails
@@ -610,7 +611,7 @@ The one thing the model can't infer is **your definition of done**.
 :::
 
 ::: {.card-subtle .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Four events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit`
+**Key events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit` — and more
 :::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
@@ -712,7 +713,7 @@ The one thing the model can't infer is **your definition of done**.
 ![](media/diag-09-mental-model.png){fig-align="center" fig-alt="Decision tree for effective Claude Code usage: check CLAUDE.md, assess task size, choose approach, manage context"}
 
 ::: {.card-green style="font-size:0.75em; margin-top:0.4em;"}
-CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work · `/compact` when context fills · CLI > MCP for token efficiency · Intent + acceptance criteria over instructions · Hooks for automated validation
+CLAUDE.md for memory · `/plan` for complex tasks · Subagents for parallel work · `/compact` when context fills · CLI > MCP for simplicity · Intent + acceptance criteria over instructions · Hooks for automated validation
 :::
 
 ## Resources {.smaller}
