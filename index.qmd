@@ -3,6 +3,9 @@ format:
   revealjs:
     css: style.css
     theme: black
+    width: 1280
+    height: 720
+    margin: 0.08
     transition: fade
     slide-number: true
     code-line-numbers: false
@@ -34,7 +37,7 @@ canonical-url: "https://www.indrapatil.com/effective-claude-code-usage/"
 
 ::: {.column width="62%"}
 
-::: {style="color: #38bdf8; font-weight: 600; font-size: 0.95em; letter-spacing: 0.04em; margin-bottom: 1em;"}
+::: {style="color: #38bdf8; font-weight: 600; font-size: 0.95em; letter-spacing: 0; margin-bottom: 1em;"}
 From CLI to Cognitive Partner
 :::
 
