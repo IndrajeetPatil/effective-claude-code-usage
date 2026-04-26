@@ -37,10 +37,16 @@
   font-family: var(--font-body) !important;
 }
 
+.reveal {
+  --r-main-font-size: 30px;
+}
+
 .reveal .slides section {
   background-color: var(--bg-primary) !important;
   color: var(--text-primary) !important;
   font-family: var(--font-body) !important;
+  box-sizing: border-box;
+  padding: 0.45em 0.7em !important;
 }
 
 /* ── Typography ───────────────────────────────────────────── */
@@ -52,12 +58,12 @@
   color: var(--text-primary) !important;
   text-shadow: none !important;
   font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.2;
+  letter-spacing: 0;
+  line-height: 1.08;
 }
 
 .reveal h1 {
-  font-size: 2.1em;
+  font-size: 1.85em;
   color: var(--accent-green) !important;
   text-shadow: var(--glow-green) !important;
 }
@@ -66,41 +72,43 @@
 .reveal .slides section.level1 h1 {
   color: var(--accent-purple) !important;
   text-shadow: var(--glow-purple) !important;
-  font-size: 1.9em;
+  font-size: 1.65em;
 }
 
 .reveal h2 {
-  font-size: 1.45em;
+  font-size: 1.24em;
   color: var(--accent-blue) !important;
   border-bottom: 2px solid var(--border-subtle);
-  padding-bottom: 0.25em;
-  margin-bottom: 0.5em;
+  padding-bottom: 0.18em;
+  margin-bottom: 0.42em;
 }
 
 .reveal h3 {
-  font-size: 1.1em;
+  font-size: 0.96em;
   color: var(--accent-amber) !important;
   font-weight: 600;
+  margin-top: 0.35em;
+  margin-bottom: 0.25em;
 }
 
 .reveal p,
 .reveal li {
   color: var(--text-primary);
   font-family: var(--font-body) !important;
-  line-height: 1.6;
+  line-height: 1.34;
 }
 
 .reveal .slides section blockquote {
   background: var(--bg-card);
   border-left: 4px solid var(--accent-purple);
   border-radius: 0 8px 8px 0;
-  padding: 0.8em 1.4em;
+  padding: 0.65em 1.15em;
   color: var(--text-muted);
   font-style: italic;
   font-family: var(--font-body) !important;
   box-shadow: none;
-  width: 88%;
-  margin: 0.8em auto;
+  width: 84%;
+  margin: 0.65em auto;
 }
 
 /* ── Links ────────────────────────────────────────────────── */
@@ -151,14 +159,14 @@
   border: 1px solid var(--border-subtle);
   border-radius: 5px;
   font-family: var(--font-mono) !important;
-  font-size: 0.82em;
+  font-size: 0.78em;
 }
 
 .reveal pre {
   background: var(--bg-card) !important;
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
-  padding: 0.9em;
+  padding: 0.7em;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   font-family: var(--font-mono) !important;
 }
@@ -169,7 +177,7 @@
 
 /* ── Image Overflow Prevention ────────────────────────────── */
 .reveal .slides section img {
-  max-height: 78vh;
+  max-height: 68vh;
   max-width: 100%;
   object-fit: contain;
   display: block;
@@ -179,7 +187,7 @@
 /* Mermaid PNG wrapper */
 .reveal .mermaid img,
 .reveal .cell img {
-  max-height: 56vh;
+  max-height: 54vh;
   max-width: 100%;
   object-fit: contain;
 }
@@ -188,7 +196,7 @@
 .reveal table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.8em;
+  font-size: 0.72em;
   font-family: var(--font-body) !important;
   background: var(--bg-card);
   border-radius: 8px;
@@ -204,9 +212,9 @@
 .reveal table thead th {
   color: var(--accent-blue) !important;
   font-weight: 700;
-  padding: 0.6em 0.9em;
+  padding: 0.42em 0.7em;
   text-align: left;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   text-transform: uppercase;
   font-size: 0.82em;
   font-family: var(--font-body) !important;
@@ -221,7 +229,7 @@
 }
 
 .reveal table tbody td {
-  padding: 0.55em 0.9em;
+  padding: 0.38em 0.7em;
   color: var(--text-primary);
   vertical-align: top;
   font-family: var(--font-body) !important;
@@ -236,7 +244,7 @@
   background: var(--bg-card) !important;
   border-radius: 8px;
   border: 1px solid var(--border-subtle);
-  margin: 0.6em 0;
+  margin: 0.45em 0;
 }
 
 .reveal .callout-tip  { border-left: 4px solid var(--accent-green)  !important; }
@@ -250,9 +258,9 @@
   border: 1px solid var(--accent-green);
   border-left: 4px solid var(--accent-green);
   border-radius: 8px;
-  padding: 0.75em 1.1em;
+  padding: 0.58em 0.85em;
   box-shadow: var(--glow-green);
-  margin: 0.4em 0;
+  margin: 0.28em 0;
   font-family: var(--font-body);
 }
 
@@ -261,9 +269,9 @@
   border: 1px solid var(--accent-blue);
   border-left: 4px solid var(--accent-blue);
   border-radius: 8px;
-  padding: 0.75em 1.1em;
+  padding: 0.58em 0.85em;
   box-shadow: var(--glow-blue);
-  margin: 0.4em 0;
+  margin: 0.28em 0;
   font-family: var(--font-body);
 }
 
@@ -272,9 +280,9 @@
   border: 1px solid var(--accent-amber);
   border-left: 4px solid var(--accent-amber);
   border-radius: 8px;
-  padding: 0.75em 1.1em;
+  padding: 0.58em 0.85em;
   box-shadow: var(--glow-amber);
-  margin: 0.4em 0;
+  margin: 0.28em 0;
   font-family: var(--font-body);
 }
 
@@ -283,9 +291,9 @@
   border: 1px solid var(--accent-purple);
   border-left: 4px solid var(--accent-purple);
   border-radius: 8px;
-  padding: 0.75em 1.1em;
+  padding: 0.58em 0.85em;
   box-shadow: var(--glow-purple);
-  margin: 0.4em 0;
+  margin: 0.28em 0;
   font-family: var(--font-body);
 }
 
@@ -293,8 +301,8 @@
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
-  padding: 0.75em 1.1em;
-  margin: 0.4em 0;
+  padding: 0.58em 0.85em;
+  margin: 0.28em 0;
   font-family: var(--font-body);
 }
 
@@ -305,9 +313,9 @@
   border-radius: 10px;
   overflow: hidden;
   font-family: var(--font-mono) !important;
-  font-size: 0.78em;
+  font-size: 0.9em;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
-  margin: 0.4em 0;
+  margin: 0.28em 0;
 }
 
 .terminal-box::before {
@@ -315,25 +323,34 @@
   display: block;
   background: #1c2128;
   color: #58a6ff;
-  padding: 0.45em 1em;
-  font-size: 1em;
+  padding: 0.28em 0.72em;
+  font-size: 0.82em;
   border-bottom: 1px solid var(--border-subtle);
-  letter-spacing: 0.28em;
+  letter-spacing: 0;
   font-family: var(--font-mono) !important;
 }
 
 .terminal-box pre,
 .terminal-box code {
+  box-sizing: border-box;
   display: block;
   background: transparent !important;
   color: var(--accent-green) !important;
-  padding: 0.85em 1.1em;
+  padding: 0.48em 0.62em;
   margin: 0;
   border: none !important;
-  white-space: pre;
-  overflow-x: auto;
-  line-height: 1.65;
+  width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow-x: hidden;
+  line-height: 1.24;
   font-family: var(--font-mono) !important;
+  font-size: 1em !important;
+}
+
+.terminal-box pre code {
+  font-size: 1em !important;
+  padding: 0 !important;
 }
 
 /* ── Badge/Pill Components ────────────────────────────────── */
@@ -347,7 +364,7 @@
   font-size: 0.78em;
   font-weight: 600;
   font-family: var(--font-body);
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
 }
 
 .badge-blue {
@@ -384,14 +401,20 @@
 }
 
 .reveal .slides section.level1 blockquote {
-  font-size: 0.88em;
-  max-width: 72%;
+  font-size: 0.82em;
+  max-width: 68%;
 }
 
 /* ── List Styling ─────────────────────────────────────────── */
 .reveal ul {
   list-style: none;
-  padding-left: 0.4em;
+  padding-left: 0.2em;
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+}
+
+.reveal li {
+  margin-bottom: 0.1em;
 }
 
 .reveal ul > li::before {
@@ -407,7 +430,7 @@
 
 .reveal ol > li {
   color: var(--text-primary);
-  padding-left: 0.3em;
+  padding-left: 0.18em;
 }
 
 /* ── Smaller text utility ─────────────────────────────────── */
@@ -435,13 +458,13 @@
 
 /* ── Compact card variant ────────────────────────────────── */
 .card-compact {
-  padding: 0.45em 0.9em !important;
+  padding: 0.34em 0.7em !important;
 }
 
 /* ── Tight list spacing ─────────────────────────────────── */
 .tight-list li {
-  line-height: 1.35;
-  margin-bottom: 0.1em;
+  line-height: 1.22;
+  margin-bottom: 0.06em;
 }
 
 /* ── Scrollbar ────────────────────────────────────────────── */
