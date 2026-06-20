@@ -2,7 +2,7 @@
 
 > A Quarto RevealJS presentation by Indrajeet Patil about using Claude Code effectively as a CLI agent for software engineering work.
 
-This presentation explains how to use Claude Code as an agentic coding partner rather than a terminal chatbot. It covers tools, slash commands, context management, CLAUDE.md files, subagents, planning mode, hooks, prompting strategies, MCP, and Git worktrees.
+This presentation explains how to use Claude Code as an agentic coding partner rather than a terminal chatbot. It covers tools, skills, workflows, context management, CLAUDE.md files, subagents, planning mode, hooks, prompting strategies, MCP, and Git worktrees.
 
 ## Primary URL
 
@@ -18,8 +18,10 @@ This presentation explains how to use Claude Code as an agentic coding partner r
 - Agentic coding
 - CLI-based AI agents
 - Tool use and slash commands
+- Skills (reusable prompt playbooks)
+- Workflows and multi-agent orchestration
 - Context window management
-- CLAUDE.md project memory
+- CLAUDE.md project memory and auto-memory
 - Subagents and planning mode
 - Hooks and validation workflows
 - Model Context Protocol
