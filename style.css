@@ -24,6 +24,7 @@
   --glow-blue:     0 0 18px rgba(56, 189, 248, 0.28);
   --glow-amber:    0 0 18px rgba(245, 158, 11, 0.22);
   --glow-purple:   0 0 18px rgba(167, 139, 250, 0.28);
+  --glow-red:      0 0 18px rgba(248, 113, 113, 0.22);
   --font-body:     'Space Grotesk', system-ui, sans-serif;
   --font-mono:     'Space Mono', 'JetBrains Mono', 'Fira Code', monospace;
 }
@@ -297,6 +298,17 @@
   font-family: var(--font-body);
 }
 
+.card-red {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-red);
+  border-left: 4px solid var(--accent-red);
+  border-radius: 8px;
+  padding: 0.58em 0.85em;
+  box-shadow: var(--glow-red);
+  margin: 0.28em 0;
+  font-family: var(--font-body);
+}
+
 .card-subtle {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
@@ -384,6 +396,18 @@
   background: rgba(245, 158, 11, 0.12);
   color: var(--accent-amber);
   border: 1px solid var(--accent-amber);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+
+.badge-purple {
+  display: inline-block;
+  background: rgba(167, 139, 250, 0.12);
+  color: var(--accent-purple);
+  border: 1px solid var(--accent-purple);
   border-radius: 20px;
   padding: 2px 10px;
   font-size: 0.78em;

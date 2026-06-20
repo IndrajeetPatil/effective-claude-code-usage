@@ -5,23 +5,24 @@ Format: Quarto RevealJS presentation
 Canonical URL: https://www.indrapatil.com/effective-claude-code-usage/
 Source: https://github.com/IndrajeetPatil/effective-claude-code-usage/
 License: CC0 1.0 Universal
-Publication date: 2026-02-18
+Publication date: 2026-06-20
 Language: English
 
 ## Summary
 
-This slide deck presents practical patterns for using Claude Code effectively as a CLI agent. Its core framing is that Claude Code is not just a chatbot in a terminal: it can read, write, search, execute, use tools, and iterate through software engineering tasks.
+This slide deck presents practical patterns for using Claude Code effectively as a CLI agent. Its core framing is that Claude Code is not just a chatbot in a terminal: it can read, write, search, execute, use tools, run workflows, and iterate through software engineering tasks.
 
-The talk is aimed at software developers who want to use Claude Code for complex engineering work. It explains how to treat the tool as a capable cognitive partner while keeping workflows auditable, validated, and grounded in project context.
+The talk is aimed at software developers who want to use Claude Code for complex engineering work. It explains how to treat the tool as a capable cognitive partner while keeping workflows auditable, validated, and grounded in project context. It covers skills (reusable playbooks), multi-agent workflows with deterministic orchestration, and the auto-memory system.
 
 ## Learning goals
 
 - Understand the difference between chatbots, autocomplete, and CLI agents.
 - Learn how Claude Code uses tools and why tool access changes the interaction model.
-- Use slash commands for session control and repeatable workflows.
+- Use skills for repeatable actions and slash commands for session control.
 - Manage the context window deliberately and avoid filling it with low-signal content.
-- Use CLAUDE.md files as durable project memory.
+- Use CLAUDE.md files and auto-memory as durable project memory.
 - Apply subagents when parallel exploration or independent subtasks are valuable.
+- Use workflows for deterministic multi-agent orchestration with budget control.
 - Use planning mode to explore before editing.
 - Use hooks and validation steps to make agentic work safer.
 - Prompt with intent and constraints rather than brittle step-by-step instructions.
@@ -35,6 +36,7 @@ The talk is aimed at software developers who want to use Claude Code for complex
 - Give agents enough context to make good decisions, but avoid dumping unnecessary context.
 - Prefer validated workflows where commands, tests, linting, and review checks provide feedback.
 - Use subagents for bounded, independent work rather than as a substitute for clear task design.
+- Use workflows when you need deterministic control flow, budget awareness, or structured output across multiple agents.
 - Use planning mode when the cost of premature edits is high.
 - Use worktrees to isolate concurrent agent sessions.
 
