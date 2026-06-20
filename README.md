@@ -5,39 +5,39 @@ Slides summarising patterns for using [Claude Code](https://docs.anthropic.com/e
 The slides can be seen here:<br>
 <https://www.indrapatil.com/effective-claude-code-usage/>
 
-# Development
+[![introductory slide](media/social-media-card.png)](https://www.indrapatil.com/effective-claude-code-usage/)
 
-This project uses Python 3.14+ with [uv](https://docs.astral.sh/uv/) for dependency management, [Quarto](https://quarto.org/) for rendering slides, and [just](https://github.com/casey/just) as a command runner. GitHub Pages deployment is automatic via GitHub Actions on push to main.
+## Development
 
-## Prerequisites
+This project uses Python 3.14 (see `.python-version`) with [uv](https://docs.astral.sh/uv/) for dependency management, [Quarto](https://quarto.org/) for rendering slides, and [just](https://github.com/casey/just) as a command runner.
+
+### Prerequisites
 
 ```bash
 # Install just (macOS)
 brew install just
 ```
 
-## Setup
+### Setup
 
 ```bash
-# Install dependencies
 just install
-
-# Or update to latest versions
-just update
 ```
 
-## Common Commands
+### Just Commands
 
 ```bash
-just help      # Show all available commands
-just render    # Render slides to HTML
-just preview   # Live preview with auto-reload
-just open      # Open rendered slides in browser
-just clean     # Remove generated files
-just check     # Check Quarto and Python setup
-just           # Install, render, and open slides (default)
+just help     # Show all available commands
+just install  # Install Quarto extensions and Python dependencies
+just update   # Update Quarto extensions and Python dependencies
+just render   # Render slides to HTML
+just preview  # Start a live preview with auto-reload
+just open     # Open rendered slides in the default browser
+just clean    # Remove generated files and caches
+just check    # Check the Quarto and Python setup
+just          # Install dependencies, render, and open slides
 ```
 
-# Feedback
+## Feedback
 
-Thoughts and comments welcome [here](https://github.com/IndrajeetPatil/effective-claude-code-usage/issues).
+Feedback and suggestions are welcome in [the issue tracker](https://github.com/IndrajeetPatil/effective-claude-code-usage/issues).
