@@ -79,10 +79,9 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 - **Tools** — what Claude can call and why it matters
 - **Skills & slash commands** — reusable playbooks and session control
 - **Context window** — what fills it and how to manage it
-- **CLAUDE.md & memory** — persistent project context
+- **CLAUDE.md, memory & hooks** — persistent context and automated validation
 - **Subagents & workflows** — parallel and orchestrated work
 - **Planning mode** — explore before you edit
-- **Hooks** — automate validation at every lifecycle event
 - **Prompting** — intent over instructions
 - **CLI vs MCP** — choose the simpler integration
 - **Git worktrees** — parallel Claude sessions
@@ -351,6 +350,48 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 ::::
 
+## Hooks — Automated Validation {.smaller}
+
+:::: {.columns}
+
+::: {.column width="52%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;"># .claude/settings.json</span>
+<span style="color:#e6edf3;">{</span>
+<span style="color:#e6edf3;">  </span><span style="color:#a78bfa;">"hooks"</span><span style="color:#e6edf3;">: {</span>
+<span style="color:#e6edf3;">    </span><span style="color:#a78bfa;">"PostToolUse"</span><span style="color:#e6edf3;">: [{</span>
+<span style="color:#a78bfa;">      "matcher"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"*"</span><span style="color:#e6edf3;">,</span>
+<span style="color:#a78bfa;">      "hooks"</span><span style="color:#e6edf3;">: [{</span>
+<span style="color:#a78bfa;">        "type"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"command"</span><span style="color:#e6edf3;">,</span>
+<span style="color:#a78bfa;">        "command"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"pnpm lint --fix"</span>
+<span style="color:#e6edf3;">      }]</span>
+<span style="color:#e6edf3;">    }]</span>
+<span style="color:#e6edf3;">  }</span>
+<span style="color:#e6edf3;">}</span>
+</code></pre>
+:::
+
+:::
+
+::: {.column width="48%"}
+
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**What hooks do** · run shell commands automatically at lifecycle events — no per-prompt reminder needed.
+:::
+
+::: {.card-subtle .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Key events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit` — and more
+:::
+
+::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Use cases** · auto-lint after every edit · run typecheck before stopping · block dangerous tool calls · log all file writes
+:::
+
+:::
+
+::::
+
 # Subagents & Workflows
 
 > *"Subagents handle parallel work. Workflows give you deterministic multi-agent orchestration."*
@@ -511,125 +552,6 @@ The one thing the model can't infer is **your definition of done**.
 ::: {.card-green .card-compact style="font-size:0.78em;"}
 **Default rule** · if a CLI tool (`gh`, `psql`, `curl`, `kubectl`) can do the job, use `Bash`. Reach for MCP when persistent auth, rate-limits, or real-time events make the CLI path awkward.
 :::
-
-# Quality Guardrails
-
-> *"An agent that can write code can also write bad code. Scaffolding is what keeps quality up when you hand the keyboard to a machine."*
-
-## The Risk of Unconstrained Agents {.smaller}
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-::: {.card-amber .card-compact style="font-size:0.82em;"}
-**Without guardrails**
-
-- Skips tests; inconsistent style across files
-- No CI enforcement; conventions drift
-- Bad tool calls can delete untracked files
-:::
-
-:::
-
-::: {.column width="50%"}
-
-::: {.card-green .card-compact style="font-size:0.82em;"}
-**With guardrails**
-
-- CLAUDE.md codifies non-negotiable rules
-- Local QA catches errors before commit
-- Quality is structural, not prompt-dependent
-:::
-
-:::
-
-::::
-
-::: {.card-blue .card-compact style="font-size:0.75em;"}
-**Key insight** · the agent is only as disciplined as your tooling forces it to be. Guardrails make output trustworthy.
-:::
-
-## Three-Layer Quality Scaffold {.smaller}
-
-![](media/diag-10-qa-scaffold.png){fig-align="center" fig-alt="Three-layer diagram: agent instructions in CLAUDE.md, local QA tools (lint/type/test), and CI/CD safety net"}
-
-## CLAUDE.md as a Quality Contract {.smaller}
-
-:::: {.columns}
-
-::: {.column width="52%"}
-
-::: {.terminal-box}
-<pre><code><span style="color:#38bdf8;"># CLAUDE.md — Quality Rules</span>
-
-<span style="color:#a78bfa;">## Non-Negotiables</span>
-<span style="color:#f87171;">- Never commit with failing tests</span>
-<span style="color:#f87171;">- Never skip lint / type checks</span>
-<span style="color:#f87171;">- Never use `any` in TypeScript</span>
-<span style="color:#f87171;">- Never push directly to main</span>
-
-<span style="color:#a78bfa;">## Definition of Done</span>
-<span style="color:#22c55e;">1. pnpm test passes</span>
-<span style="color:#22c55e;">2. pnpm lint passes</span>
-<span style="color:#22c55e;">3. pnpm typecheck passes</span>
-<span style="color:#22c55e;">4. PR description written</span>
-</code></pre>
-:::
-
-:::
-
-::: {.column width="48%"}
-
-::: {.card-green .card-compact style="font-size:0.82em;"}
-**Agent behaviour** · Claude reads these rules every turn. CLAUDE.md makes the quality bar *explicit and permanent* rather than relying on per-prompt instructions.
-:::
-
-:::
-
-::::
-
-## Hooks — Automated Validation {.smaller}
-
-:::: {.columns}
-
-::: {.column width="52%"}
-
-::: {.terminal-box}
-<pre><code><span style="color:#38bdf8;"># .claude/settings.json</span>
-<span style="color:#e6edf3;">{</span>
-<span style="color:#e6edf3;">  </span><span style="color:#a78bfa;">"hooks"</span><span style="color:#e6edf3;">: {</span>
-<span style="color:#e6edf3;">    </span><span style="color:#a78bfa;">"PostToolUse"</span><span style="color:#e6edf3;">: [{</span>
-<span style="color:#a78bfa;">      "matcher"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"*"</span><span style="color:#e6edf3;">,</span>
-<span style="color:#a78bfa;">      "hooks"</span><span style="color:#e6edf3;">: [{</span>
-<span style="color:#a78bfa;">        "type"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"command"</span><span style="color:#e6edf3;">,</span>
-<span style="color:#a78bfa;">        "command"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"pnpm lint --fix"</span>
-<span style="color:#e6edf3;">      }]</span>
-<span style="color:#e6edf3;">    }]</span>
-<span style="color:#e6edf3;">  }</span>
-<span style="color:#e6edf3;">}</span>
-</code></pre>
-:::
-
-:::
-
-::: {.column width="48%"}
-
-::: {.card-green .card-compact style="font-size:0.82em;"}
-**What hooks do** · run shell commands automatically at lifecycle events — no per-prompt reminder needed.
-:::
-
-::: {.card-subtle .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Key events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit` — and more
-:::
-
-::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Use cases** · auto-lint after every edit · run typecheck before stopping · block dangerous tool calls · log all file writes
-:::
-
-:::
-
-::::
 
 # Git Worktrees
 
