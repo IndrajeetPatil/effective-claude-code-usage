@@ -24,10 +24,10 @@ AMB  = '#f59e0b'; DAMB = '#3a2400'
 PUR  = '#a78bfa'; DPUR = '#2d1b69'
 RED  = '#f87171'; DRED = '#450a0a'
 TXT  = '#e6edf3'
-MUT  = '#8b949e'
+MUT  = '#a8b3c1'
 CARD = '#1c2128'
 
-DPI = 100
+DPI = 160
 
 # ── Drawing helpers ───────────────────────────────────────────
 
@@ -96,15 +96,14 @@ def group_bg(ax, x, y, w, h, fc, ec, alpha=0.12, lw=1.5, label='', lfs=21):
 
 
 def title(ax, w, h, text, col=GRN, fs=32, y_off=0.55):
-    """Title at the top of the figure — y_off reserves clear space above content."""
-    ax.text(w/2, h - y_off, text, ha='center', va='top',
-            fontsize=fs, color=col, fontweight='bold', zorder=5)
+    """Slide headings carry titles; diagrams should focus on the model."""
+    return
 
 
 def save(fig, name):
     path = os.path.join(_here, name)
-    plt.tight_layout(pad=0.05)
-    plt.savefig(path, dpi=DPI, bbox_inches='tight', facecolor=BG)
+    plt.tight_layout(pad=0.2)
+    plt.savefig(path, dpi=DPI, bbox_inches='tight', pad_inches=0.18, facecolor=BG)
     plt.close(fig)
     print(f'  ok  {name}')
 
@@ -189,9 +188,8 @@ def make_02():
     lbl(ax, 6.05, 1.18, 'not done — loop back', col=MUT, fs=18)
 
     # Done exit
-    arr(ax, 8.48, 2.80, 8.85, 2.80, col=GRN, lw=2.2)
-    lbl(ax, 8.65, 3.22, 'done', col=GRN, fs=17)
-    box(ax, 10.05, 2.80, 1.85, 0.95, DGRN, 'Return\nresult', fs=22, tc=GRN)
+    arr(ax, 8.48, 2.80, 8.75, 2.80, col=GRN, lw=2.2)
+    box(ax, 9.95, 2.80, 1.70, 0.95, DGRN, 'Return\nresult', fs=22, tc=GRN)
 
     save(fig, 'diag-02-react-loop.png')
 
@@ -248,8 +246,8 @@ def make_04():
 
     # Context Window
     cwx, cwy = 6.30, 2.30
-    box(ax, cwx, cwy, 2.80, 4.00, DGRN, 'Context\nWindow\n~200K tokens',
-        fs=23, tc=GRN, lw=2.8)
+    box(ax, cwx, cwy, 2.80, 4.00, DGRN, 'Context\nWindow\nmodel-dependent\nbudget',
+        fs=21, tc=GRN, lw=2.8)
 
     # Model
     box(ax, 10.05, cwy, 1.80, 0.95, DBLU, 'Model\nreasoning', fs=21, tc=BLU, lw=2.0)
@@ -268,7 +266,7 @@ def make_04():
 # ═══════════════════════════════════════════════════════════════
 def make_05():
     # Increased height so title (at h-0.55) clears the top box
-    fig, ax = new_fig(9, 7.5)
+    fig, ax = new_fig(10, 7.5)
     title(ax, 9, 7.5, 'How CLAUDE.md Is Loaded')
 
     box(ax, 4.5, 5.75, 3.0, 0.80, DPUR, 'claude invoked', fs=23, tc=PUR, lw=2.5)
@@ -340,7 +338,7 @@ def make_07():
         (2.10,  2.20, DGRN, GRN, '/plan\nread-only'),
         (3.50,  2.20, DBLU, BLU, 'Explore\ncodebase'),
         (4.90,  2.20, DAMB, AMB, 'Design\nsolution'),
-        (6.30,  2.20, DGRN, GRN, 'Plan\nfile'),
+        (6.30,  2.20, DGRN, GRN, 'Review\nplan'),
         (7.70,  2.20, DGRN, GRN, 'Execute\nchanges'),
         (9.10,  2.20, DGRN, GRN, 'Done!'),
     ]
@@ -352,7 +350,7 @@ def make_07():
         col = GRN if i >= 5 else TXT
         arr(ax, nodes[i][0] + bw/2, 2.20, nodes[i+1][0] - bw/2, 2.20, col=col)
 
-    ax.text(6.30, 1.18, '.claude/plans/', ha='center', va='center',
+    ax.text(6.30, 1.18, 'approve before edits', ha='center', va='center',
             fontsize=16, color=MUT, style='italic', zorder=5)
 
     save(fig, 'diag-07-planning-mode.png')
@@ -362,69 +360,29 @@ def make_07():
 # 9 — Daily Workflow / Mental Model
 # ═══════════════════════════════════════════════════════════════
 def make_09():
-    # Increased height so title clears the "New Task" box at top
-    fig, ax = new_fig(9, 10.2)
-    title(ax, 9, 10.2, 'Effective Usage — Mental Model')
+    fig, ax = new_fig(11, 5.2)
+    title(ax, 11, 5.2, 'Effective Usage — Mental Model')
 
-    bw, bh   = 2.80, 0.85
-    dw, dh   = 3.20, 1.00
+    steps = [
+        (1.35, DPUR, PUR, '1. Set\ncontext', 'CLAUDE.md current?\n/init if stale'),
+        (4.05, DBLU, BLU, '2. Choose\ndepth', 'Direct prompt\n/plan\nsubagents'),
+        (6.75, DAMB, AMB, '3. Manage\ncontext', '/context\n/compact\ntrim output'),
+        (9.45, DGRN, GRN, '4. Verify\nresult', 'git diff\ntests + lint\nPR review'),
+    ]
 
-    # New Task — now well below the title
-    box(ax, 4.5, 8.20, bw, bh, DPUR, 'New Task', fs=23, tc=PUR, lw=2.5)
+    for x, fc, tc, head, sub in steps:
+        box(ax, x, 3.35, 2.15, 0.95, fc, head, fs=21, tc=tc, lw=2.4, ec=tc)
+        ax.text(x, 2.18, sub, ha='center', va='center',
+                fontsize=18, color=MUT, linespacing=1.25, zorder=4)
 
-    # CLAUDE.md current?
-    diamond(ax, 4.5, 6.98, dw, dh, DBLU, 'CLAUDE.md\ncurrent?', fs=20, tc=BLU)
-    arr(ax, 4.5, 7.77, 4.5, 7.48, col=MUT)
+    for i in range(len(steps) - 1):
+        arr(ax, steps[i][0] + 1.10, 3.35, steps[i + 1][0] - 1.10, 3.35,
+            col=TXT, lw=2.0, ms=16)
 
-    # No → Update
-    box(ax, 7.75, 6.98, 2.50, 0.85, DAMB, 'Update / /init', fs=21, tc=AMB)
-    arr(ax, 6.10, 6.98, 6.50, 6.98, col=AMB)
-    lbl(ax, 6.28, 7.30, 'no', col=AMB, fs=17)
-    ax.plot([7.75, 8.85, 8.85, 4.5], [6.55, 6.55, 5.88, 5.88],
-            color=AMB, lw=1.8, zorder=2, linestyle='--')
-
-    # Yes → Task size?
-    arr(ax, 4.5, 6.48, 4.5, 6.10, col=MUT)
-    lbl(ax, 4.10, 6.30, 'yes', col=GRN, fs=17)
-
-    # Task size?
-    diamond(ax, 4.5, 5.60, dw, dh, DBLU, 'Task\ncomplexity?', fs=20, tc=BLU)
-
-    # Simple → Direct
-    box(ax, 1.30, 5.60, 2.35, 0.85, DGRN, 'Direct\nprompt', fs=21, tc=GRN)
-    arr(ax, 3.10, 5.60, 2.47, 5.60, col=GRN)
-    lbl(ax, 2.82, 5.95, 'simple', col=GRN, fs=16)
-
-    # Medium → /plan
-    box(ax, 4.50, 4.35, 2.35, 0.85, DGRN, '/plan first', fs=21, tc=GRN)
-    arr(ax, 4.50, 5.10, 4.50, 5.20, col=GRN)
-    lbl(ax, 4.05, 4.78, 'medium', col=GRN, fs=16)
-
-    # Large → Subagents
-    box(ax, 7.70, 5.60, 2.35, 0.85, DGRN, 'Subagents\nor Workflows', fs=19, tc=GRN)
-    arr(ax, 5.90, 5.60, 6.52, 5.60, col=GRN)
-    lbl(ax, 6.22, 5.95, 'large', col=GRN, fs=16)
-
-    # All three → Context full?
-    ctx_y = 3.00
-    for sx, sy in [(1.30, 5.17), (4.50, 3.92), (7.70, 5.17)]:
-        tx = 4.5 + (sx - 4.5) * 0.05
-        arr(ax, sx, sy, tx, ctx_y + 0.52, col=MUT, lw=1.8, ms=14)
-
-    # Context full?
-    diamond(ax, 4.5, ctx_y, dw, dh, DBLU, 'Context\nfull?', fs=20, tc=BLU)
-
-    # Yes → /compact
-    box(ax, 7.70, ctx_y, 2.35, 0.85, DAMB, '/compact', fs=22, tc=AMB)
-    arr(ax, 6.10, ctx_y, 6.52, ctx_y, col=AMB)
-    lbl(ax, 6.28, ctx_y + 0.35, 'yes', col=AMB, fs=17)
-    ax.plot([7.70, 8.85, 8.85, 4.5], [ctx_y - 0.42, ctx_y - 0.42, 1.42, 1.42],
-            color=AMB, lw=1.8, linestyle='--', zorder=2)
-
-    # No → Done
-    arr(ax, 4.5, ctx_y - 0.50, 4.5, 1.30, col=GRN)
-    lbl(ax, 4.08, ctx_y - 0.68, 'no', col=GRN, fs=17)
-    box(ax, 4.5, 0.88, 2.80, 0.85, DGRN, 'Done!', fs=24, tc=GRN, lw=2.8)
+    ax.text(5.5, 0.90,
+            'Intent + constraints -> bounded execution -> checked output',
+            ha='center', va='center', fontsize=20, color=GRN,
+            style='italic', zorder=5)
 
     save(fig, 'diag-09-mental-model.png')
 
@@ -473,12 +431,12 @@ def make_11():
 
     # ── Claude Code session boxes ─────────────────────────────────
     # center y=3.5, h=0.85, top=3.925, bottom=3.075
-    sess_labels = ['claude -w main',
-                   'claude -w\nfeature-auth',
-                   'claude -w\nbugfix-123']
+    sess_labels = ['claude --worktree\nmain',
+                   'claude --worktree\nfeature-auth',
+                   'claude --worktree\nbugfix-123']
 
     for wx, slbl, (sfc, sec) in zip(wt_xs, sess_labels, wt_cols):
-        box(ax, wx, 3.50, 2.80, 0.85, sfc, slbl, fs=20, tc=sec, lw=2.2, ec=sec)
+        box(ax, wx, 3.50, 2.80, 0.95, sfc, slbl, fs=18, tc=sec, lw=2.2, ec=sec)
 
     # ── Column labels — standalone text above each worktree ───────
     col_header_y = 6.85  # above worktree tops (6.40), below git bottom (7.075)
@@ -501,45 +459,34 @@ def make_11():
 # 12 — Workflow Orchestration
 # ═══════════════════════════════════════════════════════════════
 def make_12():
-    fig, ax = new_fig(11, 7.0)
-    title(ax, 11, 7.0, 'Workflow Orchestration')
+    fig, ax = new_fig(11, 5.8)
+    title(ax, 11, 5.8, 'Workflow Orchestration')
 
     # Workflow script box at top
-    box(ax, 5.5, 5.30, 5.0, 0.88, DPUR, 'Workflow Script  (JavaScript)',
+    box(ax, 5.5, 5.30, 5.0, 0.88, DPUR, 'Workflow Orchestration\n(advanced)',
         fs=22, tc=PUR, lw=2.8)
 
-    # Four primitive boxes
+    # Four capability boxes
     prims = [
-        (1.55, 3.60, DGRN, GRN, 'agent()'),
-        (4.10, 3.60, DBLU, BLU, 'parallel()'),
-        (6.60, 3.60, DAMB, AMB, 'pipeline()'),
-        (9.15, 3.60, DPUR, PUR, 'phase()'),
+        (1.55, 3.60, DGRN, GRN, 'Subagents\nmany workers'),
+        (4.10, 3.60, DBLU, BLU, 'Parallelism\nfan-out'),
+        (6.60, 3.60, DAMB, AMB, 'Progress\ntracking'),
+        (9.15, 3.60, DPUR, PUR, 'Structured\noutput'),
     ]
-    bw, bh = 2.05, 0.85
+    bw, bh = 2.10, 1.05
     for px, py, pfc, ptc, plbl in prims:
-        box(ax, px, py, bw, bh, pfc, plbl, fs=22, tc=ptc, lw=2.0)
-        arr(ax, 5.5 + (px - 5.5) * 0.42, 4.86, px, 4.03, col=MUT, lw=1.8, ms=14)
-
-    # Descriptions below primitives
-    descs = [
-        (1.55, 'spawn one\nsubagent'),
-        (4.10, 'run tasks\nconcurrently'),
-        (6.60, 'chain stages\nper item'),
-        (9.15, 'group + label\nprogress'),
-    ]
-    for dx, dtxt in descs:
-        ax.text(dx, 2.82, dtxt, ha='center', va='center',
-                fontsize=17, color=MUT, linespacing=1.2, zorder=4)
+        box(ax, px, py, bw, bh, pfc, plbl, fs=19, tc=ptc, lw=2.0)
+        arr(ax, 5.5 + (px - 5.5) * 0.42, 4.86, px, 4.13, col=MUT, lw=1.8, ms=14)
 
     # Budget annotation on the side
     box(ax, 9.80, 5.30, 2.05, 0.88, DAMB, 'Budget\ncontrol', fs=20, tc=AMB, lw=2.0)
 
     # Structured results at bottom
-    box(ax, 5.5, 1.30, 5.5, 0.88, DGRN, 'Structured Results  (JSON Schema)',
+    box(ax, 5.5, 1.35, 5.5, 0.88, DGRN, 'Reviewable Results',
         fs=21, tc=GRN, lw=2.5)
 
     for px, py, *_ in prims:
-        arr(ax, px, py - bh/2, 5.5 + (px - 5.5) * 0.12, 1.74, col=MUT, lw=1.8, ms=14)
+        arr(ax, px, py - bh/2, 5.5 + (px - 5.5) * 0.12, 1.79, col=MUT, lw=1.8, ms=14)
 
     save(fig, 'diag-12-workflows.png')
 
