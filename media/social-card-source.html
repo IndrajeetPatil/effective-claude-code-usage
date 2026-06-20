@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Effective Claude Code Usage Social Card</title>
+    <style>
+      :root {
+        --bg: #0d1117;
+        --panel: #161b22;
+        --panel-2: #1c2128;
+        --ink: #e6edf3;
+        --muted: #8b949e;
+        --line: rgba(139, 148, 158, 0.22);
+        --green: #22c55e;
+        --blue: #38bdf8;
+        --amber: #f59e0b;
+        --purple: #a78bfa;
+        --red: #f87171;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1600px;
+        height: 900px;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          "Space Grotesk", "Aptos", "Segoe UI", system-ui, sans-serif;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        inset: -180px -80px auto auto;
+        width: 560px;
+        height: 560px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.16), transparent 68%);
+        filter: blur(12px);
+      }
+
+      body::after {
+        content: "";
+        position: absolute;
+        left: -160px;
+        bottom: -220px;
+        width: 620px;
+        height: 620px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(34, 197, 94, 0.13), transparent 70%);
+        filter: blur(14px);
+      }
+
+      .frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 72px 78px 60px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 0.92fr 0.9fr;
+        gap: 46px;
+        align-items: stretch;
+        height: 100%;
+      }
+
+      .copy {
+        position: relative;
+        z-index: 2;
+        padding-top: 10px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(28, 33, 40, 0.78);
+        color: #b6c2d2;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--green), var(--blue));
+        box-shadow: 0 0 20px rgba(34, 197, 94, 0.42);
+      }
+
+      .title {
+        margin: 44px 0 24px;
+        max-width: 760px;
+        color: var(--green);
+        font-size: 86px;
+        line-height: 0.96;
+        font-weight: 800;
+      }
+
+      .subtitle {
+        max-width: 760px;
+        margin: 0;
+        color: #d7dde7;
+        font-size: 36px;
+        line-height: 1.15;
+        font-weight: 500;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        max-width: 760px;
+        margin-top: 42px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        padding: 13px 17px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(22, 27, 34, 0.78);
+        color: #c9d3df;
+        font-size: 23px;
+        font-weight: 700;
+      }
+
+      .chip::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+      }
+
+      .chip.green::before { background: var(--green); }
+      .chip.blue::before { background: var(--blue); }
+      .chip.purple::before { background: var(--purple); }
+      .chip.amber::before { background: var(--amber); }
+
+      .site {
+        position: absolute;
+        left: 78px;
+        bottom: 56px;
+        color: #9aa7b8;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .terminal-stage {
+        position: relative;
+        z-index: 1;
+        min-height: 100%;
+        border: 1px solid rgba(139, 148, 158, 0.22);
+        border-radius: 34px;
+        background:
+          radial-gradient(circle at 72% 18%, rgba(167, 139, 250, 0.14), transparent 34%),
+          radial-gradient(circle at 30% 78%, rgba(245, 158, 11, 0.1), transparent 32%),
+          linear-gradient(180deg, rgba(28, 33, 40, 0.9), rgba(13, 17, 23, 0.94));
+        box-shadow:
+          0 34px 76px rgba(0, 0, 0, 0.36),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+      }
+
+      .terminal-stage::before {
+        content: "";
+        position: absolute;
+        inset: 26px;
+        border: 1px solid rgba(139, 148, 158, 0.12);
+        border-radius: 24px;
+      }
+
+      .halo {
+        position: absolute;
+        border-radius: 999px;
+        border: 2px solid rgba(56, 189, 248, 0.18);
+      }
+
+      .halo.one {
+        width: 480px;
+        height: 480px;
+        right: -86px;
+        top: 112px;
+      }
+
+      .halo.two {
+        width: 318px;
+        height: 318px;
+        right: 22px;
+        top: 192px;
+        border-color: rgba(34, 197, 94, 0.2);
+      }
+
+      .halo.three {
+        width: 172px;
+        height: 172px;
+        right: 94px;
+        top: 266px;
+        border-color: rgba(167, 139, 250, 0.23);
+      }
+
+      .terminal {
+        position: absolute;
+        left: 58px;
+        right: 58px;
+        top: 58px;
+        height: 260px;
+        border: 1px solid rgba(139, 148, 158, 0.24);
+        border-radius: 22px;
+        background: rgba(9, 13, 18, 0.9);
+        box-shadow: 0 18px 46px rgba(0, 0, 0, 0.36);
+        overflow: hidden;
+      }
+
+      .terminal-bar {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 20px;
+        border-bottom: 1px solid rgba(139, 148, 158, 0.2);
+        background: rgba(28, 33, 40, 0.92);
+      }
+
+      .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+      }
+
+      .dot.red { background: var(--red); }
+      .dot.amber { background: var(--amber); }
+      .dot.green { background: var(--green); }
+
+      .terminal-body {
+        padding: 22px 24px;
+        font-family:
+          "Space Mono", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+        font-size: 21px;
+        line-height: 1.55;
+      }
+
+      .prompt { color: var(--blue); }
+      .ok { color: var(--green); }
+      .muted { color: #7d8795; }
+
+      .workflow {
+        position: absolute;
+        left: 54px;
+        right: 54px;
+        bottom: 54px;
+        height: 394px;
+      }
+
+      .node {
+        position: absolute;
+        width: 252px;
+        padding: 20px 22px 18px;
+        border: 1px solid rgba(139, 148, 158, 0.24);
+        border-radius: 20px;
+        background: rgba(28, 33, 40, 0.86);
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
+      }
+
+      .node::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        top: 0;
+        height: 4px;
+        border-radius: 0 0 999px 999px;
+      }
+
+      .node h2 {
+        margin: 0 0 8px;
+        color: var(--ink);
+        font-size: 27px;
+        line-height: 1.05;
+      }
+
+      .node p {
+        margin: 0;
+        color: #aeb9c8;
+        font-size: 19px;
+        line-height: 1.2;
+        font-weight: 600;
+      }
+
+      .n1 {
+        left: 18px;
+        top: 32px;
+      }
+
+      .n1::before { background: linear-gradient(90deg, var(--blue), #7dd3fc); }
+      .n1 h2 { color: var(--blue); }
+
+      .n2 {
+        right: 36px;
+        top: 4px;
+      }
+
+      .n2::before { background: linear-gradient(90deg, var(--green), #86efac); }
+      .n2 h2 { color: var(--green); }
+
+      .n3 {
+        left: 108px;
+        bottom: 16px;
+      }
+
+      .n3::before { background: linear-gradient(90deg, var(--purple), #c4b5fd); }
+      .n3 h2 { color: var(--purple); }
+
+      .n4 {
+        right: 6px;
+        bottom: 34px;
+      }
+
+      .n4::before { background: linear-gradient(90deg, var(--amber), #fbbf24); }
+      .n4 h2 { color: var(--amber); }
+
+      svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+
+      .path {
+        fill: none;
+        stroke-width: 4;
+        stroke-linecap: round;
+        stroke-dasharray: 10 14;
+        opacity: 0.72;
+      }
+
+      .path.blue { stroke: var(--blue); }
+      .path.green { stroke: var(--green); }
+      .path.purple { stroke: var(--purple); }
+      .path.amber { stroke: var(--amber); }
+
+      .core {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        transform: translate(-50%, -50%);
+        width: 132px;
+        height: 132px;
+        border-radius: 32px;
+        border: 1px solid rgba(34, 197, 94, 0.42);
+        background:
+          linear-gradient(145deg, rgba(34, 197, 94, 0.18), rgba(56, 189, 248, 0.12)),
+          rgba(13, 17, 23, 0.9);
+        box-shadow:
+          0 0 46px rgba(34, 197, 94, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .core::before,
+      .core::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .core::before {
+        width: 68px;
+        height: 68px;
+        border: 2px solid rgba(56, 189, 248, 0.5);
+      }
+
+      .core::after {
+        width: 18px;
+        height: 18px;
+        background: var(--green);
+        box-shadow: 0 0 28px rgba(34, 197, 94, 0.78);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="frame">
+      <div class="grid">
+        <section class="copy">
+          <div class="eyebrow">Presentation deck</div>
+          <h1 class="title">Effective Claude Code Usage</h1>
+          <p class="subtitle">
+            From CLI to cognitive partner for complex software engineering work.
+          </p>
+          <div class="chips">
+            <div class="chip green">Tools</div>
+            <div class="chip blue">Context</div>
+            <div class="chip purple">Subagents</div>
+            <div class="chip amber">Workflows</div>
+          </div>
+        </section>
+
+        <section class="terminal-stage" aria-hidden="true">
+          <div class="halo one"></div>
+          <div class="halo two"></div>
+          <div class="halo three"></div>
+
+          <div class="terminal">
+            <div class="terminal-bar">
+              <div class="dot red"></div>
+              <div class="dot amber"></div>
+              <div class="dot green"></div>
+            </div>
+            <div class="terminal-body">
+              <div><span class="prompt">$</span> claude</div>
+              <div><span class="ok">ok</span> read repo, plan, use tools</div>
+              <div class="muted">loop until the task is genuinely done</div>
+            </div>
+          </div>
+
+          <div class="workflow">
+            <svg viewBox="0 0 650 394" role="img" aria-label="Abstract workflow paths connecting context, tools, subagents, and review">
+              <path class="path blue" d="M118 116 C220 42 345 48 462 88" />
+              <path class="path green" d="M520 122 C462 210 352 214 292 204" />
+              <path class="path purple" d="M158 284 C230 220 292 220 336 198" />
+              <path class="path amber" d="M370 214 C430 260 486 292 546 282" />
+            </svg>
+
+            <div class="core"></div>
+
+            <article class="node n1">
+              <h2>Perceive</h2>
+              <p>files, history, docs, images</p>
+            </article>
+            <article class="node n2">
+              <h2>Act</h2>
+              <p>search, edit, test, inspect</p>
+            </article>
+            <article class="node n3">
+              <h2>Plan</h2>
+              <p>explore, then edit</p>
+            </article>
+            <article class="node n4">
+              <h2>Verify</h2>
+              <p>acceptance criteria and PRs</p>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <div class="site">indrapatil.com/effective-claude-code-usage</div>
+    </main>
+  </body>
+</html>
