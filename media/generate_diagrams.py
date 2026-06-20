@@ -359,48 +359,6 @@ def make_07():
 
 
 # ═══════════════════════════════════════════════════════════════
-# 8 — CLI vs MCP Token Cost
-# ═══════════════════════════════════════════════════════════════
-def make_08():
-    fig, ax = new_fig(11, 5.5)
-    title(ax, 11, 5.5, 'CLI vs MCP — Token Cost')
-
-    box(ax, 1.10, 2.80, 1.65, 0.95, DPUR, 'Same\nTask', fs=22, tc=PUR)
-
-    # ── CLI path ──────────────────────────────────────────────
-    # Standalone section label — sits in a gap row, clear of title and boxes
-    ax.text(6.50, 4.25, 'CLI path', ha='center', va='center',
-            fontsize=20, color=GRN, fontweight='bold', zorder=5)
-    ax.plot([2.0, 10.8], [4.05, 4.05], color=GRN, lw=1.2, alpha=0.30, zorder=1)
-
-    cli_y = 3.50
-    box(ax, 3.60, cli_y, 2.50, 0.85, DGRN, 'gh pr list\n--json ...', fs=21, tc=GRN)
-    box(ax, 6.50, cli_y, 2.50, 0.85, DGRN, 'Fewer tokens\nclean JSON', fs=21, tc=GRN)
-    arr(ax, 1.93, 2.80, 2.35, cli_y, col=GRN)
-    arr(ax, 4.85, cli_y, 5.25, cli_y, col=GRN)
-
-    # ── MCP path ──────────────────────────────────────────────
-    ax.text(6.50, 2.40, 'MCP path', ha='center', va='center',
-            fontsize=20, color=RED, fontweight='bold', zorder=5)
-    ax.plot([2.0, 10.8], [2.20, 2.20], color=RED, lw=1.2, alpha=0.30, zorder=1)
-
-    mcp_y = 1.45
-    box(ax, 3.60, mcp_y, 2.50, 0.85, DRED, 'MCP server\ncall', fs=21, tc=RED)
-    box(ax, 6.50, mcp_y, 2.50, 0.85, DRED, 'Protocol +\nschema wrap', fs=21, tc=RED)
-    box(ax, 9.40, mcp_y, 2.50, 0.85, DRED, 'More tokens\nprotocol overhead', fs=21, tc=RED)
-    arr(ax, 1.93, 2.80, 2.35, mcp_y, col=RED)
-    arr(ax, 4.85, mcp_y, 5.25, mcp_y, col=RED)
-    arr(ax, 7.75, mcp_y, 8.15, mcp_y, col=RED)
-
-    # ── Same result ───────────────────────────────────────────
-    box(ax, 10.45, 2.80, 1.65, 0.95, CARD, 'Same\nresult', fs=21, tc=TXT, ec=MUT)
-    arr(ax, 7.75, cli_y, 9.62, 2.80, col=GRN)
-    arr(ax, 10.65, mcp_y, 10.10, 2.80, col=RED)
-
-    save(fig, 'diag-08-cli-vs-mcp.png')
-
-
-# ═══════════════════════════════════════════════════════════════
 # 9 — Daily Workflow / Mental Model
 # ═══════════════════════════════════════════════════════════════
 def make_09():
@@ -469,70 +427,6 @@ def make_09():
     box(ax, 4.5, 0.88, 2.80, 0.85, DGRN, 'Done!', fs=24, tc=GRN, lw=2.8)
 
     save(fig, 'diag-09-mental-model.png')
-
-
-# ═══════════════════════════════════════════════════════════════
-# 10 — Quality Guardrails
-# Three-layer layout: each layer uses a plain colored text header
-# (no group_bg so no occlusion issues), then a row of item boxes.
-# ═══════════════════════════════════════════════════════════════
-def make_10():
-    fig, ax = new_fig(11, 9.5)
-    title(ax, 11, 9.5, 'Quality Guardrails — Three Layers')
-
-    xs = [1.20, 3.30, 5.50, 7.70, 9.80]   # x centres for 5-item rows
-    bw_item = 1.90                          # item box width
-
-    # ── Agent ────────────────────────────────────────────────
-    box(ax, 5.5, 7.20, 3.4, 0.88, DPUR, 'Agent writes code', fs=23, tc=PUR, lw=2.5)
-    arr(ax, 5.5, 6.76, 5.5, 6.52, col=BLU, lw=2.2)
-
-    # Layer 1 header — standalone text + thin rule, never overlaps boxes
-    ax.text(5.5, 6.30, 'Layer 1 — Agent Instructions  (CLAUDE.md)',
-            ha='center', va='center', fontsize=21, color=BLU,
-            fontweight='bold', zorder=5)
-    ax.plot([0.5, 10.5], [6.10, 6.10], color=BLU, lw=1.5, alpha=0.35, zorder=2)
-
-    # Layer 1 boxes
-    l1 = ['Coding\nconventions', '"Never do"\nrules', 'Run tests\nbefore done',
-          'Lint / format\non every edit', 'Definition\nof done']
-    for lx, ltxt in zip(xs, l1):
-        box(ax, lx, 5.42, bw_item, 0.82, DBLU, ltxt, fs=19, tc=BLU, lw=1.8)
-
-    arr(ax, 5.5, 5.01, 5.5, 4.77, col=AMB, lw=2.2)
-
-    # Layer 2 header
-    ax.text(5.5, 4.55, 'Layer 2 — Local QA Tools',
-            ha='center', va='center', fontsize=21, color=AMB,
-            fontweight='bold', zorder=5)
-    ax.plot([0.5, 10.5], [4.35, 4.35], color=AMB, lw=1.5, alpha=0.35, zorder=2)
-
-    # Layer 2 boxes
-    l2 = ['Linter\n(ESLint/ruff)', 'Type checker\n(tsc/mypy)', 'Formatter\n(Prettier/black)',
-          'Unit tests\n(jest/pytest)', 'Pre-commit\nhooks']
-    for lx, ltxt in zip(xs, l2):
-        box(ax, lx, 3.67, bw_item, 0.82, DAMB, ltxt, fs=18, tc=AMB, lw=1.8)
-
-    arr(ax, 5.5, 3.26, 5.5, 3.02, col=GRN, lw=2.2)
-
-    # Layer 3 header
-    ax.text(5.5, 2.80, 'Layer 3 — CI / CD Safety Net',
-            ha='center', va='center', fontsize=21, color=GRN,
-            fontweight='bold', zorder=5)
-    ax.plot([0.5, 10.5], [2.60, 2.60], color=GRN, lw=1.5, alpha=0.35, zorder=2)
-
-    # Layer 3 boxes
-    l3 = ['Branch\nprotection', 'PR checks\n(lint + test)', 'Coverage\nthreshold',
-          'Security\nscan', 'Required\nreviewer']
-    for lx, ltxt in zip(xs, l3):
-        box(ax, lx, 1.92, bw_item, 0.82, DGRN, ltxt, fs=18, tc=GRN, lw=1.8)
-
-    arr(ax, 5.5, 1.51, 5.5, 1.27, col=GRN, lw=2.2)
-
-    # Ship
-    box(ax, 5.5, 0.78, 3.4, 0.80, DGRN, 'Merge  +  Ship', fs=23, tc=GRN, lw=2.8)
-
-    save(fig, 'diag-10-qa-scaffold.png')
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -655,6 +549,6 @@ if __name__ == '__main__':
     print('Generating diagrams...')
     make_01(); make_02(); make_03()
     make_04(); make_05(); make_06()
-    make_07(); make_08(); make_09()
-    make_10(); make_11(); make_12()
+    make_07(); make_09()
+    make_11(); make_12()
     print('All done.')
