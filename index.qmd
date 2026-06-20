@@ -390,7 +390,7 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 ::::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**How** · use the `Task` tool for simple fan-out or the `Workflow` tool for deterministic orchestration with budget control. Each subagent gets an isolated context.
+**How** · use the `Agent` tool for simple fan-out or the `Workflow` tool for deterministic orchestration with budget control. Each subagent gets an isolated context.
 :::
 
 ## Workflows — Orchestrated Agents {.smaller}
