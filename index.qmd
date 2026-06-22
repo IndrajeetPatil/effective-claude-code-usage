@@ -79,11 +79,10 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 - **Tools** — what Claude can call and why it matters
 - **Skills & slash commands** — reusable playbooks and session control
 - **Context window** — what fills it and how to manage it
-- **CLAUDE.md, memory & hooks** — persistent context and automated validation
+- **CLAUDE.md, memory, hooks & dream** — persistent context and consolidation
 - **Subagents & workflows** — parallel and orchestrated work
 - **Planning mode** — explore before you edit
 - **Prompting** — intent over instructions
-- **CLI vs MCP** — choose the simpler integration
 - **Git worktrees** — parallel Claude sessions
 :::
 
@@ -183,7 +182,7 @@ Claude Code can run many tool calls in one turn: read code, inspect test output,
 | **Shell** | Run tests, git, npm, docker — any terminal command |
 | **Web** | Fetch docs, read changelogs, search answers |
 | **Agents** | Spawn subagents, isolate context, and run workflow orchestration when available |
-| **MCP** | GitHub PRs, Jira tickets, Postgres, and more |
+| **[MCP](https://docs.anthropic.com/en/docs/claude-code/mcp)** | GitHub PRs, Jira tickets, Postgres, and more |
 
 ::: {.card-blue .card-compact style="font-size:0.78em;"}
 **Permission model** · dangerous operations (file deletion, git push) require explicit user approval. You control the blast radius.
@@ -193,7 +192,7 @@ Claude Code can run many tool calls in one turn: read code, inspect test output,
 
 > *"Skills are reusable playbooks. Slash commands are session controls. Together they automate your workflow."*
 
-## Skills — Reusable Playbooks {.smaller}
+## [Skills](https://docs.anthropic.com/en/docs/claude-code/slash-commands) — Reusable Playbooks {.smaller}
 
 :::: {.columns}
 
@@ -229,7 +228,7 @@ Skills are reusable prompt playbooks. Some are bundled, some come from plugins, 
 
 ::::
 
-## Slash Commands — Session Control {.smaller}
+## [Slash Commands](https://docs.anthropic.com/en/docs/claude-code/interactive-mode) — Session Control {.smaller}
 
 :::: {.columns}
 
@@ -297,7 +296,7 @@ Skills are reusable prompt playbooks. Some are bundled, some come from plugins, 
 
 > *"CLAUDE.md is persistent memory — what Claude should always know, even after `/clear`."*
 
-## How CLAUDE.md Is Loaded {.smaller}
+## How [CLAUDE.md](https://docs.anthropic.com/en/docs/claude-code/memory) Is Loaded {.smaller}
 
 ![](media/diag-05-claude-md-loading.png){fig-align="center" fig-alt="Diagram showing how global, project-root, subdirectory CLAUDE.md files and @imports merge into the system prompt"}
 
@@ -350,7 +349,7 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 ::::
 
-## Hooks — Automated Validation {.smaller}
+## [Hooks](https://docs.anthropic.com/en/docs/claude-code/hooks) — Automated Validation {.smaller}
 
 :::: {.columns}
 
@@ -396,11 +395,54 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 ::::
 
+## Dream — Memory Consolidation {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+::: {style="font-size: 0.85em;"}
+Over time, [auto memory](https://docs.anthropic.com/en/docs/claude-code/memory) accumulates noise: stale facts, relative dates that lose meaning, and contradictions. **Dream** runs a reflective consolidation pass to clean this up.
+:::
+
+::: {.card-subtle .card-compact style="font-size:0.78em; margin-top:0.5em;"}
+**Four phases** · orient (read existing memories) → gather signal (scan recent session logs) → consolidate (merge, update, fix dates) → prune (keep index under 200 lines)
+:::
+
+::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**Experimental** · the feature exists in the UI (`/memory` shows auto-dream toggle) but `/dream` may not be fully wired up in all versions. Review its output before trusting it.
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;"># In a Claude Code session</span>
+<span style="color:#38bdf8;">&gt;</span> /memory
+<span style="color:#e6edf3;">  Auto-memory:  </span><span style="color:#22c55e;">on</span>
+<span style="color:#e6edf3;">  Auto-dream:   </span><span style="color:#22c55e;">on</span>
+<span style="color:#e6edf3;">  Last dream:   13h ago</span>
+
+<span style="color:#8b949e;"># Dream consolidates memories</span>
+<span style="color:#8b949e;"># between sessions, like sleep</span>
+<span style="color:#8b949e;"># does for the brain:</span>
+<span style="color:#8b949e;">#  - Merges duplicates</span>
+<span style="color:#8b949e;">#  - Fixes stale dates</span>
+<span style="color:#8b949e;">#  - Removes contradictions</span>
+<span style="color:#8b949e;">#  - Prunes the index</span>
+</code></pre>
+:::
+
+:::
+
+::::
+
 # Subagents & Workflows
 
 > *"Subagents handle parallel work. Workflows are for the cases where simple fan-out is not enough."*
 
-## Subagent Orchestration {.smaller}
+## [Subagent](https://docs.anthropic.com/en/docs/claude-code/sub-agents) Orchestration {.smaller}
 
 ![](media/diag-06-subagent-orchestration.png){fig-align="center" fig-alt="Diagram showing orchestrator fanning out to four parallel subagents and merging results"}
 
@@ -411,11 +453,11 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 ::: {.column width="50%"}
 
 ::: {.card-green .card-compact}
-[**Use when**]{style="font-size:0.95em;"}
+[**Let Claude decide**]{style="font-size:0.95em;"}
 
-- Independent tasks across different modules
-- Context isolation is an asset
-- Large codebase exploration
+- Describe **what** you want done, not how to orchestrate it
+- Opus picks the right [subagent type](https://docs.anthropic.com/en/docs/claude-code/sub-agents) and parallelism strategy
+- Works well for: multi-file exploration, independent module tasks, context isolation
 :::
 
 :::
@@ -423,11 +465,11 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 ::: {.column width="50%"}
 
 ::: {.card-amber .card-compact}
-[**Avoid when**]{style="font-size:0.95em;"}
+[**Define custom subagents when**]{style="font-size:0.95em;"}
 
-- Sequential dependencies between tasks
-- Shared files risk merge conflicts
-- Task is simple or needs one coherent decision
+- You need a repeatable, team-shared specialist (e.g. security reviewer)
+- Specific tool restrictions or system prompts are required
+- The built-in agent types don't fit your domain
 :::
 
 :::
@@ -435,7 +477,7 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 ::::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**How** · use subagents for simple fan-out. Reach for workflows only when you need durable orchestration, progress tracking, structured output, or background execution.
+**Default** · trust Opus to orchestrate subagents on its own. Only define custom subagents or reach for [workflows](https://docs.anthropic.com/en/docs/claude-code/tutorials) when you need durable orchestration, progress tracking, or team-shared specialists.
 :::
 
 ## Workflows — Advanced Orchestration {.smaller}
@@ -463,7 +505,7 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 > *"Explore first. Edit second."*
 
-## Planning Mode Workflow {.smaller}
+## [Planning Mode](https://docs.anthropic.com/en/docs/claude-code/tutorials) Workflow {.smaller}
 
 ![](media/diag-07-planning-mode.png){fig-align="center" fig-alt="Horizontal workflow diagram: request, /plan, explore, draft, human review, execute, done"}
 
@@ -547,7 +589,7 @@ Step-by-step instructions limit Claude's ability to explore and adapt.
 ::: {.column width="50%"}
 
 ::: {.card-green .card-compact}
-**Clear acceptance criteria**
+**Intent + acceptance criteria**
 
 *"Add unit tests for the auth module. Done when: all public functions covered, edge cases tested, conventions followed, `pnpm test` passes."*
 
@@ -559,37 +601,11 @@ Define *what* done looks like. Claude figures out *how*.
 ::::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**The one prompting rule that still matters** · Claude can explore the codebase, choose tools, and loop on failures. The one thing it can't infer is **your definition of done**. End every task with acceptance criteria, then verify those criteria before accepting the result.
+:::
+
+::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.3em;"}
 **Mental model** · delegate the work, but keep ownership of the result. Inspect the diff, run checks, and review the PR before merging.
-:::
-
-## The One Prompting Rule That Still Matters {.smaller}
-
-::: {.card-blue style="font-size:0.88em; margin-bottom: 0.8em;"}
-Claude Code can explore the codebase, choose tools, run checks, and loop on failures. You don't need to script every step.
-:::
-
-The one thing the model can't infer is **your definition of done**.
-
-::: {.card-green .card-compact style="font-size:0.85em;"}
-**End every task with acceptance criteria** · *"Done when: (1) tests pass, (2) no lint errors, (3) PR description written."* Then verify those criteria before accepting the result.
-:::
-
-# CLI vs MCP
-
-> *"Not all integrations are equal. The right integration is the one that uses the least complexity."*
-
-## CLI vs MCP Decision Guide {.smaller}
-
-| Situation | Prefer CLI | Prefer MCP |
-|-----------|-----------|------------|
-| **GitHub PRs / issues** | `gh pr list` — direct, scriptable | Real-time webhooks needed |
-| **Database queries** | `psql -c "SELECT..."` — transparent | Connection pool / auth managed |
-| **Jira / Linear** | `curl` + API key — simple | OAuth, token refresh required |
-| **File operations** | Native `Read`/`Write`/`Bash` | Almost never needed |
-| **Complex auth flows** | When API is simple | SSO, multi-step OAuth |
-
-::: {.card-green .card-compact style="font-size:0.78em;"}
-**Default rule** · if a CLI tool (`gh`, `psql`, `curl`, `kubectl`) can do the job, use `Bash`. Reach for MCP when persistent auth, rate-limits, or real-time events make the CLI path awkward.
 :::
 
 # Git Worktrees
@@ -632,7 +648,7 @@ The one thing the model can't infer is **your definition of done**.
 **Key insight** · a git worktree is a second checkout of the same repo — same `.git/` database, different working tree. Claude Code manages them with a single flag.
 :::
 
-## Worktrees — How They Work {.smaller}
+## [Worktrees](https://docs.anthropic.com/en/docs/claude-code/tutorials) — How They Work {.smaller}
 
 ![](media/diag-11-worktrees.png){fig-align="center" fig-alt="Diagram showing a single shared .git/ object store at the top with three isolated worktree directories and three parallel Claude Code sessions below"}
 
@@ -661,7 +677,7 @@ The one thing the model can't infer is **your definition of done**.
 ![](media/diag-09-mental-model.png){fig-align="center" fig-alt="Four-step mental model for effective Claude Code usage: set context, choose depth, manage context, verify result"}
 
 ::: {.card-green style="font-size:0.75em; margin-top:0.4em;"}
-CLAUDE.md for memory · `/plan` for complex tasks · Worktrees for isolation · Subagents for parallel work · Skills for repeatable actions · `/compact` when context fills · CLI > MCP for simplicity · Intent + acceptance criteria · Diff + tests before acceptance
+CLAUDE.md for memory · `/plan` for complex tasks · Worktrees for isolation · Subagents for parallel work · Skills for repeatable actions · `/compact` when context fills · Intent + acceptance criteria · Diff + tests before acceptance
 :::
 
 ## Resources {.smaller}
