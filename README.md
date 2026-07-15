@@ -5,7 +5,7 @@ Slides summarising patterns for using [Claude Code](https://docs.anthropic.com/e
 The slides can be seen here:<br>
 <https://www.indrapatil.com/effective-claude-code-usage/>
 
-[![introductory slide](media/social-media-card.png)](https://www.indrapatil.com/effective-claude-code-usage/)
+[![introductory slide](media/social-media-card.webp)](https://www.indrapatil.com/effective-claude-code-usage/)
 
 ## Development
 
