@@ -26,7 +26,7 @@ author-meta: "Indrajeet Patil"
 date-meta: "2026-06-20"
 lang: "en"
 dir: "ltr"
-image: "media/social-media-card.png"
+image: "media/social-media-card.webp"
 image-alt: "Preview image for Effective Claude Code Usage presentation"
 canonical-url: "https://www.indrapatil.com/effective-claude-code-usage/"
 ---
