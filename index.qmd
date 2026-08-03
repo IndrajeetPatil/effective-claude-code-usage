@@ -74,11 +74,11 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 
 ::: {style="font-size: 0.88em;"}
 - **Agents vs chatbots** — what Claude Code actually is
-- **Tools** — what Claude can call and why it matters
+- **Tools, permissions & sandboxing** — capabilities and safety boundaries
 - **Skills & slash commands** — reusable playbooks and session control
 - **Context window** — what fills it and how to manage it
-- **CLAUDE.md, memory, hooks & dream** — persistent context and consolidation
-- **Subagents & workflows** — parallel and orchestrated work
+- **CLAUDE.md, auto memory & hooks** — durable context and enforcement
+- **Subagents, background agents & workflows** — parallel and orchestrated work
 - **Planning mode** — explore before you edit
 - **Prompting** — intent over instructions
 - **Git worktrees** — parallel Claude sessions
@@ -180,53 +180,72 @@ Claude Code can run many tool calls in one turn: read code, inspect test output,
 | **Shell** | Run tests, git, npm, docker — any terminal command |
 | **Web** | Fetch docs, read changelogs, search answers |
 | **Agents** | Spawn subagents, isolate context, and run workflow orchestration when available |
-| **[MCP](https://docs.anthropic.com/en/docs/claude-code/mcp)** | GitHub PRs, Jira tickets, Postgres, and more |
+| **[MCP](https://code.claude.com/docs/en/mcp)** | GitHub PRs, Jira tickets, Postgres, and more |
 
 ::: {.card-blue .card-compact style="font-size:0.78em;"}
-**Permission model** · dangerous operations (file deletion, git push) require explicit user approval. You control the blast radius.
+**Permissions + sandboxing** · prompts depend on the active permission mode and rules. Sandboxed Bash can run automatically inside OS-enforced boundaries; explicit deny rules still apply. Configure both with [`/permissions`](https://code.claude.com/docs/en/permissions) and [`/sandbox`](https://code.claude.com/docs/en/sandboxing).
+:::
+
+## Choose a Permission Mode {.smaller}
+
+| Mode | Runs without asking | Best fit |
+|------|----------------------|----------|
+| **Manual** | Reads only | Getting started; sensitive work |
+| **Accept edits** | Reads + file edits | Iterating on code you will review |
+| **Plan** | Reads only | Explore before implementation |
+| **Auto** | Actions that pass safety checks | Long trusted tasks; research preview |
+| **Don't ask** | Only pre-approved tools | Locked-down CI and scripts |
+| **Bypass** | Everything | Isolated containers or VMs only |
+
+::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**Defense in depth** · permission rules decide what Claude may attempt; the sandbox enforces filesystem and network boundaries for Bash. Auto mode reduces prompts, but it does not replace review for sensitive work.
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.35em;"}
+Sources: [Permission modes](https://code.claude.com/docs/en/permission-modes) · [Sandboxing](https://code.claude.com/docs/en/sandboxing)
 :::
 
 # Skills & Slash Commands
 
-> *"Skills are reusable playbooks. Slash commands are session controls. Together they automate your workflow."*
+> *"The `/` menu is a launcher. The action type tells you how Claude will execute it."*
 
-## [Skills](https://docs.anthropic.com/en/docs/claude-code/slash-commands) — Reusable Playbooks {.smaller}
+## [`/` Actions](https://code.claude.com/docs/en/commands) — Know What You Are Running {.smaller}
 
 :::: {.columns}
 
 ::: {.column width="50%"}
 
 ::: {style="font-size: 0.88em;"}
-Skills are reusable prompt playbooks. Some are bundled, some come from plugins, and teams can add project-specific ones. When exposed as commands, invoke them as **`/skillname`**.
+The `/` menu combines built-in commands, bundled skills, workflows, plugin actions, and MCP prompts. Skills are reusable instructions that load on demand; many can activate from their description, but `/verify` and `/code-review` run only when you invoke them.
 :::
 
-| Skill | Purpose |
-|-------|---------|
-| `/code-review` | Review diff for bugs and cleanups |
-| `/simplify` | Refactor for clarity and efficiency |
-| `/security-review` | Security audit of pending changes |
-| `/deep-research` | Multi-source research with citations |
+| Action | Kind · purpose |
+|--------|----------------|
+| `/code-review` | Skill · correctness review |
+| `/simplify` | Skill · apply cleanup fixes |
+| `/verify` | Skill · run and observe the change |
+| `/run` | Skill · launch and drive the app |
 
 :::
 
 ::: {.column width="50%"}
 
-| Skill | Purpose |
-|-------|---------|
-| `/verify` | Test that a change actually works |
-| `/run` | Launch and drive the app |
-| `/init` | Generate CLAUDE.md for this repo |
-| `/review` | Review a pull request |
+| Action | Kind · purpose |
+|--------|----------------|
+| `/deep-research` | Workflow · cited research |
+| `/security-review` | Built-in · audit branch diff |
+| `/init` | Built-in · generate CLAUDE.md |
+| `/review` | Built-in · fast, read-only PR review |
 
 ::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.8em;"}
-**Install-dependent** · available skills vary by setup. Use `/help` or the command palette in your Claude Code install to see the current list.
+**Install-dependent** · availability varies by version, plan, platform, plugins, and MCP servers. Use `/help` for commands and `/skills` for loaded skills.
 :::
 
 :::
 
 ::::
 
-## [Slash Commands](https://docs.anthropic.com/en/docs/claude-code/interactive-mode) — Session Control {.smaller}
+## [Slash Commands](https://code.claude.com/docs/en/commands) — Session Control {.smaller}
 
 :::: {.columns}
 
@@ -239,9 +258,9 @@ Skills are reusable prompt playbooks. Some are bundled, some come from plugins, 
 | `/clear` | Reset conversation history |
 | `/compact` | Compress history, keep summary |
 | `/context` | Inspect context usage and heavy inputs |
+| `/rewind` | Restore or summarize from a checkpoint |
+| `/goal` | Keep working until a condition holds |
 | `/usage` | Show usage and limit breakdown |
-| `/status` | Show session, model, MCP, and sandbox status |
-| `/config` | Configure settings |
 
 :::
 
@@ -252,14 +271,14 @@ Skills are reusable prompt playbooks. Some are bundled, some come from plugins, 
 | Command | Purpose |
 |---------|---------|
 | `/plan` | Enter planning mode |
-| `/fast` | Toggle faster output when supported |
+| `/permissions` | Manage allow, ask, and deny rules |
+| `/sandbox` | Configure OS-enforced Bash isolation |
 | `/model` | Switch Claude model |
 | `/help` | List all commands |
-| `/doctor` | Diagnose config issues |
 | `/workflows` | Watch live workflow progress |
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.5em;"}
-**Commands move fast** · use `/help` as the source of truth for your install. Older aliases such as `/cost` may still work, but `/usage` and `/context` are the clearer defaults.
+**Commands move fast** · use `/help` as the source of truth for your install. `/cost` and `/stats` are current aliases for `/usage`.
 :::
 
 :::
@@ -290,11 +309,11 @@ Skills are reusable prompt playbooks. Some are bundled, some come from plugins, 
 
 ::::
 
-# CLAUDE.md & Memory
+# CLAUDE.md & Auto Memory
 
-> *"CLAUDE.md is persistent memory — what Claude should always know, even after `/clear`."*
+> *"CLAUDE.md is durable instruction context; auto memory is Claude's local notebook."*
 
-## How [CLAUDE.md](https://docs.anthropic.com/en/docs/claude-code/memory) Is Loaded {.smaller}
+## How [CLAUDE.md](https://code.claude.com/docs/en/memory) Is Loaded {.smaller}
 
 ![](media/diag-05-claude-md-loading.webp){fig-align="center" fig-alt="Diagram showing how global, project-root, subdirectory CLAUDE.md files and @imports merge into the system prompt"}
 
@@ -336,18 +355,18 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 :::
 
 ::: {.card-subtle style="font-size:0.82em; margin-top:0.6em;"}
-**It compounds** · add a rule once, Claude follows it forever.
+**Keep it lean** · include only commands, conventions, decisions, and gotchas Claude cannot infer from the repo. Use `/context` to confirm the file loaded.
 :::
 
 ::: {.card-blue style="font-size:0.78em; margin-top:0.6em;"}
-**Auto-memory** · Claude can save reusable learnings such as preferences, project context, and reference pointers. Review what it stores, and disable or redirect it in settings when a project needs stricter boundaries.
+**Auto memory** · Claude saves reusable learnings per repository and shares them across its worktrees. Audit, edit, or disable the plain Markdown notes through `/memory`.
 :::
 
 :::
 
 ::::
 
-## [Hooks](https://docs.anthropic.com/en/docs/claude-code/hooks) — Automated Validation {.smaller}
+## [Hooks](https://code.claude.com/docs/en/hooks) — Automated Validation {.smaller}
 
 :::: {.columns}
 
@@ -393,22 +412,22 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 ::::
 
-## Dream — Memory Consolidation {.smaller}
+## Memory Is Context, Not Enforcement {.smaller}
 
 :::: {.columns}
 
 ::: {.column width="50%"}
 
-::: {style="font-size: 0.85em;"}
-Over time, [auto memory](https://docs.anthropic.com/en/docs/claude-code/memory) accumulates noise: stale facts, relative dates that lose meaning, and contradictions. **Dream** runs a reflective consolidation pass to clean this up.
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**CLAUDE.md** · you write durable project instructions: non-obvious commands, conventions, workflow rules, architecture decisions, and gotchas.
 :::
 
-::: {.card-subtle .card-compact style="font-size:0.78em; margin-top:0.5em;"}
-**Four phases** · orient (read existing memories) → gather signal (scan recent session logs) → consolidate (merge, update, fix dates) → prune (keep index under 200 lines)
+::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.5em;"}
+**Auto memory** · Claude writes local, per-repository learnings. Only the first 200 lines or 25 KB of its `MEMORY.md` index load at startup; topic files load on demand.
 :::
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Experimental** · the feature exists in the UI (`/memory` shows auto-dream toggle) but `/dream` may not be fully wired up in all versions. Review its output before trusting it.
+**Neither is a hard guardrail** · concise, specific instructions improve adherence, but use permission deny rules or hooks when an action must be blocked or a check must always run.
 :::
 
 :::
@@ -417,18 +436,18 @@ Over time, [auto memory](https://docs.anthropic.com/en/docs/claude-code/memory) 
 
 ::: {.terminal-box}
 <pre><code><span style="color:#38bdf8;"># In a Claude Code session</span>
-<span style="color:#38bdf8;">&gt;</span> /memory
-<span style="color:#e6edf3;">  Auto-memory:  </span><span style="color:#22c55e;">on</span>
-<span style="color:#e6edf3;">  Auto-dream:   </span><span style="color:#22c55e;">on</span>
-<span style="color:#e6edf3;">  Last dream:   13h ago</span>
+<span style="color:#38bdf8;">&gt;</span> /context
+<span style="color:#e6edf3;">  Memory files:</span>
+<span style="color:#22c55e;">  + ~/.claude/CLAUDE.md</span>
+<span style="color:#22c55e;">  + ./CLAUDE.md</span>
 
-<span style="color:#8b949e;"># Dream consolidates memories</span>
-<span style="color:#8b949e;"># between sessions, like sleep</span>
-<span style="color:#8b949e;"># does for the brain:</span>
-<span style="color:#8b949e;">#  - Merges duplicates</span>
-<span style="color:#8b949e;">#  - Fixes stale dates</span>
-<span style="color:#8b949e;">#  - Removes contradictions</span>
-<span style="color:#8b949e;">#  - Prunes the index</span>
+<span style="color:#38bdf8;">&gt;</span> /memory
+<span style="color:#e6edf3;">  Project instructions</span>
+<span style="color:#e6edf3;">  Auto memory: </span><span style="color:#22c55e;">on</span>
+<span style="color:#e6edf3;">  Open memory folder</span>
+
+<span style="color:#8b949e;"># Review notes like code:</span>
+<span style="color:#8b949e;"># prune stale or conflicting facts</span>
 </code></pre>
 :::
 
@@ -436,38 +455,50 @@ Over time, [auto memory](https://docs.anthropic.com/en/docs/claude-code/memory) 
 
 ::::
 
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Claude Code memory documentation](https://code.claude.com/docs/en/memory)
+:::
+
 # Subagents & Workflows
 
 > *"Subagents handle parallel work. Workflows are for the cases where simple fan-out is not enough."*
 
-## [Subagent](https://docs.anthropic.com/en/docs/claude-code/sub-agents) Orchestration {.smaller}
+## [Subagent](https://code.claude.com/docs/en/sub-agents) Orchestration {.smaller}
 
 ![](media/diag-06-subagent-orchestration.webp){fig-align="center" fig-alt="Diagram showing orchestrator fanning out to four parallel subagents and merging results"}
 
-## When to Use Subagents {.smaller}
+## Choose the Right Parallel Primitive {.smaller}
 
 :::: {.columns}
 
 ::: {.column width="50%"}
 
-::: {.card-green .card-compact}
-[**Let Claude decide**]{style="font-size:0.95em;"}
+::: {.card-green .card-compact style="font-size:0.82em;"}
+[**Subagents**]{style="font-size:0.95em;"}
 
-- Describe **what** you want done, not how to orchestrate it
-- Opus picks the right [subagent type](https://docs.anthropic.com/en/docs/claude-code/sub-agents) and parallelism strategy
-- Works well for: multi-file exploration, independent module tasks, context isolation
+Focused side tasks inside one session. Use when exploration or logs would clutter the main context; results return as a summary.
+:::
+
+::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.5em;"}
+[**Background agents**]{style="font-size:0.95em;"}
+
+Independent sessions you dispatch and monitor with `claude agents`. Useful when you want to hand off several tasks and check back later. **Research preview.**
 :::
 
 :::
 
 ::: {.column width="50%"}
 
-::: {.card-amber .card-compact}
-[**Define custom subagents when**]{style="font-size:0.95em;"}
+::: {.card-amber .card-compact style="font-size:0.82em;"}
+[**Agent teams**]{style="font-size:0.95em;"}
 
-- You need a repeatable, team-shared specialist (e.g. security reviewer)
-- Specific tool restrictions or system prompts are required
-- The built-in agent types don't fit your domain
+Peer sessions with a shared task list and direct messaging. Use only when workers must coordinate with each other. **Experimental and disabled by default.**
+:::
+
+::: {.card-subtle .card-compact style="font-size:0.82em; margin-top:0.5em;"}
+[**Dynamic workflows**]{style="font-size:0.95em;"}
+
+Scripted orchestration for many agents, cross-checks, resumability, or repeatable control flow. Use after a task outgrows a few subagents.
 :::
 
 :::
@@ -475,7 +506,11 @@ Over time, [auto memory](https://docs.anthropic.com/en/docs/claude-code/memory) 
 ::::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Default** · trust Opus to orchestrate subagents on its own. Only define custom subagents or reach for [workflows](https://docs.anthropic.com/en/docs/claude-code/tutorials) when you need durable orchestration, progress tracking, or team-shared specialists.
+**Default** · start with one agent. Explicitly ask for a subagent, worktree isolation, a background session, a team, or a workflow when that coordination model materially helps.
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Run agents in parallel](https://code.claude.com/docs/en/agents)
 :::
 
 ## Workflows — Advanced Orchestration {.smaller}
@@ -483,7 +518,7 @@ Over time, [auto memory](https://docs.anthropic.com/en/docs/claude-code/memory) 
 ![](media/diag-12-workflows.webp){fig-align="center" fig-alt="Diagram showing advanced workflow orchestration coordinating subagents, parallelism, progress tracking, structured output, and reviewable results"}
 
 ::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.3em;"}
-**Advanced automation** · workflows can coordinate many agents with scripts, background runs, progress views, and structured outputs. Verify the exact API in your installed Claude Code version.
+**Advanced automation** · dynamic workflows move orchestration into a readable JavaScript script that runs in the background. Use `/workflows` to inspect progress and save a successful run for reuse.
 :::
 
 ## Workflow Patterns — Use Sparingly {.smaller}
@@ -496,14 +531,18 @@ Over time, [auto memory](https://docs.anthropic.com/en/docs/claude-code/memory) 
 | **Pipeline** | Many items need the same multi-stage treatment | Script + one Claude pass |
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Rule of thumb** · start with one agent. Add workflows only when the coordination overhead is lower than managing the task manually.
+**Rule of thumb** · use a few subagents for turn-by-turn delegation; use a workflow when the plan itself needs repeatable loops, branching, cross-checking, or dozens of workers.
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Dynamic workflows](https://code.claude.com/docs/en/workflows)
 :::
 
 # Planning Mode
 
 > *"Explore first. Edit second."*
 
-## [Planning Mode](https://docs.anthropic.com/en/docs/claude-code/tutorials) Workflow {.smaller}
+## [Planning Mode](https://code.claude.com/docs/en/permission-modes) Workflow {.smaller}
 
 ![](media/diag-07-planning-mode.webp){fig-align="center" fig-alt="Horizontal workflow diagram: request, /plan, explore, draft, human review, execute, done"}
 
@@ -521,7 +560,7 @@ In **planning mode** Claude reads files and proposes an approach before edits ha
 | Mysterious bug | Treats symptoms, not cause | Root-cause analysis before editing |
 
 ::: {.card-amber .card-compact style="font-size:0.78em;"}
-**Rule of thumb** · if the task touches >3 files or crosses service boundaries, plan first. ~5 min of planning saves 1–2 hours of rework.
+**Rule of thumb** · plan when the approach is uncertain, the change spans multiple files, or the code is unfamiliar. If you can describe the diff in one sentence, direct execution is usually enough.
 :::
 
 ::: {.card-blue .card-compact style="font-size:0.78em;"}
@@ -599,7 +638,7 @@ Define *what* done looks like. Claude figures out *how*.
 ::::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**The one prompting rule that still matters** · Claude can explore the codebase, choose tools, and loop on failures. The one thing it can't infer is **your definition of done**. End every task with acceptance criteria, then verify those criteria before accepting the result.
+**The prompting rule that still matters most** · Claude can explore the codebase, choose tools, and loop on failures, but it cannot read your mind. State **your definition of done**, then verify those criteria before accepting the result.
 :::
 
 ::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.3em;"}
@@ -646,7 +685,7 @@ Define *what* done looks like. Claude figures out *how*.
 **Key insight** · a git worktree is a second checkout of the same repo — same `.git/` database, different working tree. Claude Code manages them with a single flag.
 :::
 
-## [Worktrees](https://docs.anthropic.com/en/docs/claude-code/tutorials) — How They Work {.smaller}
+## [Worktrees](https://code.claude.com/docs/en/worktrees) — How They Work {.smaller}
 
 ![](media/diag-11-worktrees.webp){fig-align="center" fig-alt="Diagram showing a single shared .git/ object store at the top with three isolated worktree directories and three parallel Claude Code sessions below"}
 
@@ -660,7 +699,7 @@ Define *what* done looks like. Claude figures out *how*.
 
 ::: {.column width="50%"}
 ::: {.card-blue .card-compact style="font-size:0.78em;"}
-**Pro tip** · add worktree directories to `.gitignore`. Use `git worktree add/list/remove` for manual control.
+**Pro tip** · add `.claude/worktrees/` to `.gitignore`. Use `.worktreeinclude` to copy selected gitignored setup files such as `.env` into new worktrees.
 :::
 :::
 
@@ -675,15 +714,15 @@ Define *what* done looks like. Claude figures out *how*.
 ![](media/diag-09-mental-model.webp){fig-align="center" fig-alt="Four-step mental model for effective Claude Code usage: set context, choose depth, manage context, verify result"}
 
 ::: {.card-green style="font-size:0.75em; margin-top:0.4em;"}
-CLAUDE.md for memory · `/plan` for complex tasks · Worktrees for isolation · Subagents for parallel work · Skills for repeatable actions · `/compact` when context fills · Intent + acceptance criteria · Diff + tests before acceptance
+CLAUDE.md for durable instructions · `/plan` for complex tasks · Worktrees for isolation · Subagents for focused side work · Skills for repeatable actions · `/compact` when context fills · Intent + acceptance criteria · Diff + tests before acceptance
 :::
 
 ## Resources {.smaller}
 
 ::: {style="font-size: 0.82em;"}
 
-- [Claude Code official documentation](https://docs.anthropic.com/en/docs/claude-code) — tools, skills, workflows, subagents, planning mode
-- [Claude Code best practices](https://docs.anthropic.com/en/docs/claude-code/best-practices) — prompting patterns, guardrails, context management
+- [Claude Code official documentation](https://code.claude.com/docs/en/overview) — tools, skills, workflows, subagents, planning mode
+- [Claude Code best practices](https://code.claude.com/docs/en/best-practices) — prompting patterns, guardrails, context management
 - [Anthropic's guide to agentic coding](https://www.anthropic.com/engineering/claude-code-best-practices) — ReAct loop, quality scaffolding, CLI vs MCP tradeoffs
 
 :::
