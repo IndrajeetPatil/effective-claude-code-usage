@@ -277,7 +277,7 @@ def make_05():
     box(ax, 5.4, 2.65, 3.0, 0.88, DAMB, 'Subdirectory\nCLAUDE.md', fs=21, tc=AMB)
     box(ax, 8.3, 2.65, 2.85, 0.88, DBLU, '@import\nsnippets', fs=21, tc=BLU)
 
-    box(ax, 4.5, 1.05, 6.4, 0.88, DGRN, 'Merged System Prompt  (injected every turn)',
+    box(ax, 4.5, 1.05, 6.4, 0.88, DGRN, 'Instruction Context  (loaded into conversation)',
         fs=21, tc=GRN, lw=2.8)
 
     arr(ax, 3.35, 5.75, 2.0, 4.69, col=MUT)
@@ -416,9 +416,9 @@ def make_11():
     # ── Worktree directory boxes ──────────────────────────────────
     # center y=5.8, h=1.2, top=6.4, bottom=5.2
     wt_xs     = [1.8,           5.5,                  9.2]
-    wt_labels = ['main\nbranch: main',
-                 'feature-auth\nbranch: feature-auth',
-                 'bugfix-123\nbranch: bugfix-123']
+    wt_labels = ['.claude/worktrees/ui\nbranch: worktree-ui',
+                 '.claude/worktrees/auth\nbranch: worktree-auth',
+                 '.claude/worktrees/bugfix\nbranch: worktree-bugfix']
     wt_cols   = [(DGRN, GRN), (DBLU, BLU), (DAMB, AMB)]
 
     for wx, wlbl, (wfc, wec) in zip(wt_xs, wt_labels, wt_cols):
@@ -431,9 +431,9 @@ def make_11():
 
     # ── Claude Code session boxes ─────────────────────────────────
     # center y=3.5, h=0.85, top=3.925, bottom=3.075
-    sess_labels = ['claude --worktree\nmain',
-                   'claude --worktree\nfeature-auth',
-                   'claude --worktree\nbugfix-123']
+    sess_labels = ['claude --worktree\nui',
+                   'claude --worktree\nauth',
+                   'claude --worktree\nbugfix']
 
     for wx, slbl, (sfc, sec) in zip(wt_xs, sess_labels, wt_cols):
         box(ax, wx, 3.50, 2.80, 0.95, sfc, slbl, fs=18, tc=sec, lw=2.2, ec=sec)
