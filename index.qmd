@@ -193,12 +193,12 @@ Claude Code can run many tool calls in one turn: read code, inspect test output,
 | **Manual** | Reads only | Getting started; sensitive work |
 | **Accept edits** | Reads + file edits | Iterating on code you will review |
 | **Plan** | Reads only | Explore before implementation |
-| **Auto** | Actions that pass safety checks | Long trusted tasks; research preview |
+| **Auto** | Everything, with background safety checks | Default on Pro/Max/Team; long tasks |
 | **Don't ask** | Only pre-approved tools | Locked-down CI and scripts |
 | **Bypass** | Everything | Isolated containers or VMs only |
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Defense in depth** · permission rules decide what Claude may attempt; the sandbox enforces filesystem and network boundaries for Bash. Auto mode reduces prompts, but it does not replace review for sensitive work.
+**Defense in depth** · permission rules decide what Claude may attempt; the sandbox enforces filesystem and network boundaries for Bash. In auto mode a classifier model reviews actions in your place — it cuts prompts but does not replace your review of sensitive work.
 :::
 
 ::: {style="font-size:0.55em; text-align:center; margin-top:0.35em;"}
