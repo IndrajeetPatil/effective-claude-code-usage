@@ -61,7 +61,7 @@ Check which set is present to know which language context applies.
 - **Mermaid performance boundary.** Keep Mermaid diagrams as Mermaid source. Do not replace them with pre-rendered SVGs solely to reduce the website bundle.
 - **No code execution.** The YAML front matter sets `execute: eval: false`. Code blocks are for display only; they are not executed during render.
 - **Compute engine.** Python decks declare `jupyter: python3` in the front matter; R decks declare `engine: knitr`. The virtualenv or renv exists to satisfy Quarto's engine, not to run slide code.
-- **Generated diagrams.** `media/generate_diagrams.py` produces PNG diagrams using matplotlib and the Caveat font. See `CLAUDE.md` for detailed layout rules, colour constants, and sizing constraints.
+- **Generated diagrams.** `media/generate_diagrams.py` produces PNG diagrams using matplotlib and the Caveat font. See `AGENTS.md` for detailed layout rules, colour constants, and sizing constraints.
 
 ## Commands
 

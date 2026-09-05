@@ -7,4 +7,4 @@ Root llms.txt: https://www.indrapatil.com/effective-claude-code-usage/llms.txt
 Root llms-full.txt: https://www.indrapatil.com/effective-claude-code-usage/llms-full.txt
 Source: https://github.com/IndrajeetPatil/effective-claude-code-usage/
 
-Summary: A Quarto RevealJS presentation on using Claude Code effectively as a CLI agent for software engineering. The deck covers tool use, permission modes, sandboxing, skills, workflows, context management, CLAUDE.md, auto memory, subagents, background agents, planning mode, hooks, prompting, MCP, and Git worktrees.
+Summary: A Quarto RevealJS presentation on using Claude Code effectively as a CLI agent for software engineering. The deck covers tool use, permission modes, sandboxing, skills, workflows, context management, AGENTS.md, auto memory, subagents, background agents, planning mode, hooks, prompting, MCP, and Git worktrees.
