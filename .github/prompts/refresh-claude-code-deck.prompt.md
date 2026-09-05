@@ -7,8 +7,7 @@ agent: agent
 
 You are updating this repository's Quarto/RevealJS presentation about using
 Claude Code effectively. The deck lives in `index.qmd`; diagrams are generated
-by `media/generate_diagrams.py` and committed as `.webp`. Read `AGENTS.md` and
-`AGENTS.md` first — they hold the layout rules, colour constants, and diagram
+by `media/generate_diagrams.py` and committed as `.webp`. Read `AGENTS.md` first — it holds the layout rules, colour constants, and diagram
 constraints you must follow.
 
 ## Goal
