@@ -193,7 +193,7 @@ Claude Code can run many tool calls in one turn: read code, inspect test output,
 | **Manual** | Reads only | Getting started; sensitive work |
 | **Accept edits** | Reads + file edits | Iterating on code you will review |
 | **Plan** | Reads only | Explore before implementation |
-| **Auto** | Everything, with background safety checks | Default on Pro/Max/Team; long tasks |
+| **Auto** | Classifier-approved actions (still blocks risky ones) | Default on Pro/Max/Team; long tasks |
 | **Don't ask** | Only pre-approved tools | Locked-down CI and scripts |
 | **Bypass** | Everything | Isolated containers or VMs only |
 
@@ -515,7 +515,7 @@ Source: [Run agents in parallel](https://code.claude.com/docs/en/agents)
 
 ## Workflows — Advanced Orchestration {.smaller}
 
-![](media/diag-12-workflows.webp){fig-align="center" fig-alt="Diagram showing advanced workflow orchestration coordinating subagents, parallelism, progress tracking, structured output, and reviewable results"}
+![](media/diag-12-workflows.webp){fig-align="center" fig-alt="Diagram showing advanced workflow orchestration coordinating subagents, parallelism, progress tracking, structured output, budget control, and reviewable results"}
 
 ::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.3em;"}
 **Advanced automation** · dynamic workflows move orchestration into a readable JavaScript script that runs in the background. Use `/workflows` to inspect progress and save a successful run for reuse.
