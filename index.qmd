@@ -77,7 +77,7 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 - **Tools, permissions & sandboxing** — capabilities and safety boundaries
 - **Skills & slash commands** — reusable playbooks and session control
 - **Context window** — what fills it and how to manage it
-- **AGENTS.md, auto memory & hooks** — durable context and enforcement
+- **CLAUDE.md, auto memory & hooks** — durable context and enforcement
 - **Subagents, background agents & workflows** — parallel and orchestrated work
 - **Planning mode** — explore before you edit
 - **Prompting** — intent over instructions
@@ -234,7 +234,7 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 |--------|----------------|
 | `/deep-research` | Workflow · cited research |
 | `/security-review` | Built-in · audit branch diff |
-| `/init` | Built-in · generate AGENTS.md |
+| `/init` | Built-in · generate CLAUDE.md |
 | `/review` | Built-in · fast, read-only PR review |
 
 ::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.8em;"}
@@ -291,7 +291,7 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 
 ## What Fills the Context? {.smaller}
 
-![](media/diag-04-context-window.webp){fig-align="center" fig-alt="Diagram showing five inputs flowing into the context window: AGENTS.md, history, files, tool outputs, images"}
+![](media/diag-04-context-window.webp){fig-align="center" fig-alt="Diagram showing five inputs flowing into the context window: CLAUDE.md, history, files, tool outputs, images"}
 
 :::: {.columns}
 
@@ -309,22 +309,22 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 
 ::::
 
-# AGENTS.md & Auto Memory
+# CLAUDE.md & Auto Memory
 
-> *"AGENTS.md is durable instruction context; auto memory is Claude's local notebook."*
+> *"CLAUDE.md is durable instruction context; auto memory is Claude's local notebook."*
 
-## How [AGENTS.md](https://code.claude.com/docs/en/memory) Is Loaded {.smaller}
+## How [CLAUDE.md](https://code.claude.com/docs/en/memory) Is Loaded {.smaller}
 
-![](media/diag-05-claude-md-loading.webp){fig-align="center" fig-alt="Diagram showing how global, project-root, subdirectory AGENTS.md files and @imports merge into the system prompt"}
+![](media/diag-05-claude-md-loading.webp){fig-align="center" fig-alt="Diagram showing how global, project-root, subdirectory CLAUDE.md files and @imports merge into the system prompt"}
 
-## AGENTS.md Anatomy {.smaller}
+## CLAUDE.md Anatomy {.smaller}
 
 :::: {.columns}
 
 ::: {.column width="60%"}
 
 ::: {.terminal-box}
-<pre><code><span style="color:#38bdf8;"># My Project AGENTS.md</span>
+<pre><code><span style="color:#38bdf8;"># My Project CLAUDE.md</span>
 
 <span style="color:#a78bfa;">## Stack</span>
 <span style="color:#e6edf3;">TypeScript monorepo, Node 22, pnpm</span>
@@ -351,7 +351,7 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 ::: {.card-green style="font-size:0.85em;"}
 **Auto-generate**
 
-Run `/init` in any repo — Claude inspects the codebase and writes a AGENTS.md for you. Edit it to add conventions and "never do" rules.
+Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md for you. Edit it to add conventions and "never do" rules.
 :::
 
 ::: {.card-subtle style="font-size:0.82em; margin-top:0.6em;"}
@@ -419,7 +419,7 @@ Run `/init` in any repo — Claude inspects the codebase and writes a AGENTS.md 
 ::: {.column width="50%"}
 
 ::: {.card-green .card-compact style="font-size:0.82em;"}
-**AGENTS.md** · you write durable project instructions: non-obvious commands, conventions, workflow rules, architecture decisions, and gotchas.
+**CLAUDE.md** · you write durable project instructions: non-obvious commands, conventions, workflow rules, architecture decisions, and gotchas.
 :::
 
 ::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.5em;"}
@@ -438,8 +438,8 @@ Run `/init` in any repo — Claude inspects the codebase and writes a AGENTS.md 
 <pre><code><span style="color:#38bdf8;"># In a Claude Code session</span>
 <span style="color:#38bdf8;">&gt;</span> /context
 <span style="color:#e6edf3;">  Memory files:</span>
-<span style="color:#22c55e;">  + ~/.claude/AGENTS.md</span>
-<span style="color:#22c55e;">  + ./AGENTS.md</span>
+<span style="color:#22c55e;">  + ~/.claude/CLAUDE.md</span>
+<span style="color:#22c55e;">  + ./CLAUDE.md</span>
 
 <span style="color:#38bdf8;">&gt;</span> /memory
 <span style="color:#e6edf3;">  Project instructions</span>
@@ -714,7 +714,7 @@ Define *what* done looks like. Claude figures out *how*.
 ![](media/diag-09-mental-model.webp){fig-align="center" fig-alt="Four-step mental model for effective Claude Code usage: set context, choose depth, manage context, verify result"}
 
 ::: {.card-green style="font-size:0.75em; margin-top:0.4em;"}
-AGENTS.md for durable instructions · `/plan` for complex tasks · Worktrees for isolation · Subagents for focused side work · Skills for repeatable actions · `/compact` when context fills · Intent + acceptance criteria · Diff + tests before acceptance
+CLAUDE.md for durable instructions · `/plan` for complex tasks · Worktrees for isolation · Subagents for focused side work · Skills for repeatable actions · `/compact` when context fills · Intent + acceptance criteria · Diff + tests before acceptance
 :::
 
 ## Resources {.smaller}
