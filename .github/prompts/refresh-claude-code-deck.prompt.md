@@ -7,8 +7,7 @@ agent: agent
 
 You are updating this repository's Quarto/RevealJS presentation about using
 Claude Code effectively. The deck lives in `index.qmd`; diagrams are generated
-by `media/generate_diagrams.py` and committed as `.webp`. Read `AGENTS.md` and
-`CLAUDE.md` first — they hold the layout rules, colour constants, and diagram
+by `media/generate_diagrams.py` and committed as `.webp`. Read `AGENTS.md` first — it holds the layout rules, colour constants, and diagram
 constraints you must follow.
 
 ## Goal
@@ -24,7 +23,7 @@ Fetch the latest facts before touching anything. Cover at least:
 
 - **Claude Code features** — permission modes, sandboxing, slash commands,
   skills, subagents / background agents / agent teams / workflows, hooks,
-  worktrees, CLAUDE.md loading, and auto memory. Primary source:
+  worktrees, AGENTS.md loading, and auto memory. Primary source:
   <https://code.claude.com/docs/en/> (the `.md` variant of each page is easiest
   to grep, e.g. `https://code.claude.com/docs/en/permission-modes.md`).
 - **Model lineup** — current Opus / Sonnet / Haiku / Fable versions, model IDs,
@@ -60,7 +59,7 @@ Sort every discrepancy into:
 
 Preserve the deck's conventions: source-citation div at the bottom of factual
 slides, `fig-alt` on every image, the existing card/column palette, and the
-principle in `CLAUDE.md` that diagrams and text must not restate each other.
+principle in `AGENTS.md` that diagrams and text must not restate each other.
 
 ### The bar for NEW features
 

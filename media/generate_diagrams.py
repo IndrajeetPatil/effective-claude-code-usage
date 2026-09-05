@@ -234,7 +234,7 @@ def make_04():
     title(ax, 11, 5.8, 'What Fills the Context Window?')
 
     inputs = [
-        (1.40, 3.90, DPUR, PUR, 'CLAUDE.md'),
+        (1.40, 3.90, DPUR, PUR, 'AGENTS.md'),
         (1.40, 3.10, DBLU, BLU, 'Conversation History'),
         (1.40, 2.30, DGRN, GRN, 'File Contents'),
         (1.40, 1.50, DAMB, AMB, 'Tool Outputs'),
@@ -262,21 +262,21 @@ def make_04():
 
 
 # ═══════════════════════════════════════════════════════════════
-# 5 — CLAUDE.md Loading
+# 5 — AGENTS.md Loading
 # ═══════════════════════════════════════════════════════════════
 def make_05():
     # w=11 gives horizontal room so no boxes touch; every merge arrow is vertical
     # so nothing crosses. The project-root -> context arrow drops through the gap
     # between the two child boxes (x=8.0 sits in the 7.80..8.30 clear channel).
     fig, ax = new_fig(11, 7.5)
-    title(ax, 11, 7.5, 'How CLAUDE.md Is Loaded')
+    title(ax, 11, 7.5, 'How AGENTS.md Is Loaded')
 
     box(ax, 5.5, 5.85, 3.2, 0.80, DPUR, 'claude invoked', fs=23, tc=PUR, lw=2.5)
 
-    box(ax, 2.3, 4.35, 3.4, 0.88, DBLU, '~/.claude/CLAUDE.md\n(global)', fs=21, tc=BLU)
-    box(ax, 8.0, 4.35, 3.4, 0.88, DGRN, './CLAUDE.md\n(project root)', fs=21, tc=GRN)
+    box(ax, 2.3, 4.35, 3.4, 0.88, DBLU, '~/.claude/AGENTS.md\n(global)', fs=21, tc=BLU)
+    box(ax, 8.0, 4.35, 3.4, 0.88, DGRN, './AGENTS.md\n(project root)', fs=21, tc=GRN)
 
-    box(ax, 6.35, 2.75, 2.9,  0.88, DAMB, 'Subdirectory\nCLAUDE.md', fs=21, tc=AMB)
+    box(ax, 6.35, 2.75, 2.9,  0.88, DAMB, 'Subdirectory\nAGENTS.md', fs=21, tc=AMB)
     box(ax, 9.55, 2.75, 2.5,  0.88, DBLU, '@import\nsnippets', fs=21, tc=BLU)
 
     box(ax, 5.5, 1.10, 9.0, 0.88, DGRN, 'Instruction Context  (loaded into conversation)',
@@ -369,7 +369,7 @@ def make_09():
     title(ax, 11, 5.2, 'Effective Usage — Mental Model')
 
     steps = [
-        (1.35, DPUR, PUR, '1. Set\ncontext', 'CLAUDE.md current?\n/init if stale'),
+        (1.35, DPUR, PUR, '1. Set\ncontext', 'AGENTS.md current?\n/init if stale'),
         (4.05, DBLU, BLU, '2. Choose\ndepth', 'Direct prompt\n/plan\nsubagents'),
         (6.75, DAMB, AMB, '3. Manage\ncontext', '/context\n/compact\ntrim output'),
         (9.45, DGRN, GRN, '4. Verify\nresult', 'git diff\ntests + lint\nPR review'),
