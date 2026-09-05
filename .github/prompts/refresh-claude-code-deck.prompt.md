@@ -23,7 +23,7 @@ Fetch the latest facts before touching anything. Cover at least:
 
 - **Claude Code features** — permission modes, sandboxing, slash commands,
   skills, subagents / background agents / agent teams / workflows, hooks,
-  worktrees, AGENTS.md loading, and auto memory. Primary source:
+  worktrees, CLAUDE.md loading, and auto memory. Primary source:
   <https://code.claude.com/docs/en/> (the `.md` variant of each page is easiest
   to grep, e.g. `https://code.claude.com/docs/en/permission-modes.md`).
 - **Model lineup** — current Opus / Sonnet / Haiku / Fable versions, model IDs,

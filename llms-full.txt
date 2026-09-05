@@ -21,7 +21,7 @@ The talk is aimed at software developers who want to use Claude Code for complex
 - Choose permission modes deliberately and combine rules with Bash sandboxing for defense in depth.
 - Distinguish built-in commands, reusable skills, and dynamic workflows exposed through the `/` menu.
 - Manage the context window deliberately and avoid filling it with low-signal content.
-- Use AGENTS.md for durable instructions and auto memory for Claude-authored, per-repository learnings.
+- Use CLAUDE.md for durable instructions and auto memory for Claude-authored, per-repository learnings.
 - Apply subagents when parallel exploration or independent subtasks are valuable.
 - Use background agents to hand off independent sessions and monitor them from agent view.
 - Use workflows for deterministic multi-agent orchestration with budget control.
@@ -36,7 +36,7 @@ The talk is aimed at software developers who want to use Claude Code for complex
 
 - Treat Claude Code as an agent that loops through perception, planning, action, observation, and revision.
 - Keep project instructions explicit and close to the codebase.
-- Treat AGENTS.md and auto memory as context, not enforcement; use hooks or permission deny rules for hard guardrails.
+- Treat CLAUDE.md and auto memory as context, not enforcement; use hooks or permission deny rules for hard guardrails.
 - Match the permission mode to the environment; reserve bypass mode for isolated containers or virtual machines.
 - Give agents enough context to make good decisions, but avoid dumping unnecessary context.
 - Prefer validated workflows where commands, tests, linting, and review checks provide feedback.
