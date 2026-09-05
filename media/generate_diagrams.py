@@ -265,29 +265,34 @@ def make_04():
 # 5 — CLAUDE.md Loading
 # ═══════════════════════════════════════════════════════════════
 def make_05():
-    # Increased height so title (at h-0.55) clears the top box
-    fig, ax = new_fig(10, 7.5)
-    title(ax, 9, 7.5, 'How CLAUDE.md Is Loaded')
+    # w=11 gives horizontal room so no boxes touch; every merge arrow is vertical
+    # so nothing crosses. The project-root -> context arrow drops through the gap
+    # between the two child boxes (x=8.0 sits in the 7.80..8.30 clear channel).
+    fig, ax = new_fig(11, 7.5)
+    title(ax, 11, 7.5, 'How CLAUDE.md Is Loaded')
 
-    box(ax, 4.5, 5.75, 3.0, 0.80, DPUR, 'claude invoked', fs=23, tc=PUR, lw=2.5)
+    box(ax, 5.5, 5.85, 3.2, 0.80, DPUR, 'claude invoked', fs=23, tc=PUR, lw=2.5)
 
-    box(ax, 2.0, 4.25, 3.5, 0.88, DBLU, '~/.claude/CLAUDE.md\n(global)', fs=21, tc=BLU)
-    box(ax, 7.0, 4.25, 3.5, 0.88, DGRN, './CLAUDE.md\n(project root)', fs=21, tc=GRN)
+    box(ax, 2.3, 4.35, 3.4, 0.88, DBLU, '~/.claude/CLAUDE.md\n(global)', fs=21, tc=BLU)
+    box(ax, 8.0, 4.35, 3.4, 0.88, DGRN, './CLAUDE.md\n(project root)', fs=21, tc=GRN)
 
-    box(ax, 5.4, 2.65, 3.0, 0.88, DAMB, 'Subdirectory\nCLAUDE.md', fs=21, tc=AMB)
-    box(ax, 8.3, 2.65, 2.85, 0.88, DBLU, '@import\nsnippets', fs=21, tc=BLU)
+    box(ax, 6.35, 2.75, 2.9,  0.88, DAMB, 'Subdirectory\nCLAUDE.md', fs=21, tc=AMB)
+    box(ax, 9.55, 2.75, 2.5,  0.88, DBLU, '@import\nsnippets', fs=21, tc=BLU)
 
-    box(ax, 4.5, 1.05, 6.4, 0.88, DGRN, 'Instruction Context  (loaded into conversation)',
+    box(ax, 5.5, 1.10, 9.0, 0.88, DGRN, 'Instruction Context  (loaded into conversation)',
         fs=21, tc=GRN, lw=2.8)
 
-    arr(ax, 3.35, 5.75, 2.0, 4.69, col=MUT)
-    arr(ax, 5.65, 5.75, 7.0, 4.69, col=MUT)
+    # claude invoked -> the two top-level sources
+    arr(ax, 4.4, 5.45, 2.3, 4.79, col=MUT)
+    arr(ax, 6.6, 5.45, 8.0, 4.79, col=MUT)
 
-    arr(ax, 6.15, 3.81, 5.4, 3.09, col=MUT, lw=1.8)
-    arr(ax, 7.85, 3.81, 8.3, 3.09, col=MUT, lw=1.8)
+    # project root -> its subdirectory files and @imports
+    arr(ax, 7.3, 3.91, 6.35, 3.19, col=MUT, lw=1.8)
+    arr(ax, 8.7, 3.91, 9.55, 3.19, col=MUT, lw=1.8)
 
-    for sx, sy in [(2.0, 3.81), (7.0, 3.81), (5.4, 2.21), (8.3, 2.21)]:
-        arr(ax, sx, sy, 4.5 + (sx - 4.5) * 0.12, 1.49, col=MUT, lw=1.8, ms=14)
+    # every source merges straight down into the instruction context (no crossings)
+    for sx, sy in [(2.3, 3.91), (8.0, 3.91), (6.35, 2.31), (9.55, 2.31)]:
+        arr(ax, sx, sy, sx, 1.54, col=MUT, lw=1.8, ms=14)
 
     save(fig, 'diag-05-claude-md-loading.png')
 
@@ -466,20 +471,19 @@ def make_12():
     box(ax, 5.5, 5.30, 5.0, 0.88, DPUR, 'Workflow Orchestration\n(advanced)',
         fs=22, tc=PUR, lw=2.8)
 
-    # Four capability boxes
+    # Five capability boxes — every one wired to both the script and the results,
+    # so budget control reads as a first-class capability, not a stray box.
     prims = [
-        (1.55, 3.60, DGRN, GRN, 'Subagents\nmany workers'),
-        (4.10, 3.60, DBLU, BLU, 'Parallelism\nfan-out'),
-        (6.60, 3.60, DAMB, AMB, 'Progress\ntracking'),
-        (9.15, 3.60, DPUR, PUR, 'Structured\noutput'),
+        (1.26, 3.60, DGRN, GRN, 'Subagents\nmany workers'),
+        (3.38, 3.60, DBLU, BLU, 'Parallelism\nfan-out'),
+        (5.50, 3.60, DAMB, AMB, 'Progress\ntracking'),
+        (7.62, 3.60, DPUR, PUR, 'Structured\noutput'),
+        (9.74, 3.60, DRED, RED, 'Budget\ncontrol'),
     ]
-    bw, bh = 2.10, 1.05
+    bw, bh = 1.95, 1.05
     for px, py, pfc, ptc, plbl in prims:
-        box(ax, px, py, bw, bh, pfc, plbl, fs=19, tc=ptc, lw=2.0)
+        box(ax, px, py, bw, bh, pfc, plbl, fs=18, tc=ptc, lw=2.0)
         arr(ax, 5.5 + (px - 5.5) * 0.42, 4.86, px, 4.13, col=MUT, lw=1.8, ms=14)
-
-    # Budget annotation on the side
-    box(ax, 9.80, 5.30, 2.05, 0.88, DAMB, 'Budget\ncontrol', fs=20, tc=AMB, lw=2.0)
 
     # Structured results at bottom
     box(ax, 5.5, 1.35, 5.5, 0.88, DGRN, 'Reviewable Results',
