@@ -3,6 +3,8 @@ format:
   revealjs:
     css: style.css
     theme: black
+    # Use CSS image sizing; RevealJS stretching can collapse lazy images in scroll view.
+    auto-stretch: false
     width: 1280
     height: 720
     margin: 0.08
