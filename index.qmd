@@ -55,7 +55,7 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 ::: {.column width="38%"}
 
 ::: {.terminal-box}
-<pre><code tabindex="0"><span style="color:#38bdf8;">$</span> claude
+<pre><code><span style="color:#38bdf8;">$</span> claude
 <span style="color:#22c55e;">✓</span> Claude Code
 
 <span style="color:#8b949e;"># Your AI pair programmer</span>
@@ -134,7 +134,7 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 ::: {.column width="50%"}
 
 ::: {.terminal-box}
-<pre><code tabindex="0"><span style="color:#38bdf8;">$</span> claude "add unit tests
+<pre><code><span style="color:#38bdf8;">$</span> claude "add unit tests
   for src/auth.ts"
 
 <span style="color:#22c55e;">●</span> Reading src/auth.ts
@@ -327,7 +327,7 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 ::: {.column width="60%"}
 
 ::: {.terminal-box}
-<pre><code tabindex="0"><span style="color:#38bdf8;"># My Project CLAUDE.md</span>
+<pre><code><span style="color:#38bdf8;"># My Project CLAUDE.md</span>
 
 <span style="color:#a78bfa;">## Stack</span>
 <span style="color:#e6edf3;">TypeScript monorepo, Node 22, pnpm</span>
@@ -376,7 +376,7 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 ::: {.column width="52%"}
 
 ::: {.terminal-box}
-<pre><code tabindex="0"><span style="color:#38bdf8;"># .claude/settings.json</span>
+<pre><code><span style="color:#38bdf8;"># .claude/settings.json</span>
 <span style="color:#e6edf3;">{</span>
 <span style="color:#e6edf3;">  </span><span style="color:#a78bfa;">"hooks"</span><span style="color:#e6edf3;">: {</span>
 <span style="color:#e6edf3;">    </span><span style="color:#a78bfa;">"PostToolUse"</span><span style="color:#e6edf3;">: [{</span>
@@ -438,7 +438,7 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 ::: {.column width="50%"}
 
 ::: {.terminal-box}
-<pre><code tabindex="0"><span style="color:#38bdf8;"># In a Claude Code session</span>
+<pre><code><span style="color:#38bdf8;"># In a Claude Code session</span>
 <span style="color:#38bdf8;">&gt;</span> /context
 <span style="color:#e6edf3;">  Memory files:</span>
 <span style="color:#22c55e;">  + ~/.claude/CLAUDE.md</span>
@@ -751,7 +751,7 @@ Other [slide decks](https://www.indrapatil.com/presentations/) on software engin
 <br>
 
 ::: {.terminal-box style="max-width: 400px; margin: 0 auto;"}
-<pre><code tabindex="0"><span style="color:#38bdf8;">$</span> claude --help
+<pre><code><span style="color:#38bdf8;">$</span> claude --help
 <span style="color:#22c55e;">Claude Code</span> — AI pair programmer
 <span style="color:#8b949e;">Use it well. Ship great software.</span>
 </code></pre>
