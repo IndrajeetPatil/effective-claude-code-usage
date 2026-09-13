@@ -355,10 +355,16 @@
   width: 100%;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  overflow-x: hidden;
   line-height: 1.24;
   font-family: var(--font-mono) !important;
   font-size: 1em !important;
+}
+
+/* Wrapped examples grow naturally inside the rounded terminal container. */
+.reveal .terminal-box pre,
+.reveal .terminal-box code {
+  overflow: visible;
+  max-height: none;
 }
 
 .terminal-box pre code {
