@@ -46,7 +46,7 @@ Indrajeet Patil &nbsp;·&nbsp; 2026
 :::
 
 ::: {style="font-size: 0.65em; color: #8b949e; margin-top: 2em;"}
-Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-usage/)
+Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-usage/){style="text-decoration: underline;"}
 :::
 
 :::
