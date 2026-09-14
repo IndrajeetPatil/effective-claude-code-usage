@@ -115,12 +115,10 @@
 /* ── Links ────────────────────────────────────────────────── */
 .reveal a {
   color: var(--accent-blue) !important;
-  text-decoration: underline;
 }
 
 .reveal a:hover {
   color: var(--accent-green) !important;
-  text-decoration: underline;
 }
 
 /* ── Progress Bar ─────────────────────────────────────────── */

@@ -9,6 +9,18 @@ format:
     height: 720
     margin: 0.08
     transition: fade
+    revealjs-plugins:
+      - a11y
+    revealjs-a11y:
+      # 0.2.3's menus introduce ARIA failures; retain our slide-menu handling.
+      slide-menu-a11y: false
+      menu: false
+      # Use the extension's core accessibility fixes without extra UI/shortcuts.
+      font-size-controls: false
+      font-selection: false
+      text-spacing: false
+      transcript: false
+      slide-change-cue: false
     slide-number: true
     code-line-numbers: false
     preview-links: auto
