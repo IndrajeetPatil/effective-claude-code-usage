@@ -1,5 +1,7 @@
 # Effective Claude Code Usage
 
+[![Build and Deploy Presentation](https://github.com/IndrajeetPatil/effective-claude-code-usage/actions/workflows/build-presentation.yaml/badge.svg)](https://github.com/IndrajeetPatil/effective-claude-code-usage/actions/workflows/build-presentation.yaml)
+
 Slides summarising patterns for using [Claude Code](https://code.claude.com/docs/en/overview) effectively as a CLI agent — from tools, skills, and workflows to subagents, planning mode, and context management.
 
 The slides can be seen here:<br>
@@ -52,7 +54,10 @@ underlines, reduced motion, and screen-reader announcements.
 Run `just install` again after `just clean`, which removes installed extensions.
 
 The `accessibility.html` helper still handles scrollable code, slide-menu focus,
-and vertical-slide semantics. Unused tabset handling has been removed.
+vertical-slide semantics, and tabset keyboard navigation. This deck has no
+tabsets today, so that last part is inert here; the file is deliberately kept
+identical across the presentation fleet, with the copies synced by hand, so it
+is not trimmed per deck.
 The extension's slide-menu patch and accessibility settings panel are disabled
 as in the reference deck: version 0.2.3 introduces ARIA and contrast failures in
 those components.

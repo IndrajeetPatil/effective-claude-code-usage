@@ -31,6 +31,9 @@ format:
     include-after-body: accessibility.html
     link-external-newwindow: true
     footer: ""
+execute:
+  echo: true
+  eval: false
 keywords: ["claude-code", "ai-agents", "cli", "anthropic", "software-engineering", "workflows", "skills", "multi-platform"]
 description-meta: "A comprehensive guide to using Claude Code effectively as a CLI agent. Learn about tools, skills, workflows, context management, subagents, planning mode, and more."
 license: "CC0 1.0 Universal"
@@ -42,6 +45,7 @@ dir: "ltr"
 image: "media/social-media-card.webp"
 image-alt: "Preview image for Effective Claude Code Usage presentation"
 canonical-url: "https://www.indrapatil.com/effective-claude-code-usage/"
+jupyter: python3
 ---
 
 ## Effective Claude Code Usage {style="margin-top: 1.2em;"}

@@ -64,8 +64,11 @@ Check which set is present to know which language context applies.
   Inspect all slides, revealed fragments, and tab panels in both presentation and scroll view; the initial report alone does not exercise every state.
   The `a11y` extension supplies zoom, focus indicators, link underlines, reduced motion,
   slide isolation, and screen-reader announcements. Keep `accessibility.html` for
-  code scrolling, menu focus, and vertical-slide semantics.
-  This deck has no tabsets; reassess keyboard handling if adding any.
+  code scrolling, menu focus, vertical-slide semantics, and tabset keyboard navigation.
+  This deck has no tabsets today, so the tabset branch of that helper is inert here, but
+  the code stays: `accessibility.html` is kept identical across the fleet by hand.
+  Never trim it for this deck; add tabsets freely
+  and the arrow/Home/End handling already works.
   Disable the extension's slide-menu patch and settings menu as in the reference
   deck: version 0.2.3 introduces ARIA and contrast failures in those components.
 - **Icons.** Icons use lightweight HTML spans backed by only the required SVG path data in the custom stylesheet; no icon-font or Quarto icon extension is needed.
@@ -81,14 +84,17 @@ All commands use [just](https://github.com/casey/just). The recipes are the same
 
 ```bash
 just install   # Install language dependencies and the latest a11y extension
+just sync      # Alias for install
+just update    # Update language dependencies
 just render    # Render index.qmd to _site/
 just preview   # Live-reload dev server
 just open      # Alias for preview (live-reload dev server over localhost)
 just clean     # Remove build artifacts
-just check     # Verify Quarto setup
-just update    # Update language dependencies
+just check     # Verify Quarto and Python setup
 just axe       # Preview with the axe accessibility checker enabled
 ```
+
+This deck renders with Quarto. Python dependencies are managed with [uv](https://docs.astral.sh/uv/) (`pyproject.toml` + `uv.lock`); CI installs them with `uv sync --frozen`. Slides live in `index.qmd`.
 
 Python decks wrap Quarto in `uv run`, which syncs the environment against `uv.lock` and puts `.venv/bin` on `PATH` so Quarto discovers the project interpreter. R decks call `quarto render` directly (R is discovered automatically). See the `justfile` for exact commands.
 
