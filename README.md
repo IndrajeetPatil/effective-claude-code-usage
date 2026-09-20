@@ -55,9 +55,9 @@ Run `just install` again after `just clean`, which removes installed extensions.
 
 The `accessibility.html` helper still handles scrollable code, slide-menu focus,
 vertical-slide semantics, and tabset keyboard navigation. This deck has no
-tabsets today, so that last part is inert here; the file is deliberately
-byte-identical across the presentation fleet and is verified by the
-`check-template-drift` workflow, so it is not trimmed per deck.
+tabsets today, so that last part is inert here; the file is deliberately kept
+identical across the presentation fleet, with the copies synced by hand, so it
+is not trimmed per deck.
 The extension's slide-menu patch and accessibility settings panel are disabled
 as in the reference deck: version 0.2.3 introduces ARIA and contrast failures in
 those components.
