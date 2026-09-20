@@ -1,5 +1,7 @@
 # Effective Claude Code Usage
 
+[![Build and Deploy Presentation](https://github.com/IndrajeetPatil/effective-claude-code-usage/actions/workflows/build-presentation.yaml/badge.svg)](https://github.com/IndrajeetPatil/effective-claude-code-usage/actions/workflows/build-presentation.yaml)
+
 Slides summarising patterns for using [Claude Code](https://code.claude.com/docs/en/overview) effectively as a CLI agent — from tools, skills, and workflows to subagents, planning mode, and context management.
 
 The slides can be seen here:<br>
