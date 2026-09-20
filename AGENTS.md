@@ -64,8 +64,11 @@ Check which set is present to know which language context applies.
   Inspect all slides, revealed fragments, and tab panels in both presentation and scroll view; the initial report alone does not exercise every state.
   The `a11y` extension supplies zoom, focus indicators, link underlines, reduced motion,
   slide isolation, and screen-reader announcements. Keep `accessibility.html` for
-  code scrolling, menu focus, and vertical-slide semantics.
-  This deck has no tabsets; reassess keyboard handling if adding any.
+  code scrolling, menu focus, vertical-slide semantics, and tabset keyboard navigation.
+  This deck has no tabsets today, so the tabset branch of that helper is inert here, but
+  the code stays: `accessibility.html` is byte-identical across the fleet and
+  `check-template-drift.yaml` enforces that. Never trim it for this deck; add tabsets freely
+  and the arrow/Home/End handling already works.
   Disable the extension's slide-menu patch and settings menu as in the reference
   deck: version 0.2.3 introduces ARIA and contrast failures in those components.
 - **Icons.** Icons use lightweight HTML spans backed by only the required SVG path data in the custom stylesheet; no icon-font or Quarto icon extension is needed.
