@@ -4,12 +4,15 @@ Font: Caveat (Google Fonts) — same family Excalidraw uses as its Virgil fallba
 Run from the project root: uv run python media/generate_diagrams.py
 """
 
+import io
+import os
+
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch, Polygon
 from matplotlib import font_manager
-import os
+from matplotlib.patches import FancyBboxPatch, Polygon
+from PIL import Image, ImageChops
 
 # ── Register Caveat font ──────────────────────────────────────
 _here = os.path.dirname(os.path.abspath(__file__))
@@ -18,14 +21,22 @@ plt.rcParams['font.family'] = 'Caveat'
 
 # ── Colour palette ────────────────────────────────────────────
 BG   = '#0d1117'
-GRN  = '#22c55e'; DGRN = '#14532d'
-BLU  = '#38bdf8'; DBLU = '#0c2a3a'
-AMB  = '#f59e0b'; DAMB = '#3a2400'
-PUR  = '#a78bfa'; DPUR = '#2d1b69'
-RED  = '#f87171'; DRED = '#450a0a'
+GRN  = '#22c55e'
+BLU  = '#38bdf8'
+AMB  = '#f59e0b'
+PUR  = '#a78bfa'
+RED  = '#f87171'
 TXT  = '#e6edf3'
 MUT  = '#a8b3c1'
 CARD = '#1c2128'
+
+
+def tint(accent, amount=0.16):
+    """Blend an accent into the background; dark fills keep accent text above WCAG AA."""
+    a = [int(accent[i:i + 2], 16) for i in (1, 3, 5)]
+    b = [int(BG[i:i + 2], 16) for i in (1, 3, 5)]
+    return '#' + ''.join(f'{round(b[k] + (a[k] - b[k]) * amount):02x}' for k in range(3))
+
 
 DPI = 160
 
@@ -33,6 +44,7 @@ DPI = 160
 
 def new_fig(w, h):
     fig, ax = plt.subplots(figsize=(w, h))
+    fig.subplots_adjust(0, 0, 1, 1)
     fig.patch.set_facecolor(BG)
     ax.set_facecolor(BG)
     ax.set_xlim(0, w)
@@ -41,465 +53,317 @@ def new_fig(w, h):
     return fig, ax
 
 
-def box(ax, x, y, w, h, fc, label, fs=23, tc='auto', lw=2.2, ec=None):
-    """Rounded rectangle with centred label."""
-    if tc == 'auto':
-        tc = BG if fc not in (CARD, BG, DGRN, DBLU, DAMB, DPUR, DRED) else TXT
-    if ec is None:
-        ec = TXT
+def box(ax, x, y, w, h, col, label, fs=22, sub='', sfs=17, fc=None, lw=2.0, ls='-'):
+    """Rounded box: accent border, tinted fill, accent label, optional muted sub-label."""
     p = FancyBboxPatch((x - w/2, y - h/2), w, h,
-                        boxstyle='round,pad=0.04',
-                        facecolor=fc, edgecolor=ec,
-                        linewidth=lw, zorder=3)
+                       boxstyle='round,pad=0,rounding_size=0.12',
+                       facecolor=tint(col) if fc is None else fc, edgecolor=col,
+                       linewidth=lw, linestyle=ls, zorder=3)
     ax.add_patch(p)
-    ax.text(x, y, label, ha='center', va='center',
-            fontsize=fs, color=tc, fontweight='bold',
-            zorder=4, linespacing=1.2)
+    if sub:
+        ax.text(x, y + h * 0.17, label, ha='center', va='center',
+                fontsize=fs, color=col, zorder=4, linespacing=1.1)
+        ax.text(x, y - h * 0.22, sub, ha='center', va='center',
+                fontsize=sfs, color=TXT, zorder=4, linespacing=1.1)
+    else:
+        ax.text(x, y, label, ha='center', va='center',
+                fontsize=fs, color=col, zorder=4, linespacing=1.1)
 
 
-def diamond(ax, x, y, w, h, fc, label, fs=22, tc='auto', lw=2.2):
+def diamond(ax, x, y, w, h, col, label, fs=20):
     """Diamond decision shape with centred label."""
-    if tc == 'auto':
-        tc = BG
     verts = [(x, y + h/2), (x + w/2, y), (x, y - h/2), (x - w/2, y)]
-    poly = Polygon(verts, closed=True, facecolor=fc, edgecolor=TXT,
-                   linewidth=lw, zorder=3)
-    ax.add_patch(poly)
-    ax.text(x, y, label, ha='center', va='center',
-            fontsize=fs, color=tc, fontweight='bold',
-            zorder=4, linespacing=1.2)
+    ax.add_patch(Polygon(verts, closed=True, facecolor=tint(col), edgecolor=col,
+                         linewidth=2.0, zorder=3))
+    ax.text(x, y, label, ha='center', va='center', fontsize=fs, color=col,
+            zorder=4)
 
 
-def arr(ax, x1, y1, x2, y2, col=MUT, lw=2.2, rad=0.0, ms=18):
+def arr(ax, x1, y1, x2, y2, col=MUT, lw=2.0, rad=0.0, ms=16):
     ax.annotate('', xy=(x2, y2), xytext=(x1, y1),
-                arrowprops=dict(arrowstyle='->', color=col, lw=lw,
-                                mutation_scale=ms,
+                arrowprops=dict(arrowstyle='-|>', color=col, lw=lw,
+                                mutation_scale=ms, shrinkA=0, shrinkB=0,
                                 connectionstyle=f'arc3,rad={rad}'),
                 zorder=2)
 
 
-def lbl(ax, x, y, text, col=MUT, fs=18):
-    ax.text(x, y, text, ha='center', va='center',
-            fontsize=fs, color=col, style='italic', zorder=5)
+def line(ax, xs, ys, col=MUT, lw=2.0, ls='-'):
+    ax.plot(xs, ys, color=col, lw=lw, ls=ls, zorder=2, solid_capstyle='round')
 
 
-def group_bg(ax, x, y, w, h, fc, ec, alpha=0.12, lw=1.5, label='', lfs=21):
-    """Semi-transparent group background. Label sits inside at the top edge."""
-    r = FancyBboxPatch((x - w/2, y - h/2), w, h,
-                        boxstyle='round,pad=0.1',
-                        facecolor=fc, edgecolor=ec,
-                        linewidth=lw, alpha=alpha, zorder=1)
-    ax.add_patch(r)
-    if label:
-        ax.text(x, y + h/2 - 0.18, label, ha='center', va='top',
-                fontsize=lfs, color=ec, fontweight='bold', alpha=0.9, zorder=2)
+def lbl(ax, x, y, text, col=MUT, fs=18, ha='center', **kw):
+    ax.text(x, y, text, ha=ha, va='center', fontsize=fs, color=col,
+            style='italic', zorder=5, **kw)
 
 
-def title(ax, w, h, text, col=GRN, fs=32, y_off=0.55):
-    """Slide headings carry titles; diagrams should focus on the model."""
-    return
+def heading(ax, x, y, text, col, fs=21, ha='center'):
+    ax.text(x, y, text, ha=ha, va='center', fontsize=fs, color=col, zorder=5)
+
+
+def bracket(ax, x1, x2, y, text, col=MUT, fs=18):
+    """Horizontal bracket above a span, with its label above it."""
+    line(ax, [x1, x1, x2, x2], [y - 0.12, y, y, y - 0.12], col=col, lw=1.6)
+    lbl(ax, (x1 + x2) / 2, y + 0.22, text, col=col, fs=fs)
 
 
 def save(fig, name):
-    path = os.path.join(_here, name)
-    plt.tight_layout(pad=0.2)
-    plt.savefig(path, dpi=DPI, bbox_inches='tight', pad_inches=0.18, facecolor=BG)
+    """Render, crop to the drawn content, and write a WebP next to this script."""
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', dpi=DPI, facecolor=BG)
     plt.close(fig)
-    print(f'  ok  {name}')
+    im = Image.open(buf).convert('RGB')
+    diff = ImageChops.difference(im, Image.new('RGB', im.size, BG)).convert('L')
+    left, top, right, bottom = diff.point(lambda p: 255 if p > 10 else 0).getbbox()
+    pad = int(0.12 * DPI)
+    im = im.crop((max(left - pad, 0), max(top - pad, 0),
+                  min(right + pad, im.width), min(bottom + pad, im.height)))
+    im.save(os.path.join(_here, name), 'WEBP', quality=90, method=6)
+    print(f'  ok  {name}  {im.width}x{im.height}')
 
 
 # ═══════════════════════════════════════════════════════════════
 # 1 — Intelligence Spectrum
 # ═══════════════════════════════════════════════════════════════
 def make_01():
-    fig, ax = new_fig(11, 6.0)
-    title(ax, 11, 6.0, 'Intelligence Spectrum')
+    fig, ax = new_fig(11, 4.7)
 
-    # Capability arrow — in the band between title and column headers
-    ax.annotate('', xy=(10.6, 4.78), xytext=(0.4, 4.78),
-                arrowprops=dict(arrowstyle='->', color=MUT, lw=2.0,
-                                mutation_scale=18, connectionstyle='arc3,rad=0.0'),
-                zorder=2)
-    ax.text(5.5, 4.56, 'increasing capability  &  autonomy',
-            ha='center', va='center', fontsize=18, color=MUT,
-            style='italic', zorder=5)
+    arr(ax, 0.3, 4.45, 10.7, 4.45, col=MUT, lw=1.8)
+    lbl(ax, 5.5, 4.18, 'more autonomy', fs=19)
 
-    # Column headers as standalone text — positioned ABOVE the group rects,
-    # well clear of both the capability arrow and the group boxes
-    col_headers = [
-        (1.85, MUT,  'Tab Completion'),
-        (5.50, BLU,  'Chatbot (LLM)'),
-        (9.15, GRN,  'Agent (Claude Code)'),
+    cols = [
+        (1.85, MUT, 'Tab completion', ['Predicts next tokens', 'Sees the open file', 'You write the code']),
+        (5.50, BLU, 'Chatbot',        ['Answers a prompt', 'Sees what you paste', 'You run the code']),
+        (9.15, GRN, 'Agent (Claude Code)', ['Pursues a goal', 'Reads the whole repo', 'Runs and checks its work']),
     ]
-    for hx, hc, ht in col_headers:
-        ax.text(hx, 4.18, ht, ha='center', va='center',
-                fontsize=20, color=hc, fontweight='bold', zorder=5)
+    for x, col, head, items in cols:
+        heading(ax, x, 3.68, head, col, fs=24)
+        ax.add_patch(FancyBboxPatch((x - 1.7, 0.2), 3.4, 3.05,
+                                    boxstyle='round,pad=0,rounding_size=0.15',
+                                    facecolor=tint(col, 0.06), edgecolor=tint(col, 0.45),
+                                    linewidth=1.4, zorder=1))
+        for y, item in zip([2.7, 1.73, 0.76], items):
+            box(ax, x, y, 3.0, 0.72, col, item, fs=21)
 
-    # Group backgrounds WITHOUT embedded labels (labels are drawn above)
-    group_bg(ax, 1.85, 2.20, 3.2, 3.0, '#8b949e', '#8b949e', alpha=0.14)
-    group_bg(ax, 5.50, 2.20, 3.2, 3.0, DBLU,      BLU,       alpha=0.14)
-    group_bg(ax, 9.15, 2.20, 3.2, 3.0, DGRN,      GRN,       alpha=0.14)
-
-    # Tab Completion boxes
-    box(ax, 1.85, 2.85, 2.65, 0.85, '#21262d', 'Predict next token',   fs=21, tc=MUT, ec='#30363d')
-    box(ax, 1.85, 1.70, 2.65, 0.85, '#21262d', 'No context\nor world state', fs=21, tc=MUT, ec='#30363d')
-
-    # Chatbot boxes
-    box(ax, 5.50, 2.85, 2.65, 0.85, DBLU, 'Understand prompt', fs=21, tc=BLU)
-    box(ax, 5.50, 1.70, 2.65, 0.85, DBLU, 'One-shot response', fs=21, tc=BLU)
-
-    # Agent boxes (3) — enough internal room since groups have no embedded label
-    box(ax, 9.15, 3.08, 2.65, 0.78, DGRN, 'Perceive context', fs=20, tc=GRN)
-    box(ax, 9.15, 2.20, 2.65, 0.78, DGRN, 'Plan & use tools', fs=20, tc=GRN)
-    box(ax, 9.15, 1.32, 2.65, 0.78, DGRN, 'Loop until done',  fs=20, tc=GRN)
-
-    save(fig, 'diag-01-intelligence-spectrum.png')
+    save(fig, 'diag-01-intelligence-spectrum.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
 # 2 — ReAct Agent Loop
 # ═══════════════════════════════════════════════════════════════
 def make_02():
-    fig, ax = new_fig(11, 5.2)
-    title(ax, 11, 5.2, 'The ReAct Agent Loop')
+    fig, ax = new_fig(11, 3.4)
+    y, h = 2.25, 1.2
 
-    nodes = [
-        (0.95, 2.80, DPUR, PUR, 'New\nTask'),
-        (2.65, 2.80, DBLU, BLU, 'Perceive\ncontext'),
-        (4.35, 2.80, DGRN, GRN, 'Think\nreason'),
-        (6.05, 2.80, DAMB, AMB, 'Act\nuse tool'),
-        (7.75, 2.80, DBLU, BLU, 'Observe\noutput'),
-    ]
-    bw, bh = 1.45, 1.05
-    for x, y, fc, tc, lbl_text in nodes:
-        box(ax, x, y, bw, bh, fc, lbl_text, fs=22, tc=tc)
+    box(ax, 0.75, y, 1.2, h, PUR, 'Task', fs=23)
+    box(ax, 2.75, y, 1.8, h, BLU, 'Think', sub='choose next step')
+    box(ax, 4.95, y, 1.8, h, AMB, 'Act', sub='call a tool')
+    box(ax, 7.15, y, 1.8, h, GRN, 'Observe', sub='read the result')
+    diamond(ax, 8.95, y, 1.25, 1.25, TXT, 'Done?')
+    box(ax, 10.45, y, 1.0, h, GRN, 'Result', fs=21)
 
-    for i in range(len(nodes) - 1):
-        arr(ax, nodes[i][0] + bw/2, 2.80, nodes[i+1][0] - bw/2, 2.80, col=TXT)
+    for x1, x2 in [(1.35, 1.85), (3.65, 4.05), (5.85, 6.25), (8.05, 8.32)]:
+        arr(ax, x1, y, x2, y, col=TXT)
+    arr(ax, 9.575, y, 9.95, y, col=GRN)
+    lbl(ax, 9.76, y + 0.32, 'yes', col=GRN, fs=18)
 
-    # Loop-back
-    loop_y = 1.50
-    ax.plot([4.35, 4.35], [loop_y, 2.27], color=MUT, lw=2.0, zorder=2)
-    ax.plot([7.75, 7.75], [loop_y, 2.27], color=MUT, lw=2.0, zorder=2)
-    ax.plot([4.35, 7.75], [loop_y, loop_y], color=MUT, lw=2.0, zorder=2)
-    ax.annotate('', xy=(4.35, 2.27), xytext=(4.35, loop_y + 0.01),
-                arrowprops=dict(arrowstyle='->', color=MUT, lw=2.0, mutation_scale=15),
-                zorder=2)
-    lbl(ax, 6.05, 1.18, 'not done — loop back', col=MUT, fs=18)
+    loop_y = 0.75
+    line(ax, [8.95, 8.95], [y - 0.625, loop_y])
+    line(ax, [8.95, 2.75], [loop_y, loop_y])
+    arr(ax, 2.75, loop_y, 2.75, y - h/2)
+    lbl(ax, 5.85, loop_y - 0.3, 'no: loop again, often many tool calls per turn', fs=18)
 
-    # Done exit
-    arr(ax, 8.48, 2.80, 8.75, 2.80, col=GRN, lw=2.2)
-    box(ax, 9.95, 2.80, 1.70, 0.95, DGRN, 'Return\nresult', fs=22, tc=GRN)
-
-    save(fig, 'diag-02-react-loop.png')
+    save(fig, 'diag-02-react-loop.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
-# 3 — Tool Ecosystem
-# ═══════════════════════════════════════════════════════════════
-def make_03():
-    fig, ax = new_fig(11, 6.8)
-    title(ax, 11, 6.8, 'Tool Ecosystem')
-
-    cx, cy = 5.5, 2.80
-    box(ax, cx, cy, 2.1, 1.15, DGRN, 'Claude\nCode', fs=26, tc=GRN, lw=2.8)
-
-    tools = [
-        (1.55, 4.10, DBLU, BLU, 'File I/O',  'Read · Write\nEdit · Glob'),
-        (1.55, 1.50, DAMB, AMB, 'Shell',      'Bash · any\nterminal cmd'),
-        (5.50, 4.75, DPUR, PUR, 'Search',     'Grep · WebSearch\nWebFetch'),
-        (9.45, 4.10, DRED, RED, 'MCP',        'GitHub · Jira\nCustom servers'),
-        (9.45, 1.50, DGRN, GRN, 'Agents',     'Task · Workflow\nExplore · Plan'),
-    ]
-    for tx, ty, fc, tc, t_title, t_sub in tools:
-        box(ax, tx, ty + 0.22, 2.65, 0.75, fc, t_title, fs=22, tc=tc, lw=2.0)
-        ax.text(tx, ty - 0.42, t_sub, ha='center', va='center',
-                fontsize=18, color=MUT, linespacing=1.2, zorder=4)
-        dx, dy = cx - tx, cy - ty
-        dist = (dx**2 + dy**2)**0.5
-        sx = tx + (dx/dist) * 1.40
-        sy = ty + (dy/dist) * 0.62
-        ex = cx - (dx/dist) * 1.10
-        ey = cy - (dy/dist) * 0.60
-        arr(ax, sx, sy, ex, ey, col=MUT, lw=1.8, ms=14)
-
-    save(fig, 'diag-03-tool-ecosystem.png')
-
-
-# ═══════════════════════════════════════════════════════════════
-# 4 — Context Window
+# 4 — Context Window (what /context reports)
 # ═══════════════════════════════════════════════════════════════
 def make_04():
-    fig, ax = new_fig(11, 5.8)
-    title(ax, 11, 5.8, 'What Fills the Context Window?')
+    fig, ax = new_fig(11, 4.4)
+    x0, bh = 2.25, 0.95
 
-    inputs = [
-        (1.40, 3.90, DPUR, PUR, 'CLAUDE.md'),
-        (1.40, 3.10, DBLU, BLU, 'Conversation History'),
-        (1.40, 2.30, DGRN, GRN, 'File Contents'),
-        (1.40, 1.50, DAMB, AMB, 'Tool Outputs'),
-        (1.40, 0.70, DRED, RED, 'Images'),
-    ]
-    iw, ih = 2.65, 0.68
-    for ix, iy, fc, tc, ilbl in inputs:
-        box(ax, ix, iy, iw, ih, fc, ilbl, fs=21, tc=tc, lw=2.0)
+    def bar(y, segments):
+        x = x0
+        for width, col, text in segments:
+            dashed = col is None
+            box(ax, x + width/2, y, width - 0.06, bh, MUT if dashed else col, text,
+                fs=17, fc=BG if dashed else None, lw=1.6, ls='--' if dashed else '-')
+            x += width
+        return x
 
-    # Context Window
-    cwx, cwy = 6.30, 2.30
-    box(ax, cwx, cwy, 2.80, 4.00, DGRN, 'Context\nWindow\nmodel-dependent\nbudget',
-        fs=21, tc=GRN, lw=2.8)
+    startup = [(1.0, MUT, 'System\nprompt'), (1.3, PUR, 'CLAUDE.md\n+ memory'),
+               (1.3, BLU, 'Skill + MCP\nindex')]
+    work = [(1.2, GRN, 'Prompts\n+ replies'), (1.3, AMB, 'File reads'),
+            (1.45, RED, 'Tool output')]
 
-    # Model
-    box(ax, 10.05, cwy, 1.80, 0.95, DBLU, 'Model\nreasoning', fs=21, tc=BLU, lw=2.0)
+    heading(ax, 2.0, 2.65, 'Mid-session', TXT, fs=20, ha='right')
+    bar(2.65, startup + work + [(1.15, None, 'free')])
+    s_end = x0 + sum(w for w, *_ in startup)
+    w_end = s_end + sum(w for w, *_ in work)
+    bracket(ax, x0 + 0.03, s_end - 0.03, 3.3, 'loaded at startup')
+    bracket(ax, s_end + 0.03, w_end - 0.03, 3.3, 'grows every turn')
 
-    for ix, iy, *_ in inputs:
-        arr(ax, ix + iw/2, iy, cwx - 1.42, cwy + (iy - cwy) * 0.50,
-            col=MUT, lw=1.8, ms=14)
+    heading(ax, 2.0, 0.85, 'After /compact', TXT, fs=20, ha='right')
+    bar(0.85, startup + [(1.25, GRN, 'Summary'), (3.85, None, 'free')])
+    lbl(ax, s_end + 0.62, 1.62, 'history replaced by a summary', fs=18, ha='left')
 
-    arr(ax, cwx + 1.42, cwy, 10.05 - 0.90, cwy, col=GRN, lw=2.2)
-
-    save(fig, 'diag-04-context-window.png')
+    save(fig, 'diag-04-context-window.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
 # 5 — CLAUDE.md Loading
 # ═══════════════════════════════════════════════════════════════
 def make_05():
-    # w=11 gives horizontal room so no boxes touch; every merge arrow is vertical
-    # so nothing crosses. The project-root -> context arrow drops through the gap
-    # between the two child boxes (x=8.0 sits in the 7.80..8.30 clear channel).
-    fig, ax = new_fig(11, 7.5)
-    title(ax, 11, 7.5, 'How CLAUDE.md Is Loaded')
+    fig, ax = new_fig(11, 4.7)
 
-    box(ax, 5.5, 5.85, 3.2, 0.80, DPUR, 'claude invoked', fs=23, tc=PUR, lw=2.5)
+    heading(ax, 0.35, 4.45, 'At launch: concatenated, broadest first', GRN, fs=21, ha='left')
+    launch = [
+        (1.45, MUT, 'Managed policy', 'organisation'),
+        (4.15, BLU, '~/.claude/CLAUDE.md', 'you, every project'),
+        (6.85, GRN, './CLAUDE.md', 'team, plus parent dirs'),
+        (9.55, PUR, 'CLAUDE.local.md', 'you, this project'),
+    ]
+    for x, col, head, sub in launch:
+        box(ax, x, 3.5, 2.3, 1.05, col, head, fs=19, sub=sub, sfs=17)
+    for x1, x2 in [(2.6, 3.0), (5.3, 5.7), (8.0, 8.4)]:
+        arr(ax, x1 + 0.02, 3.5, x2 - 0.02, 3.5, col=TXT)
+    lbl(ax, 5.5, 2.68, '@path imports expand inline at launch (up to four hops)', fs=18)
 
-    box(ax, 2.3, 4.35, 3.4, 0.88, DBLU, '~/.claude/CLAUDE.md\n(global)', fs=21, tc=BLU)
-    box(ax, 8.0, 4.35, 3.4, 0.88, DGRN, './CLAUDE.md\n(project root)', fs=21, tc=GRN)
+    heading(ax, 0.35, 2.0, 'On demand: when Claude works with matching files', AMB, fs=21, ha='left')
+    box(ax, 3.05, 1.0, 4.4, 1.05, AMB, 'subdir/CLAUDE.md', fs=19,
+        sub='read or edit a file in that folder', sfs=17)
+    box(ax, 7.95, 1.0, 4.4, 1.05, AMB, '.claude/rules/*.md  with  paths:', fs=19,
+        sub='touch a file matching the glob', sfs=17)
 
-    box(ax, 6.35, 2.75, 2.9,  0.88, DAMB, 'Subdirectory\nCLAUDE.md', fs=21, tc=AMB)
-    box(ax, 9.55, 2.75, 2.5,  0.88, DBLU, '@import\nsnippets', fs=21, tc=BLU)
-
-    box(ax, 5.5, 1.10, 9.0, 0.88, DGRN, 'Instruction Context  (loaded into conversation)',
-        fs=21, tc=GRN, lw=2.8)
-
-    # claude invoked -> the two top-level sources
-    arr(ax, 4.4, 5.45, 2.3, 4.79, col=MUT)
-    arr(ax, 6.6, 5.45, 8.0, 4.79, col=MUT)
-
-    # project root -> its subdirectory files and @imports
-    arr(ax, 7.3, 3.91, 6.35, 3.19, col=MUT, lw=1.8)
-    arr(ax, 8.7, 3.91, 9.55, 3.19, col=MUT, lw=1.8)
-
-    # every source merges straight down into the instruction context (no crossings)
-    for sx, sy in [(2.3, 3.91), (8.0, 3.91), (6.35, 2.31), (9.55, 2.31)]:
-        arr(ax, sx, sy, sx, 1.54, col=MUT, lw=1.8, ms=14)
-
-    save(fig, 'diag-05-claude-md-loading.png')
+    save(fig, 'diag-05-claude-md-loading.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
 # 6 — Subagent Orchestration
 # ═══════════════════════════════════════════════════════════════
 def make_06():
-    # Increased height so title clears the Orchestrator box
-    fig, ax = new_fig(11, 6.8)
-    title(ax, 11, 6.8, 'Subagent Orchestration')
+    fig, ax = new_fig(11, 4.6)
+    xs = [1.95, 5.5, 9.05]
 
-    xs = [1.55, 3.95, 6.55, 9.15]
-    task_labels  = ['Write\nunit tests', 'Update\ndocs', 'Refactor\nauth', 'Audit\ndeps']
-    agent_labels = ['Explore\nagent', 'Plan\nagent',
-                    'Code reviewer\nagent', 'General\nagent']
-    cx = 5.35
+    box(ax, 5.5, 4.1, 5.0, 0.75, PUR, 'Main session: holds the goal', fs=22)
 
-    box(ax, cx, 5.10, 4.8, 0.88, DPUR, 'Orchestrator  (main Claude session)',
-        fs=22, tc=PUR, lw=2.8)
+    agents = [
+        (BLU, 'Explore', 'find every auth call site\nread-only'),
+        (GRN, 'general-purpose', 'update the API docs\ncan edit files'),
+        (AMB, 'code-reviewer (custom)', 'review the diff\nyour tools + model'),
+    ]
+    for x, (col, head, sub) in zip(xs, agents):
+        box(ax, x, 2.35, 3.15, 1.45, col, head, fs=21, sub=sub, sfs=17)
+        arr(ax, 5.5 + (x - 5.5) * 0.45, 3.72, x, 3.1)
+        arr(ax, x, 1.62, 5.5 + (x - 5.5) * 0.55, 1.03)
+    lbl(ax, 9.55, 4.1, 'each subagent gets\nits own context window', fs=17)
 
-    bw, bh = 2.05, 0.95
-    for x, lbl_text in zip(xs, task_labels):
-        box(ax, x, 3.60, bw, bh, DBLU, lbl_text, fs=20, tc=BLU)
-        arr(ax, cx + (x - cx) * 0.42, 4.66, x, 4.08, col=MUT, lw=1.8, ms=14)
+    box(ax, 5.5, 0.65, 6.6, 0.75, GRN, 'Only summaries return to the main context', fs=21)
 
-    for x, lbl_text in zip(xs, agent_labels):
-        box(ax, x, 2.10, bw, bh, DGRN, lbl_text, fs=19, tc=GRN)
-        arr(ax, x, 3.12, x, 2.58, col=MUT, lw=1.8, ms=14)
-
-    box(ax, cx, 0.70, 5.5, 0.88, DGRN, 'Merge Results  —  back to Orchestrator',
-        fs=21, tc=GRN, lw=2.5)
-    for x in xs:
-        arr(ax, x, 1.62, cx + (x - cx) * 0.22, 1.14, col=MUT, lw=1.8, ms=14)
-
-    save(fig, 'diag-06-subagent-orchestration.png')
+    save(fig, 'diag-06-subagent-orchestration.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
 # 7 — Planning Mode Workflow
 # ═══════════════════════════════════════════════════════════════
 def make_07():
-    fig, ax = new_fig(11, 4.5)
-    title(ax, 11, 4.5, 'Planning Mode Workflow')
+    fig, ax = new_fig(11, 3.7)
+    y, h = 2.15, 1.15
 
-    nodes = [
-        (0.70,  2.20, DPUR, PUR, 'Request'),
-        (2.10,  2.20, DGRN, GRN, '/plan\nread-only'),
-        (3.50,  2.20, DBLU, BLU, 'Explore\ncodebase'),
-        (4.90,  2.20, DAMB, AMB, 'Design\nsolution'),
-        (6.30,  2.20, DGRN, GRN, 'Review\nplan'),
-        (7.70,  2.20, DGRN, GRN, 'Execute\nchanges'),
-        (9.10,  2.20, DGRN, GRN, 'Done!'),
-    ]
-    bw, bh = 1.22, 1.02
-    for x, y, fc, tc, lbl_text in nodes:
-        box(ax, x, y, bw, bh, fc, lbl_text, fs=19, tc=tc)
+    box(ax, 0.7, y, 1.15, h, PUR, 'Request', fs=20)
+    box(ax, 2.55, y, 1.85, h, BLU, 'Explore', sub='read code')
+    box(ax, 4.85, y, 1.85, h, AMB, 'Draft plan', sub='files, steps, risks')
+    diamond(ax, 6.95, y, 1.55, 1.3, TXT, 'Approve?', fs=19)
+    box(ax, 8.75, y, 1.3, h, GRN, 'Execute', fs=20)
+    box(ax, 10.3, y, 1.15, h, GRN, 'Verify', fs=20)
 
-    for i in range(len(nodes) - 1):
-        col = GRN if i >= 5 else TXT
-        arr(ax, nodes[i][0] + bw/2, 2.20, nodes[i+1][0] - bw/2, 2.20, col=col)
+    for x1, x2 in [(1.275, 1.625), (3.475, 3.925), (5.775, 6.175), (9.4, 9.725)]:
+        arr(ax, x1, y, x2, y, col=TXT)
+    arr(ax, 7.725, y, 8.1, y, col=GRN)
+    lbl(ax, 7.91, y + 0.4, 'yes', col=GRN, fs=18)
 
-    ax.text(6.30, 1.18, 'approve before edits', ha='center', va='center',
-            fontsize=16, color=MUT, style='italic', zorder=5)
+    bracket(ax, 1.65, 7.7, 3.05, 'plan mode: nothing is edited yet', col=BLU)
 
-    save(fig, 'diag-07-planning-mode.png')
+    loop_y = 0.75
+    line(ax, [6.95, 6.95], [y - 0.65, loop_y])
+    line(ax, [6.95, 4.85], [loop_y, loop_y])
+    arr(ax, 4.85, loop_y, 4.85, y - h/2)
+    lbl(ax, 5.9, loop_y - 0.3, 'revise', fs=18)
+
+    save(fig, 'diag-07-planning-mode.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
 # 9 — Daily Workflow / Mental Model
 # ═══════════════════════════════════════════════════════════════
 def make_09():
-    fig, ax = new_fig(11, 5.2)
-    title(ax, 11, 5.2, 'Effective Usage — Mental Model')
+    fig, ax = new_fig(11, 3.4)
 
     steps = [
-        (1.35, DPUR, PUR, '1. Set\ncontext', 'CLAUDE.md current?\n/init if stale'),
-        (4.05, DBLU, BLU, '2. Choose\ndepth', 'Direct prompt\n/plan\nsubagents'),
-        (6.75, DAMB, AMB, '3. Manage\ncontext', '/context\n/compact\ntrim output'),
-        (9.45, DGRN, GRN, '4. Verify\nresult', 'git diff\ntests + lint\nPR review'),
+        (1.45, PUR, '1. Set context',   'CLAUDE.md + skills\nintent + done criteria'),
+        (4.15, BLU, '2. Choose depth',  'direct prompt\n/plan or subagents\nworktree per task'),
+        (6.85, AMB, '3. Manage context', '/context to inspect\n/clear between tasks\n/compact when long'),
+        (9.55, GRN, '4. Verify result', 'git diff\ntests + lint\nreview the PR'),
     ]
-
-    for x, fc, tc, head, sub in steps:
-        box(ax, x, 3.35, 2.15, 0.95, fc, head, fs=21, tc=tc, lw=2.4, ec=tc)
-        ax.text(x, 2.18, sub, ha='center', va='center',
-                fontsize=18, color=MUT, linespacing=1.25, zorder=4)
-
+    for x, col, head, sub in steps:
+        box(ax, x, 2.85, 2.3, 0.8, col, head, fs=22)
+        ax.text(x, 2.22, sub, ha='center', va='top', fontsize=19, color=TXT,
+                linespacing=1.3, zorder=4)
     for i in range(len(steps) - 1):
-        arr(ax, steps[i][0] + 1.10, 3.35, steps[i + 1][0] - 1.10, 3.35,
-            col=TXT, lw=2.0, ms=16)
+        arr(ax, steps[i][0] + 1.17, 2.85, steps[i + 1][0] - 1.17, 2.85, col=TXT)
 
-    ax.text(5.5, 0.90,
-            'Intent + constraints -> bounded execution -> checked output',
-            ha='center', va='center', fontsize=20, color=GRN,
-            style='italic', zorder=5)
-
-    save(fig, 'diag-09-mental-model.png')
+    save(fig, 'diag-09-mental-model.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
 # 11 — Git Worktrees: Parallel Isolation
-# Layout: w=11, h=9.0
-#   title at y=8.45 (h-0.55)
-#   safe zone: top edge ≤ 9.0-1.05 = 7.95
-#   git store center y=7.5, top=7.925 ≤ 7.95 ✓
-#   worktrees center y=5.8, h=1.2, top=6.4
-#   sessions center y=3.5, h=0.85, top=3.925
-#   annotation at y=2.2
-
+# ═══════════════════════════════════════════════════════════════
 def make_11():
-    fig, ax = new_fig(11, 9.0)
-    title(ax, 11, 9.0, 'Git Worktrees — Parallel Isolation')
+    fig, ax = new_fig(11, 4.3)
+    xs = [1.9, 5.5, 9.1]
 
-    # ── Shared git object store ───────────────────────────────────
-    # center y=7.5, h=0.85 → top=7.925 ≤ 7.95 ✓, bottom=7.075
-    box(ax, 5.5, 7.50, 6.0, 0.85, CARD,
-        '.git/  ·  shared objects, refs, history, remote connections',
-        fs=20, tc=TXT, lw=2.0, ec=MUT)
+    box(ax, 5.5, 3.85, 6.8, 0.7, MUT, '.git/  shared history, refs, and remotes', fs=21, fc=CARD)
 
-    # ── Arrows: git store → worktrees (fan out) ──────────────────
-    # worktree tops = 5.8 + 0.60 = 6.40
-    arr(ax, 3.0, 7.075, 1.8, 6.40, col=MUT, lw=1.8, rad=-0.22)
-    arr(ax, 5.5, 7.075, 5.5, 6.40, col=MUT, lw=1.8)
-    arr(ax, 8.0, 7.075, 9.2, 6.40, col=MUT, lw=1.8, rad=0.22)
+    trees = [(GRN, 'ui'), (BLU, 'auth'), (AMB, 'bugfix')]
+    for x, (col, name) in zip(xs, trees):
+        box(ax, x, 2.35, 3.2, 1.05, col, f'.claude/worktrees/{name}', fs=20,
+            sub=f'branch worktree-{name}', sfs=18)
+        box(ax, x, 0.55, 3.2, 0.7, col, f'claude --worktree {name}', fs=20, fc=BG)
+        arr(ax, x, 1.82, x, 0.92)
+    arr(ax, 2.6, 3.49, 1.9, 2.9, rad=0.2)
+    arr(ax, 5.5, 3.49, 5.5, 2.9)
+    arr(ax, 8.4, 3.49, 9.1, 2.9, rad=-0.2)
 
-    # ── Worktree directory boxes ──────────────────────────────────
-    # center y=5.8, h=1.2, top=6.4, bottom=5.2
-    wt_xs     = [1.8,           5.5,                  9.2]
-    wt_labels = ['.claude/worktrees/ui\nbranch: worktree-ui',
-                 '.claude/worktrees/auth\nbranch: worktree-auth',
-                 '.claude/worktrees/bugfix\nbranch: worktree-bugfix']
-    wt_cols   = [(DGRN, GRN), (DBLU, BLU), (DAMB, AMB)]
-
-    for wx, wlbl, (wfc, wec) in zip(wt_xs, wt_labels, wt_cols):
-        box(ax, wx, 5.80, 2.80, 1.20, wfc, wlbl, fs=20, tc=wec, lw=2.2, ec=wec)
-
-    # ── Arrows: worktrees → sessions ─────────────────────────────
-    # worktree bottom = 5.2, session top = 3.5 + 0.425 = 3.925
-    for wx in wt_xs:
-        arr(ax, wx, 5.20, wx, 3.925, col=MUT, lw=1.8)
-
-    # ── Claude Code session boxes ─────────────────────────────────
-    # center y=3.5, h=0.85, top=3.925, bottom=3.075
-    sess_labels = ['claude --worktree\nui',
-                   'claude --worktree\nauth',
-                   'claude --worktree\nbugfix']
-
-    for wx, slbl, (sfc, sec) in zip(wt_xs, sess_labels, wt_cols):
-        box(ax, wx, 3.50, 2.80, 0.95, sfc, slbl, fs=18, tc=sec, lw=2.2, ec=sec)
-
-    # ── Column labels — standalone text above each worktree ───────
-    col_header_y = 6.85  # above worktree tops (6.40), below git bottom (7.075)
-    for wx, (_, wec), lbl_txt in zip(wt_xs, wt_cols,
-                                      ['Session A', 'Session B', 'Session C']):
-        ax.text(wx, col_header_y, lbl_txt,
-                ha='center', va='center', fontsize=18, color=wec,
-                fontweight='bold', alpha=0.70, zorder=5)
-
-    # ── Bottom annotation ─────────────────────────────────────────
-    ax.text(5.5, 2.22,
-            'Isolated files · own branch · no conflicts · shared history',
-            ha='center', va='center', fontsize=19, color=MUT,
-            style='italic', zorder=5)
-
-    save(fig, 'diag-11-worktrees.png')
+    save(fig, 'diag-11-worktrees.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
-# 12 — Workflow Orchestration
+# 12 — Workflow Orchestration (adversarial-verify pipeline)
 # ═══════════════════════════════════════════════════════════════
 def make_12():
-    fig, ax = new_fig(11, 5.8)
-    title(ax, 11, 5.8, 'Workflow Orchestration')
+    fig, ax = new_fig(11, 4.2)
+    ys = [3.0, 2.0, 1.0]
 
-    # Workflow script box at top
-    box(ax, 5.5, 5.30, 5.0, 0.88, DPUR, 'Workflow Orchestration\n(advanced)',
-        fs=22, tc=PUR, lw=2.8)
+    box(ax, 1.05, 2.0, 1.75, 1.5, PUR, 'Workflow\nscript', fs=22)
+    heading(ax, 4.0, 3.85, 'Phase 1: review', BLU)
+    heading(ax, 7.0, 3.85, 'Phase 2: verify', AMB)
 
-    # Five capability boxes — every one wired to both the script and the results,
-    # so budget control reads as a first-class capability, not a stray box.
-    prims = [
-        (1.26, 3.60, DGRN, GRN, 'Subagents\nmany workers'),
-        (3.38, 3.60, DBLU, BLU, 'Parallelism\nfan-out'),
-        (5.50, 3.60, DAMB, AMB, 'Progress\ntracking'),
-        (7.62, 3.60, DPUR, PUR, 'Structured\noutput'),
-        (9.74, 3.60, DRED, RED, 'Budget\ncontrol'),
-    ]
-    bw, bh = 1.95, 1.05
-    for px, py, pfc, ptc, plbl in prims:
-        box(ax, px, py, bw, bh, pfc, plbl, fs=18, tc=ptc, lw=2.0)
-        arr(ax, 5.5 + (px - 5.5) * 0.42, 4.86, px, 4.13, col=MUT, lw=1.8, ms=14)
+    reviews = ['bugs reviewer', 'security reviewer', 'perf reviewer']
+    for y, text in zip(ys, reviews):
+        box(ax, 4.0, y, 2.3, 0.7, BLU, text, fs=19)
+        box(ax, 7.0, y, 2.3, 0.7, AMB, 'challenge findings', fs=19)
+        arr(ax, 1.95, 2.0 + (y - 2.0) * 0.35, 2.83, y)
+        arr(ax, 5.17, y, 5.83, y)
+        arr(ax, 8.17, y, 9.03, 2.0 + (y - 2.0) * 0.35)
 
-    # Structured results at bottom
-    box(ax, 5.5, 1.35, 5.5, 0.88, DGRN, 'Reviewable Results',
-        fs=21, tc=GRN, lw=2.5)
+    box(ax, 9.95, 2.0, 1.75, 1.5, GRN, 'Confirmed\nfindings', fs=22)
 
-    for px, py, *_ in prims:
-        arr(ax, px, py - bh/2, 5.5 + (px - 5.5) * 0.12, 1.79, col=MUT, lw=1.8, ms=14)
-
-    save(fig, 'diag-12-workflows.png')
+    save(fig, 'diag-12-workflows.webp')
 
 
 # ═══════════════════════════════════════════════════════════════
 if __name__ == '__main__':
     print('Generating diagrams...')
-    make_01(); make_02(); make_03()
-    make_04(); make_05(); make_06()
-    make_07(); make_09()
-    make_11(); make_12()
+    make_01(); make_02(); make_04(); make_05(); make_06()
+    make_07(); make_09(); make_11(); make_12()
     print('All done.')
