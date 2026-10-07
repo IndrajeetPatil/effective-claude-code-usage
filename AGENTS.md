@@ -76,7 +76,7 @@ Check which set is present to know which language context applies.
 - **Mermaid performance boundary.** Keep Mermaid diagrams as Mermaid source. Do not replace them with pre-rendered SVGs solely to reduce the website bundle.
 - **No code execution.** The YAML front matter sets `execute: eval: false`. Code blocks are for display only; they are not executed during render.
 - **Compute engine.** Python decks declare `jupyter: python3` in the front matter; R decks declare `engine: knitr`. The virtualenv or renv exists to satisfy Quarto's engine, not to run slide code.
-- **Generated diagrams.** `media/generate_diagrams.py` produces PNG diagrams using matplotlib and the Caveat font. See [Diagram generation](#diagram-generation-mediagenerate_diagramspy) below for detailed layout rules, colour constants, and sizing constraints.
+- **Generated diagrams.** `media/generate_diagrams.py` produces cropped WebP diagrams using matplotlib and the Caveat font. See [Diagram generation](#diagram-generation-mediagenerate_diagramspy) below for legibility rules, colour constants, and sizing constraints.
 
 ## Commands
 
@@ -138,63 +138,49 @@ When modifying `index.qmd`:
 
 ## Diagram generation (media/generate_diagrams.py)
 
-All diagrams use matplotlib + Caveat font at DPI=100, rendered as PNG for RevealJS slides.
+All diagrams use matplotlib + the Caveat font at DPI=160. `save()` renders each figure,
+crops it to the drawn content plus a small margin, and writes the WebP that `index.qmd`
+references. Regenerate with `uv run python media/generate_diagrams.py`.
 
-### Layout rules learned the hard way
+### Legibility rules
 
-**Title placement**
-- The `title()` helper uses `y_off=0.55` (not the original 0.28). This reserves ~0.55 inches below
-  the top edge for the title text (~0.44 inches tall at fs=32) plus a visible gap.
-- The topmost content element's TOP EDGE must sit at `h - 0.55 - 0.50` or lower.
-  Formula: `top_content_y + half_height ≤ h - 1.05`
-- When adding a new diagram, compute this before placing any element. If the top element
-  violates the constraint, increase the figure height — do NOT move `y_off`.
+**No in-image titles.** The slide heading is the title. Empty bands are cropped away, so
+any reserved space would only shrink the diagram on the slide.
 
-**Never embed group labels inside group backgrounds**
-- `group_bg()` with `label=` places text at the inner-top of the rectangle (zorder=2).
-  Child boxes drawn inside the group use zorder=3 and WILL overdraw the label text.
-- Two safe alternatives (pick one):
-  1. Place standalone `ax.text(...)` calls ABOVE the group rect, in a dedicated gap row.
-  2. Skip `group_bg` labels entirely for diagrams where child boxes fill the group area,
-     and use a separate row of styled text + thin `ax.plot` rule as a section divider
-     (see `make_08`, `make_10`).
-- The `group_bg(label=...)` parameter is only safe when no child box occupies
-  the top portion of the group (i.e. boxes start >0.5 units below the group top edge).
+**Design for the slide's width, not its height.** Slide CSS caps images at 480px tall and
+the slide's content width. A diagram is only as legible as its aspect ratio allows: aim
+for width:height of roughly 2.3:1 or wider (`w=11`, `h` about 3.4–4.7) so it is
+width-bound and its text renders at about 20px or more. Tall layouts shrink every label.
 
-**Column/section headers**
-- When columns have coloured background groups, put column header text as standalone
-  `ax.text(...)` calls in a horizontal band ABOVE the group backgrounds, not inside them.
-  See `make_01` for the pattern: headers at a fixed y above the groups, groups without labels.
+**Font sizes.** Box labels 19–24 pt, sub-labels and annotations 17–19 pt. Nothing smaller.
 
-**Checklist before saving each diagram**
-- [ ] Title centre y = `h - 0.55`; nothing has its top edge within 0.5 units of the title centre
-- [ ] No `group_bg` label is at a y where a child box top edge also exists
-- [ ] All text labels (section headers, edge annotations) occupy their own horizontal band
-- [ ] Visually inspect the PNG via `Read` tool immediately after generation
+**Boxes.** Use `box(ax, x, y, w, h, accent, label, sub=...)`: accent border, dark tinted fill,
+accent label, and an optional `TXT` sub-label. Do not use white borders. Leave at least
+0.3 units between boxes joined by an arrow, or the arrowhead disappears.
 
-**How to check: calculate top edge of topmost element**
-  ```
-  element top edge = center_y + height/2
-  safe if: element top edge ≤ (h - 0.55) - 0.50
-  ```
+**Labels own their space.** Section headers, bracket labels, and edge annotations
+(`heading()`, `bracket()`, `lbl()`) each sit in their own horizontal band, never on top
+of an arrow or box. Put column headers above background panels, not inside them.
 
-### Figure sizing
-- Use `w=11` for horizontal layouts, `w=9` for vertical flowcharts.
-- When only increasing height to fix a title overlap, keep all content y-coordinates
-  unchanged — the extra space accretes at the top, which is exactly what's needed.
-- Do NOT change DPI (keep 100) — RevealJS scales images; lower DPI = larger apparent text.
+**Checklist before committing a diagram**
+- [ ] No text overlaps a box edge, arrow, or other text
+- [ ] Every arrowhead is visible
+- [ ] Printed size is width-bound (see aspect rule above)
+- [ ] Visually inspect the WebP (convert with `dwebp` if needed) via the `Read` tool,
+      and on the rendered slide
+- [ ] The slide's `fig-alt` text describes the new content
 
 ### Colours (always use these constants — never hardcode hex in diagrams)
 ```
-BG=#0d1117  GRN=#22c55e  DGRN=#14532d
-BLU=#38bdf8  DBLU=#0c2a3a  AMB=#f59e0b  DAMB=#3a2400
-PUR=#a78bfa  DPUR=#2d1b69  RED=#f87171  DRED=#450a0a
-TXT=#e6edf3  MUT=#8b949e  CARD=#1c2128
+BG=#0d1117  GRN=#22c55e  BLU=#38bdf8  AMB=#f59e0b  PUR=#a78bfa  RED=#f87171
+TXT=#e6edf3  MUT=#a8b3c1  CARD=#1c2128
 ```
+Box fills come from `tint(accent)`, which blends 16% of the accent into `BG`. These dark
+fills keep accent-coloured text above WCAG AA contrast; do not brighten them.
 
 ### Font glyphs
-- Caveat.ttf does not contain Unicode check marks (✓ U+2713) or other special symbols.
-  Use plain ASCII alternatives: `+`, `-`, `>`, `x`, `ok`.
+- Caveat.ttf does not contain Unicode check marks (✓ U+2713) or other special symbols,
+  and has no bold weight. Use plain ASCII alternatives: `+`, `-`, `>`, `x`, `ok`.
 
 ## Slide content principle
 

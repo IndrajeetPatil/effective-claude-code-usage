@@ -39,7 +39,7 @@ description-meta: "A comprehensive guide to using Claude Code effectively as a C
 license: "CC0 1.0 Universal"
 pagetitle: "Effective Claude Code Usage"
 author-meta: "Indrajeet Patil"
-date-meta: "2026-06-20"
+date-meta: "2026-10-07"
 lang: "en"
 dir: "ltr"
 image: "media/social-media-card.webp"
@@ -91,27 +91,27 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 
 ::: {.column width="55%"}
 
-::: {style="font-size: 0.88em;"}
+::: {.tight-list style="font-size: 1.05em;"}
 - **Agents vs chatbots** — what Claude Code actually is
-- **Tools, permissions, and sandboxing** — capabilities and safety boundaries
-- **Skills & slash commands** — reusable playbooks and session control
+- **Tools and permissions** — capabilities and safety boundaries
+- **Skills & slash commands** — use them, then write your own
 - **Context window** — what fills it and how to manage it
-- **CLAUDE.md, auto memory, and hooks** — durable context and enforcement
-- **Subagents, background agents, and workflows** — parallel and orchestrated work
+- **CLAUDE.md, memory, and hooks** — durable context and enforcement
+- **Subagents and workflows** — parallel and orchestrated work
 - **Planning mode** — explore before you edit
 - **Prompting** — intent over instructions
-- **Git worktrees** — parallel Claude sessions
+- **Worktrees and `claude -p`** — parallel sessions and automation
 :::
 
 :::
 
 ::: {.column width="45%"}
 
-::: {.card-green .card-compact style="font-size: 0.88em;"}
+::: {.card-green .card-compact style="font-size: 0.95em;"}
 **Goal** · turn Claude Code from a smart autocomplete into a capable cognitive partner for complex engineering tasks.
 :::
 
-::: {.card-subtle .card-compact style="margin-top: 0.5em; font-size: 0.82em;"}
+::: {.card-subtle .card-compact style="margin-top: 0.5em; font-size: 0.9em;"}
 **Prerequisite** · Claude Code installed; you can run `claude` in a terminal.
 :::
 
@@ -172,34 +172,30 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 
 ## Intelligence Spectrum {.smaller}
 
-![](media/diag-01-intelligence-spectrum.webp){fig-align="center" fig-alt="Three-column diagram showing the intelligence spectrum from tab completion to chatbot to agent"}
+![](media/diag-01-intelligence-spectrum.webp){fig-align="center" fig-alt="Three columns ordered by increasing autonomy. Tab completion predicts next tokens, sees the open file, and you write the code. A chatbot answers a prompt, sees what you paste, and you run the code. An agent such as Claude Code pursues a goal, reads the whole repository, and runs and checks its own work."}
 
 ## ReAct Agent Loop {.smaller}
 
-![](media/diag-02-react-loop.webp){fig-align="center" fig-alt="Diagram showing the ReAct agent loop: perceive, think, act, observe, repeat"}
+![](media/diag-02-react-loop.webp){fig-align="center" fig-alt="ReAct agent loop: a task flows into think, act, and observe steps, then a done check. If not done, it loops back to think; if done, it returns a result."}
 
-::: {.card-amber style="font-size:0.82em; margin-top:0.4em;"}
-Claude Code can run many tool calls in one turn: read code, inspect test output, make changes, and re-run checks before it stops.
+::: {.card-amber .card-compact style="font-size:0.82em; margin-top:0.6em;"}
+**Why it matters** · the loop only ends well if Claude can tell when it is done. Give it a check to run — tests, a build, a screenshot — and it will iterate against that signal instead of stopping at "looks right".
 :::
 
 # Tools & Capabilities
 
 > *"A tool is a function the model can call. The model decides when — and how many times."*
 
-## Tool Ecosystem {.smaller}
-
-![](media/diag-03-tool-ecosystem.webp){fig-align="center" fig-alt="Hub-and-spoke diagram showing Claude Code connected to File I/O, Shell, Search, Agents, and MCP tools"}
-
 ## Tool Categories {.smaller}
 
-| Category | Enables |
-|----------|---------|
-| **File I/O** | Read any file; create or surgically modify code |
-| **Pattern Search** | Find files by name; search content by regex |
-| **Shell** | Run tests, git, npm, docker — any terminal command |
-| **Web** | Fetch docs, read changelogs, search answers |
-| **Agents** | Spawn subagents, isolate context, and run workflow orchestration when available |
-| **[MCP](https://code.claude.com/docs/en/mcp)** | GitHub PRs, Jira tickets, Postgres, and more |
+| Category | Tools | Enables |
+|----------|-------|---------|
+| **File I/O** | `Read` · `Write` · `Edit` | Read any file; create or surgically modify code |
+| **Search** | `Glob` · `Grep` | Find files by name; search content by regex |
+| **Shell** | `Bash` | Run tests, git, npm, docker — any terminal command |
+| **Web** | `WebFetch` · `WebSearch` | Fetch docs, read changelogs, search answers |
+| **Agents** | `Agent` · `Workflow` | Spawn subagents, isolate context, orchestrate workflows |
+| **[MCP](https://code.claude.com/docs/en/mcp)** | Server-defined | GitHub PRs, Jira tickets, Postgres, and more |
 
 ::: {.card-blue .card-compact style="font-size:0.78em;"}
 **Permissions + sandboxing** · prompts depend on the active permission mode and rules. Sandboxed Bash can run automatically inside OS-enforced boundaries; explicit deny rules still apply. Configure both with [`/permissions`](https://code.claude.com/docs/en/permissions) and [`/sandbox`](https://code.claude.com/docs/en/sandboxing).
@@ -210,14 +206,14 @@ Claude Code can run many tool calls in one turn: read code, inspect test output,
 | Mode | Runs without asking | Best fit |
 |------|----------------------|----------|
 | **Manual** | Reads only | Getting started; sensitive work |
-| **Accept edits** | Reads + file edits | Iterating on code you will review |
+| **Accept edits** | Reads, file edits, common filesystem commands | Iterating on code you will review |
 | **Plan** | Reads only | Explore before implementation |
-| **Auto** | Classifier-approved actions (still blocks risky ones) | Default on Pro/Max/Team; long tasks |
+| **Auto** | Classifier-approved actions (still blocks risky ones) | Default in recent versions; long tasks |
 | **Don't ask** | Only pre-approved tools | Locked-down CI and scripts |
 | **Bypass** | Everything | Isolated containers or VMs only |
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Defense in depth** · permission rules decide what Claude may attempt; the sandbox enforces filesystem and network boundaries for Bash. In auto mode a classifier model reviews actions in your place — it cuts prompts but does not replace your review of sensitive work.
+**Switch with `Shift+Tab`** · it cycles manual → accept edits → plan → auto mid-session. Permission rules decide what Claude may attempt; the sandbox enforces filesystem and network boundaries for Bash. In auto mode a classifier reviews actions in your place — it cuts prompts but does not replace your review of sensitive work.
 :::
 
 ::: {style="font-size:0.55em; text-align:center; margin-top:0.35em;"}
@@ -263,6 +259,55 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 :::
 
 ::::
+
+## Write Your Own [Skill](https://code.claude.com/docs/en/skills) {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;"># .claude/skills/release-notes/SKILL.md</span>
+<span style="color:#8b949e;">---</span>
+<span style="color:#a78bfa;">description:</span> <span style="color:#e6edf3;">Draft release notes from merged</span>
+<span style="color:#e6edf3;">  PRs. Use when preparing a release.</span>
+<span style="color:#a78bfa;">disable-model-invocation:</span> <span style="color:#22c55e;">true</span>
+<span style="color:#a78bfa;">allowed-tools:</span> <span style="color:#22c55e;">Bash(gh pr list *) Read</span>
+<span style="color:#8b949e;">---</span>
+
+<span style="color:#e6edf3;">1. List PRs merged since the last tag.</span>
+<span style="color:#e6edf3;">2. Group them: features, fixes, chores.</span>
+<span style="color:#e6edf3;">3. Write CHANGELOG.md in house style.</span>
+</code></pre>
+:::
+
+:::
+
+::: {.column width="45%"}
+
+::: {.card-green .card-compact style="font-size:0.85em;"}
+**When to write one** · you have pasted the same multi-step instructions into a prompt more than twice.
+:::
+
+::: {.card-subtle .card-compact style="font-size:0.82em; margin-top:0.4em;"}
+**Where** · `.claude/skills/<name>/` for the team (commit it), `~/.claude/skills/<name>/` for you. The folder name becomes `/name`.
+:::
+
+::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.4em;"}
+**Who invokes it** · Claude loads a skill when its `description` matches the task. Set `disable-model-invocation: true` for actions with side effects, so they run only when you type `/name`.
+:::
+
+::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**Cheap until used** · only descriptions sit in context; the body loads on invocation. Existing `.claude/commands/*.md` files keep working as skills.
+:::
+
+:::
+
+::::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Extend Claude with skills](https://code.claude.com/docs/en/skills)
+:::
 
 ## [Slash Commands](https://code.claude.com/docs/en/commands) — Session Control {.smaller}
 
@@ -310,31 +355,43 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 
 ## What Fills the Context? {.smaller}
 
-![](media/diag-04-context-window.webp){fig-align="center" fig-alt="Diagram showing five inputs flowing into the context window: CLAUDE.md, history, files, tool outputs, images"}
+![](media/diag-04-context-window.webp){fig-align="center" fig-alt="Two context-window bars. Mid-session: system prompt, CLAUDE.md plus memory, and the skill and MCP index are loaded at startup; prompts and replies, file reads, and tool output grow every turn, leaving little free space. After /compact: the startup items remain, history is replaced by a short summary, and most of the window is free."}
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-::: {.card-amber .card-compact style="font-size:0.78em;"}
-**Fills fast** · large tool outputs (full files, verbose logs) consume tokens rapidly.
+::: {.card-amber .card-compact style="font-size:0.8em;"}
+**Fills fast** · full-file reads and verbose logs dominate. As the window fills, earlier instructions get less attention.
 :::
 :::
 
 ::: {.column width="50%"}
-::: {.card-green .card-compact style="font-size:0.78em;"}
-**Fix** · Claude can compact long sessions, but you still control the inputs. Use `/compact`, limit reads to relevant files, and trim verbose bash output.
+::: {.card-green .card-compact style="font-size:0.8em;"}
+**Fix** · `/clear` between unrelated tasks; `/compact focus on X` to steer the summary; send broad searches to a subagent so only its findings come back.
 :::
 :::
 
 ::::
 
-# CLAUDE.md & Auto Memory
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Sources: [Explore the context window](https://code.claude.com/docs/en/context-window) · [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works#the-context-window)
+:::
 
-> *"CLAUDE.md is durable instruction context; auto memory is Claude's local notebook."*
+# CLAUDE.md, Memory & Hooks
+
+> *"CLAUDE.md is durable instruction context; auto memory is Claude's local notebook; hooks are the rules that always run."*
 
 ## How [CLAUDE.md](https://code.claude.com/docs/en/memory) Is Loaded {.smaller}
 
-![](media/diag-05-claude-md-loading.webp){fig-align="center" fig-alt="Diagram showing how global, project-root, subdirectory CLAUDE.md files, and @imports merge into the system prompt"}
+![](media/diag-05-claude-md-loading.webp){fig-align="center" fig-alt="At launch, Claude Code concatenates instruction files from broadest to most specific: managed policy, ~/.claude/CLAUDE.md, ./CLAUDE.md with parent directories, then CLAUDE.local.md; @path imports expand inline up to four hops. On demand, subdirectory CLAUDE.md files load when Claude reads or edits files in that folder, and .claude/rules files with paths globs load when Claude touches matching files."}
+
+::: {.card-blue .card-compact style="font-size:0.8em; margin-top:0.6em;"}
+**Scale without bloat** · imports organise a long file but still load at launch. Move guidance that only matters for part of the repo into subdirectory files or path-scoped rules.
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [How Claude remembers your project](https://code.claude.com/docs/en/memory)
+:::
 
 ## CLAUDE.md Anatomy {.smaller}
 
@@ -374,57 +431,11 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 :::
 
 ::: {.card-subtle style="font-size:0.82em; margin-top:0.6em;"}
-**Keep it lean** · include only commands, conventions, decisions, and gotchas Claude cannot infer from the repo. Use `/context` to confirm the file loaded.
+**Keep it lean** · aim for under 200 lines. Include only commands, conventions, decisions, and gotchas Claude cannot infer from the repo.
 :::
 
-::: {.card-blue style="font-size:0.78em; margin-top:0.6em;"}
-**Auto memory** · Claude saves reusable learnings per repository and shares them across its worktrees. Audit, edit, or disable the plain Markdown notes through `/memory`.
-:::
-
-:::
-
-::::
-
-## [Hooks](https://code.claude.com/docs/en/hooks) — Automated Validation {.smaller}
-
-:::: {.columns}
-
-::: {.column width="52%"}
-
-::: {.terminal-box}
-<pre><code><span style="color:#38bdf8;"># .claude/settings.json</span>
-<span style="color:#e6edf3;">{</span>
-<span style="color:#e6edf3;">  </span><span style="color:#a78bfa;">"hooks"</span><span style="color:#e6edf3;">: {</span>
-<span style="color:#e6edf3;">    </span><span style="color:#a78bfa;">"PostToolUse"</span><span style="color:#e6edf3;">: [{</span>
-<span style="color:#a78bfa;">      "matcher"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"Edit"</span><span style="color:#e6edf3;">,</span>
-<span style="color:#a78bfa;">      "hooks"</span><span style="color:#e6edf3;">: [{</span>
-<span style="color:#a78bfa;">        "type"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"command"</span><span style="color:#e6edf3;">,</span>
-<span style="color:#a78bfa;">        "command"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"pnpm lint"</span>
-<span style="color:#e6edf3;">      }]</span>
-<span style="color:#e6edf3;">    }]</span>
-<span style="color:#e6edf3;">  }</span>
-<span style="color:#e6edf3;">}</span>
-</code></pre>
-:::
-
-:::
-
-::: {.column width="48%"}
-
-::: {.card-green .card-compact style="font-size:0.82em;"}
-**What hooks do** · run shell commands automatically at lifecycle events — no per-prompt reminder needed.
-:::
-
-::: {.card-subtle .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Key events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit` — and more
-:::
-
-::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Use cases** · lint after edits · run typecheck before stopping · block risky bash commands · log file writes
-:::
-
-::: {.card-amber .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Keep them scoped** · prefer narrow matchers and non-mutating checks unless automatic edits are truly intentional.
+::: {.card-blue style="font-size:0.82em; margin-top:0.6em;"}
+**Test each line** · would removing it cause a mistake? If not, cut it. When two rules contradict, Claude may follow either.
 :::
 
 :::
@@ -478,13 +489,63 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 Source: [Claude Code memory documentation](https://code.claude.com/docs/en/memory)
 :::
 
+## [Hooks](https://code.claude.com/docs/en/hooks) — Automated Validation {.smaller}
+
+:::: {.columns}
+
+::: {.column width="52%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#38bdf8;"># .claude/settings.json</span>
+<span style="color:#e6edf3;">{</span>
+<span style="color:#e6edf3;">  </span><span style="color:#a78bfa;">"hooks"</span><span style="color:#e6edf3;">: {</span>
+<span style="color:#e6edf3;">    </span><span style="color:#a78bfa;">"PostToolUse"</span><span style="color:#e6edf3;">: [{</span>
+<span style="color:#a78bfa;">      "matcher"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"Edit"</span><span style="color:#e6edf3;">,</span>
+<span style="color:#a78bfa;">      "hooks"</span><span style="color:#e6edf3;">: [{</span>
+<span style="color:#a78bfa;">        "type"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"command"</span><span style="color:#e6edf3;">,</span>
+<span style="color:#a78bfa;">        "command"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"pnpm lint"</span>
+<span style="color:#e6edf3;">      }]</span>
+<span style="color:#e6edf3;">    }]</span>
+<span style="color:#e6edf3;">  }</span>
+<span style="color:#e6edf3;">}</span>
+</code></pre>
+:::
+
+:::
+
+::: {.column width="48%"}
+
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**What hooks do** · run shell commands automatically at lifecycle events — no per-prompt reminder needed.
+:::
+
+::: {.card-subtle .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Key events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit` — and more
+:::
+
+::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Use cases** · lint after edits · run typecheck before stopping · block risky bash commands · log file writes
+:::
+
+::: {.card-amber .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
+**Keep them scoped** · prefer narrow matchers and non-mutating checks unless automatic edits are truly intentional.
+:::
+
+:::
+
+::::
+
 # Subagents & Workflows
 
 > *"Subagents handle parallel work. Workflows are for the cases where simple fan-out is not enough."*
 
 ## [Subagent](https://code.claude.com/docs/en/sub-agents) Orchestration {.smaller}
 
-![](media/diag-06-subagent-orchestration.webp){fig-align="center" fig-alt="Diagram showing orchestrator fanning out to four parallel subagents and merging results"}
+![](media/diag-06-subagent-orchestration.webp){fig-align="center" fig-alt="The main session, which holds the goal, delegates to three subagents that each get their own context window: Explore finds every auth call site and is read-only; general-purpose updates the API docs and can edit files; a custom code-reviewer reviews the diff with your chosen tools and model. Only their summaries return to the main context."}
+
+::: {.card-amber .card-compact style="font-size:0.8em; margin-top:0.6em;"}
+**Custom subagents** · a Markdown file in `.claude/agents/` with `name`, `description`, and optional `tools` and `model`. Claude delegates when the description matches; `/agents` manages them.
+:::
 
 ## Choose the Right Parallel Primitive {.smaller}
 
@@ -534,10 +595,10 @@ Source: [Run agents in parallel](https://code.claude.com/docs/en/agents)
 
 ## Workflows — Advanced Orchestration {.smaller}
 
-![](media/diag-12-workflows.webp){fig-align="center" fig-alt="Diagram showing advanced workflow orchestration coordinating subagents, parallelism, progress tracking, structured output, budget control, and reviewable results"}
+![](media/diag-12-workflows.webp){fig-align="center" fig-alt="Example workflow: a script runs phase 1, where bugs, security, and performance reviewers work in parallel, then phase 2, where each reviewer's findings are independently challenged, and only confirmed findings come out."}
 
-::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.3em;"}
-**Advanced automation** · dynamic workflows move orchestration into a readable JavaScript script that runs in the background. Use `/workflows` to inspect progress and save a successful run for reuse.
+::: {.card-green .card-compact style="font-size:0.8em; margin-top:0.6em;"}
+**Orchestration as code** · the control flow above lives in a readable JavaScript script that runs in the background. `/workflows` shows live progress; save a run that worked so the team can reuse it.
 :::
 
 ## Workflow Patterns — Use Sparingly {.smaller}
@@ -563,10 +624,10 @@ Source: [Dynamic workflows](https://code.claude.com/docs/en/workflows)
 
 ## [Planning Mode](https://code.claude.com/docs/en/permission-modes) Workflow {.smaller}
 
-![](media/diag-07-planning-mode.webp){fig-align="center" fig-alt="Horizontal workflow diagram: request, /plan, explore, draft, human review, execute, done"}
+![](media/diag-07-planning-mode.webp){fig-align="center" fig-alt="Planning workflow: request, explore the code, draft a plan covering files, steps, and risks, then an approval decision. Explore and draft happen in plan mode where nothing is edited. If revised, the loop returns to the draft; if approved, Claude executes and then verifies."}
 
-::: {.card-green style="font-size:0.82em; margin-top:0.5em;"}
-In **planning mode** Claude reads files and proposes an approach before edits happen. Start it with `/plan` or `claude --permission-mode plan`, then review the plan before execution.
+::: {.card-green .card-compact style="font-size:0.82em; margin-top:0.6em;"}
+**Enter plan mode** · `/plan`, `Shift+Tab` until the status bar shows plan mode, or `claude --permission-mode plan`. Edit the plan directly or reply with feedback before approving.
 :::
 
 ## When Planning Mode Pays Off {.smaller}
@@ -660,10 +721,6 @@ Define *what* done looks like. Claude figures out *how*.
 **The prompting rule that still matters most** · Claude can explore the codebase, choose tools, and loop on failures, but it cannot read your mind. State **your definition of done**, then verify those criteria before accepting the result.
 :::
 
-::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.3em;"}
-**Mental model** · delegate the work, but keep ownership of the result. Inspect the diff, run checks, and review the PR before merging.
-:::
-
 # Git Worktrees
 
 > *"When two Claude sessions edit the same files, you don't get double the speed — you get merge conflicts. Worktrees give each session its own universe."*
@@ -679,7 +736,7 @@ Define *what* done looks like. Claude figures out *how*.
 
 - Two sessions share the same working directory
 - Uncommitted changes bleed across sessions
-- One context reset can overwrite the other's work
+- One session's half-finished edits break the other's tests
 - Stash/pop gymnastics just to switch tasks
 :::
 
@@ -706,7 +763,7 @@ Define *what* done looks like. Claude figures out *how*.
 
 ## [Worktrees](https://code.claude.com/docs/en/worktrees) — How They Work {.smaller}
 
-![](media/diag-11-worktrees.webp){fig-align="center" fig-alt="Diagram showing a single shared .git/ object store at the top with three isolated worktree directories and three parallel Claude Code sessions below"}
+![](media/diag-11-worktrees.webp){fig-align="center" fig-alt="One shared .git directory with history, refs, and remotes feeds three worktree directories under .claude/worktrees (ui, auth, and bugfix), each on its own worktree branch and each driven by its own claude --worktree session."}
 
 :::: {.columns}
 
@@ -724,25 +781,79 @@ Define *what* done looks like. Claude figures out *how*.
 
 ::::
 
+# Automation
+
+> *"The same agent loop runs without a terminal session: in scripts, pipelines, and CI."*
+
+## [Run Claude Non-Interactively](https://code.claude.com/docs/en/headless) {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+
+::: {.terminal-box}
+<pre><code><span style="color:#8b949e;"># Pipe input in, get an answer out</span>
+<span style="color:#38bdf8;">$</span> cat build.log | claude -p \
+    <span style="color:#22c55e;">"explain the root cause"</span>
+
+<span style="color:#8b949e;"># Pre-approve only the tools it needs</span>
+<span style="color:#38bdf8;">$</span> claude -p <span style="color:#22c55e;">"fix the failing tests"</span> \
+    --allowedTools <span style="color:#22c55e;">"Bash,Read,Edit"</span>
+
+<span style="color:#8b949e;"># Structured output for scripts</span>
+<span style="color:#38bdf8;">$</span> claude -p <span style="color:#22c55e;">"summarise this PR"</span> \
+    --output-format json | jq -r .result
+</code></pre>
+:::
+
+:::
+
+::: {.column width="45%"}
+
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**`-p` / `--print`** · runs one task and exits; a non-zero exit code means the run failed, so scripts can branch on it.
+:::
+
+::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.4em;"}
+**Reproducible in CI** · add `--bare` to skip local hooks, plugins, MCP servers, auto memory, and CLAUDE.md; pass what you need explicitly.
+:::
+
+::: {.card-amber .card-compact style="font-size:0.82em; margin-top:0.4em;"}
+**Locked down** · `--permission-mode dontAsk` denies anything not pre-approved. Keep bypass mode for disposable containers.
+:::
+
+::: {.card-subtle .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**In GitHub** · [Claude Code GitHub Actions](https://code.claude.com/docs/en/github-actions) responds to `@claude` mentions in issues and PRs.
+:::
+
+:::
+
+::::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Run Claude Code programmatically](https://code.claude.com/docs/en/headless)
+:::
+
 # Summary
 
 > *"Claude Code is most powerful when you treat it as a partner, not a search engine."*
 
 ## Effective Usage: Mental Model {.smaller}
 
-![](media/diag-09-mental-model.webp){fig-align="center" fig-alt="Four-step mental model for effective Claude Code usage: set context, choose depth, manage context, verify result"}
+![](media/diag-09-mental-model.webp){fig-align="center" fig-alt="Four-step mental model. 1, set context: CLAUDE.md and skills, intent and done criteria. 2, choose depth: direct prompt, /plan or subagents, a worktree per task. 3, manage context: /context to inspect, /clear between tasks, /compact when long. 4, verify result: git diff, tests and lint, review the PR."}
 
-::: {.card-green style="font-size:0.75em; margin-top:0.4em;"}
-CLAUDE.md for durable instructions · `/plan` for complex tasks · Worktrees for isolation · Subagents for focused side work · Skills for repeatable actions · `/compact` when context fills · Intent + acceptance criteria · Diff + tests before acceptance
+::: {.card-green .card-compact style="font-size:0.85em; margin-top:1em; text-align:center;"}
+**Delegate the work, keep ownership of the result.**
 :::
 
 ## Resources {.smaller}
 
-::: {style="font-size: 0.82em;"}
+::: {style="font-size: 1.05em;"}
 
 - [Claude Code official documentation](https://code.claude.com/docs/en/overview) — tools, skills, workflows, subagents, planning mode
 - [Claude Code best practices](https://code.claude.com/docs/en/best-practices) — prompting patterns, guardrails, context management
-- [Anthropic's guide to agentic coding](https://www.anthropic.com/engineering/claude-code-best-practices) — ReAct loop, quality scaffolding, CLI vs MCP tradeoffs
+- [Explore the context window](https://code.claude.com/docs/en/context-window) — interactive view of what loads and when
+- [Anthropic's guide to agentic coding](https://www.anthropic.com/engineering/claude-code-best-practices) — ReAct loop, quality scaffolding, CLI vs MCP trade-offs
 
 :::
 
@@ -766,7 +877,7 @@ Other [slide decks](https://www.indrapatil.com/presentations/) on software engin
 
 <br>
 
-::: {.terminal-box style="max-width: 400px; margin: 0 auto;"}
+::: {.terminal-box style="max-width: 480px; margin: 0 auto;"}
 <pre><code><span style="color:#38bdf8;">$</span> claude --help
 <span style="color:#22c55e;">Claude Code</span> — AI pair programmer
 <span style="color:#8b949e;">Use it well. Ship great software.</span>

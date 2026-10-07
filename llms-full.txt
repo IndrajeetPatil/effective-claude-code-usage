@@ -20,8 +20,10 @@ The talk is aimed at software developers who want to use Claude Code for complex
 - Learn how Claude Code uses tools and why tool access changes the interaction model.
 - Choose permission modes deliberately and combine rules with Bash sandboxing for defense in depth.
 - Distinguish built-in commands, reusable skills, and dynamic workflows exposed through the `/` menu.
+- Write a project skill as `.claude/skills/<name>/SKILL.md` and control whether Claude may invoke it automatically.
 - Manage the context window deliberately and avoid filling it with low-signal content.
 - Use CLAUDE.md for durable instructions and auto memory for Claude-authored, per-repository learnings.
+- Know which instruction files load at launch and which load on demand (subdirectory CLAUDE.md files and path-scoped rules).
 - Apply subagents when parallel exploration or independent subtasks are valuable.
 - Use background agents to hand off independent sessions and monitor them from agent view.
 - Use workflows for deterministic multi-agent orchestration with budget control.
@@ -31,10 +33,11 @@ The talk is aimed at software developers who want to use Claude Code for complex
 - Prompt with intent and constraints rather than brittle step-by-step instructions.
 - Understand when MCP is useful and when CLI tools are more token-efficient.
 - Use Git worktrees for parallel Claude Code sessions.
+- Run Claude Code non-interactively with `claude -p` for scripts and CI, using `--bare`, `--allowedTools`, and `--output-format json`.
 
 ## Core recommendations
 
-- Treat Claude Code as an agent that loops through perception, planning, action, observation, and revision.
+- Treat Claude Code as an agent that loops through thinking, acting with tools, and observing results until the task is done.
 - Keep project instructions explicit and close to the codebase.
 - Treat CLAUDE.md and auto memory as context, not enforcement; use hooks or permission deny rules for hard guardrails.
 - Match the permission mode to the environment; reserve bypass mode for isolated containers or virtual machines.
@@ -45,6 +48,8 @@ The talk is aimed at software developers who want to use Claude Code for complex
 - Use workflows when you need deterministic control flow, budget awareness, or structured output across multiple agents.
 - Use planning mode when the cost of premature edits is high.
 - Use worktrees to isolate concurrent agent sessions.
+- Give Claude a check to run (tests, a build, a screenshot) so the agent loop can verify its own work.
+- Use `/clear` between unrelated tasks and keep CLAUDE.md under about 200 lines.
 
 ## Retrieval notes
 
