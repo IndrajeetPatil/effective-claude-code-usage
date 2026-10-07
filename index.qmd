@@ -48,42 +48,27 @@ canonical-url: "https://www.indrapatil.com/effective-claude-code-usage/"
 jupyter: python3
 ---
 
-## Effective Claude Code Usage {style="margin-top: 1.2em;"}
+## Effective Claude Code Usage {.deck-title}
 
-:::: {.columns}
+::: {.title-copy}
 
-::: {.column width="62%"}
-
-::: {style="color: #38bdf8; font-weight: 600; font-size: 0.95em; letter-spacing: 0; margin-bottom: 1em;"}
+::: {.title-subtitle}
 From CLI to Cognitive Partner
 :::
 
-::: {style="font-size: 0.72em; color: #8b949e;"}
+::: {.title-byline}
 Indrajeet Patil &nbsp;·&nbsp; 2026
 :::
 
-::: {style="font-size: 0.65em; color: #8b949e; margin-top: 2em;"}
+::: {.title-source}
 Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-usage/)
 :::
 
 :::
 
-::: {.column width="38%"}
-
-::: {.terminal-box}
-<pre><code><span style="color:#38bdf8;">$</span> claude
-<span style="color:#22c55e;">✓</span> Claude Code
-
-<span style="color:#8b949e;"># Your AI pair programmer</span>
-<span style="color:#8b949e;"># in the terminal</span>
-
-<span style="color:#38bdf8;">&gt;</span> How can I help?
-</code></pre>
+::: {.title-art}
+![](media/illustration-title-workshop.webp){fig-alt="The orange Anthropic symbol stands in a terminal workshop with a mounted tool assembling linked software modules. Cyan code panels and green test badges illustrate a coding partner that builds and verifies software."}
 :::
-
-:::
-
-::::
 
 ## What you'll learn {.smaller}
 
@@ -444,41 +429,22 @@ Run `/init` in any repo — Claude inspects the codebase and writes a CLAUDE.md 
 
 ## Memory Is Context, Not Enforcement {.smaller}
 
+![](media/illustration-memory-guardrails.webp){.concept-illustration fig-align="center" fig-alt="Dotted arrows from project instructions and remembered notes guide the orange Anthropic symbol towards a solid enforcement checkpoint. Guidance informs a decision, while a gate can require a check or block an action."}
+
 :::: {.columns}
 
 ::: {.column width="50%"}
 
 ::: {.card-green .card-compact style="font-size:0.82em;"}
-**CLAUDE.md** · you write durable project instructions: non-obvious commands, conventions, workflow rules, architecture decisions, and gotchas.
-:::
-
-::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.5em;"}
-**Auto memory** · Claude writes local, per-repository learnings. Only the first 200 lines or 25 KB of its `MEMORY.md` index load at startup; topic files load on demand.
-:::
-
-::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Neither is a hard guardrail** · concise, specific instructions improve adherence, but use permission deny rules or hooks when an action must be blocked or a check must always run.
+**Keep context lean** · put non-obvious commands, conventions, decisions, and gotchas in CLAUDE.md. Claude's auto memory is local and per-repository; its index loads only the first 200 lines or 25 KB, with topic files loaded on demand.
 :::
 
 :::
 
 ::: {.column width="50%"}
 
-::: {.terminal-box}
-<pre><code><span style="color:#38bdf8;"># In a Claude Code session</span>
-<span style="color:#38bdf8;">&gt;</span> /context
-<span style="color:#e6edf3;">  Memory files:</span>
-<span style="color:#22c55e;">  + ~/.claude/CLAUDE.md</span>
-<span style="color:#22c55e;">  + ./CLAUDE.md</span>
-
-<span style="color:#38bdf8;">&gt;</span> /memory
-<span style="color:#e6edf3;">  Project instructions</span>
-<span style="color:#e6edf3;">  Auto memory: </span><span style="color:#22c55e;">on</span>
-<span style="color:#e6edf3;">  Open memory folder</span>
-
-<span style="color:#8b949e;"># Review notes like code:</span>
-<span style="color:#8b949e;"># prune stale or conflicting facts</span>
-</code></pre>
+::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**Review and enforce** · use `/context` to inspect loaded files and `/memory` to review notes; prune stale or conflicting facts. Use permission deny rules or hooks when an action must be blocked or a check must always run.
 :::
 
 :::
@@ -549,36 +515,30 @@ Source: [Claude Code memory documentation](https://code.claude.com/docs/en/memor
 
 ## Choose the Right Parallel Primitive {.smaller}
 
+![](media/illustration-parallel-primitives.webp){.concept-illustration .concept-illustration-dense fig-align="center" fig-alt="Four coordination patterns: subagents report back to one main session; background agents run as independent sessions; agent teams connect peers around a shared task board; workflows follow a scripted branching and joining path."}
+
 :::: {.columns}
 
 ::: {.column width="50%"}
 
-::: {.card-green .card-compact style="font-size:0.82em;"}
-[**Subagents**]{style="font-size:0.95em;"}
-
-Focused side tasks inside one session. Use when exploration or logs would clutter the main context; results return as a summary.
+::: {.card-green .card-compact style="font-size:0.75em;"}
+**Keep context focused** · use subagents when exploration or logs would clutter the main session; bring back a summary.
 :::
 
-::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.5em;"}
-[**Background agents**]{style="font-size:0.95em;"}
-
-Independent sessions you dispatch and monitor with `claude agents`. Useful when you want to hand off several tasks and check back later. **Research preview.**
+::: {.card-blue .card-compact style="font-size:0.75em; margin-top:0.4em;"}
+**Hand off and revisit** · dispatch and monitor background sessions with `claude agents`. **Research preview.**
 :::
 
 :::
 
 ::: {.column width="50%"}
 
-::: {.card-amber .card-compact style="font-size:0.82em;"}
-[**Agent teams**]{style="font-size:0.95em;"}
-
-Peer sessions with a shared task list and direct messaging. Use only when workers must coordinate with each other. **Experimental and disabled by default.**
+::: {.card-amber .card-compact style="font-size:0.75em;"}
+**Coordinate directly** · use teams only when workers must communicate. **Experimental and disabled by default.**
 :::
 
-::: {.card-subtle .card-compact style="font-size:0.82em; margin-top:0.5em;"}
-[**Dynamic workflows**]{style="font-size:0.95em;"}
-
-Scripted orchestration for many agents, cross-checks, resumability, or repeatable control flow. Use after a task outgrows a few subagents.
+::: {.card-subtle .card-compact style="font-size:0.75em; margin-top:0.4em;"}
+**Repeat control flow** · use workflows for many agents, cross-checks, or resumability, once a few subagents are insufficient.
 :::
 
 :::
@@ -586,7 +546,7 @@ Scripted orchestration for many agents, cross-checks, resumability, or repeatabl
 ::::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Default** · start with one agent. Explicitly ask for a subagent, worktree isolation, a background session, a team, or a workflow when that coordination model materially helps.
+**Default** · start with one agent; request extra coordination only when it materially helps.
 :::
 
 ::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
@@ -689,36 +649,18 @@ Source: [Dynamic workflows](https://code.claude.com/docs/en/workflows)
 
 ## Define the What, Not the How {.smaller}
 
-:::: {.columns}
+![](media/illustration-intent-and-criteria.webp){.concept-illustration fig-align="center" fig-alt="Two route maps contrast a route constrained by prescribed waypoints with several possible routes to a clear destination. The destination has a checklist, showing that the agent can choose its approach while success remains verifiable."}
 
-::: {.column width="50%"}
-
-::: {.card-amber .card-compact}
-**Over-specified**
-
-*"First read auth.ts. Then check the test file. Then look for mocks. Then write a test for login using the existing mock pattern."*
-
-Step-by-step instructions limit Claude's ability to explore and adapt.
+::: {.card-green .card-compact style="font-size:0.85em;"}
+**A concrete prompt** · "Add unit tests for the auth module. Done when: all public functions covered, edge cases tested, conventions followed, `pnpm test` passes."
 :::
-
-:::
-
-::: {.column width="50%"}
-
-::: {.card-green .card-compact}
-**Intent + acceptance criteria**
-
-*"Add unit tests for the auth module. Done when: all public functions covered, edge cases tested, conventions followed, `pnpm test` passes."*
-
-Define *what* done looks like. Claude figures out *how*.
-:::
-
-:::
-
-::::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**The prompting rule that still matters most** · Claude can explore the codebase, choose tools, and loop on failures, but it cannot read your mind. State **your definition of done**, then verify those criteria before accepting the result.
+**Before accepting** · run the named checks and inspect the tests. Passing a command alone does not prove the requested coverage or edge cases are present.
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Claude Code best practices](https://code.claude.com/docs/en/best-practices)
 :::
 
 # Git Worktrees
@@ -727,38 +669,30 @@ Define *what* done looks like. Claude figures out *how*.
 
 ## Why Parallel Sessions Need Isolation {.smaller}
 
+![](media/illustration-session-isolation.webp){.concept-illustration fig-align="center" fig-alt="Two sessions collide while editing one shared folder. In separate worktrees, each session edits its own folder, while both remain connected to shared repository history."}
+
 :::: {.columns}
 
 ::: {.column width="50%"}
 
-::: {.card-amber .card-compact}
-**Without worktrees**
-
-- Two sessions share the same working directory
-- Uncommitted changes bleed across sessions
-- One session's half-finished edits break the other's tests
-- Stash/pop gymnastics just to switch tasks
+::: {.card-amber .card-compact style="font-size:0.82em;"}
+**The failure mode** · one session's half-finished edits can break another's tests. Switching tasks may require stash/pop gymnastics.
 :::
 
 :::
 
 ::: {.column width="50%"}
 
-::: {.card-green .card-compact}
-**With worktrees**
-
-- Each session gets its own directory and branch
-- Edits, builds, and tool calls are fully isolated
-- Shared commit history and remote connections
-- Merge when both are done — on your schedule
+::: {.card-green .card-compact style="font-size:0.82em;"}
+**The hand-off** · give each session its own branch; build and test in that checkout. Review and merge completed work on your schedule.
 :::
 
 :::
 
 ::::
 
-::: {.card-blue .card-compact style="font-size:0.78em;"}
-**Key insight** · a git worktree is a second checkout of the same repo — same `.git/` database, different working tree. Claude Code manages them with a single flag.
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Parallel sessions with worktrees](https://code.claude.com/docs/en/worktrees)
 :::
 
 ## [Worktrees](https://code.claude.com/docs/en/worktrees) — How They Work {.smaller}
