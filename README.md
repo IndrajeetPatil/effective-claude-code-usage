@@ -7,7 +7,7 @@ Slides summarising patterns for using [Claude Code](https://code.claude.com/docs
 The slides can be seen here:<br>
 <https://www.indrapatil.com/effective-claude-code-usage/>
 
-[![introductory slide](media/social-media-card.webp)](https://www.indrapatil.com/effective-claude-code-usage/)
+[![Effective Claude Code Usage, with the orange Anthropic symbol in a terminal workshop](media/social-media-card.webp)](https://www.indrapatil.com/effective-claude-code-usage/)
 
 ## Development
 

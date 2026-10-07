@@ -43,7 +43,7 @@ date-meta: "2026-10-07"
 lang: "en"
 dir: "ltr"
 image: "media/social-media-card.webp"
-image-alt: "Preview image for Effective Claude Code Usage presentation"
+image-alt: "Effective Claude Code Usage: From CLI to Cognitive Partner, with the orange Anthropic symbol in a terminal workshop."
 canonical-url: "https://www.indrapatil.com/effective-claude-code-usage/"
 jupyter: python3
 ---
