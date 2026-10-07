@@ -13,9 +13,10 @@ keywords = [
     "ai-agents",
     "cli",
     "anthropic",
-    "software-engineering"
+    "software-engineering",
+    "llms-txt"
 ]
-dependencies = ["jupyter>=1.1.1", "ipykernel>=7.4.0"]
+dependencies = ["ipykernel>=7.4.0", "nbclient>=0.11.0", "pyyaml>=6.0.3"]
 
 [tool.uv]
 required-version = ">=0.12.17"
