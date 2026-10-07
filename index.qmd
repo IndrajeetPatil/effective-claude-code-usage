@@ -373,6 +373,10 @@ Source: [Extend Claude with skills](https://code.claude.com/docs/en/skills)
 
 ::::
 
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Sources: [Explore the context window](https://code.claude.com/docs/en/context-window) · [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works#the-context-window)
+:::
+
 # CLAUDE.md, Memory & Hooks
 
 > *"CLAUDE.md is durable instruction context; auto memory is Claude's local notebook; hooks are the rules that always run."*
