@@ -92,6 +92,62 @@
   margin-bottom: 0.25em;
 }
 
+/* Title slide: an oversized heading beside the terminal workshop. */
+.reveal .slides section.deck-title h2 {
+  width: 44%;
+  margin-top: 1em;
+  margin-bottom: 0.45em;
+  padding-bottom: 0;
+  border: 0;
+  font-size: 2.05em;
+  line-height: 1.06;
+  color: var(--accent-green) !important;
+}
+
+.title-copy {
+  width: 42%;
+}
+
+.title-subtitle {
+  font-size: 0.84em;
+  font-weight: 600;
+}
+
+.title-subtitle p {
+  color: var(--accent-blue) !important;
+}
+
+.title-byline {
+  margin-top: 1.5em;
+  font-size: 0.65em;
+}
+
+.title-source {
+  margin-top: 1.2em;
+  font-size: 0.55em;
+}
+
+.title-byline p,
+.title-source p {
+  color: var(--text-muted) !important;
+}
+
+.title-art {
+  position: absolute;
+  top: 75px;
+  right: 0;
+  width: 55%;
+}
+
+.title-art p {
+  margin: 0;
+}
+
+.reveal .slides section.deck-title .title-art img {
+  width: 100%;
+  max-height: 520px;
+}
+
 .reveal p,
 .reveal li {
   color: var(--text-primary);
@@ -182,6 +238,15 @@
   object-fit: contain;
   display: block;
   margin: 0 auto;
+}
+
+/* Concept illustrations leave room for practical guidance and citations. */
+.reveal .slides section img.concept-illustration {
+  max-height: 360px;
+}
+
+.reveal .slides section img.concept-illustration-dense {
+  max-height: 300px;
 }
 
 /* Mermaid PNG wrapper */
