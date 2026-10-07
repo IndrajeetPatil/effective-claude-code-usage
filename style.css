@@ -196,7 +196,7 @@
 .reveal table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.72em;
+  font-size: 0.8em;
   font-family: var(--font-body) !important;
   background: var(--bg-card);
   border-radius: 8px;
