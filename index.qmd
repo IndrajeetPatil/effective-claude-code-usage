@@ -93,11 +93,11 @@ Source code on [GitHub](https://github.com/IndrajeetPatil/effective-claude-code-
 
 ::: {style="font-size: 0.88em;"}
 - **Agents vs chatbots** — what Claude Code actually is
-- **Tools, permissions & sandboxing** — capabilities and safety boundaries
+- **Tools, permissions, and sandboxing** — capabilities and safety boundaries
 - **Skills & slash commands** — reusable playbooks and session control
 - **Context window** — what fills it and how to manage it
-- **CLAUDE.md, auto memory & hooks** — durable context and enforcement
-- **Subagents, background agents & workflows** — parallel and orchestrated work
+- **CLAUDE.md, auto memory, and hooks** — durable context and enforcement
+- **Subagents, background agents, and workflows** — parallel and orchestrated work
 - **Planning mode** — explore before you edit
 - **Prompting** — intent over instructions
 - **Git worktrees** — parallel Claude sessions
@@ -334,7 +334,7 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 
 ## How [CLAUDE.md](https://code.claude.com/docs/en/memory) Is Loaded {.smaller}
 
-![](media/diag-05-claude-md-loading.webp){fig-align="center" fig-alt="Diagram showing how global, project-root, subdirectory CLAUDE.md files and @imports merge into the system prompt"}
+![](media/diag-05-claude-md-loading.webp){fig-align="center" fig-alt="Diagram showing how global, project-root, subdirectory CLAUDE.md files, and @imports merge into the system prompt"}
 
 ## CLAUDE.md Anatomy {.smaller}
 
@@ -610,7 +610,7 @@ In **planning mode** Claude reads files and proposes an approach before edits ha
 
 - Inspect `git diff`
 - Run tests and lint
-- Check generated artifacts
+- Check generated artefacts
 - Review the PR like any teammate's work
 :::
 
