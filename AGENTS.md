@@ -56,7 +56,7 @@ Check which set is present to know which language context applies.
 - **Slide syntax.** Slides are separated by `##` headings. Use Quarto's RevealJS dialect: fenced divs (`:::`), columns (`.columns` / `.column`), raw HTML blocks (`{=html}`), and the `{.smaller}` class for dense slides.
 - **Inline styling.** Visual design uses inline `style` attributes on fenced divs with a small palette of background colours (e.g. `#e3f2fd`, `#e8f5e9`, `#fff3e0`, `#ffebee`, `#FFFBC1`, `#f8f9fa`). The CSS maps these to the custom theme. Do not change these colour values without updating `style.css`.
 - **Image classes.** Images may use semantic classes (e.g. `.hero`, `.artifact`, `.illustration`) that control border, shadow, and rounding in `style.css`. Check the existing CSS before adding new image classes.
-- **Sources.** Every factual claim has a source citation at the bottom of its slide in a small-font centered div. Keep this pattern.
+- **Sources.** Every factual claim has a source citation at the bottom of its slide in a small-font centred div. Keep this pattern.
 - **Accessibility.** Images must have `fig-alt` text. Raw HTML widgets use `role="img"` and `aria-label`. Keep these.
   Verify with `just axe`, which appends an "Accessibility Report" slide listing axe-core violations. Keep `axe` in
   `_quarto-a11y.yml`, not `index.qmd`, so production builds exclude the audit payload. CLI metadata such as
@@ -89,7 +89,7 @@ just update    # Update language dependencies
 just render    # Render index.qmd to _site/
 just preview   # Live-reload dev server
 just open      # Alias for preview (live-reload dev server over localhost)
-just clean     # Remove build artifacts
+just clean     # Remove build artefacts
 just check     # Verify Quarto and Python setup
 just axe       # Preview with the axe accessibility checker enabled
 ```
@@ -162,12 +162,12 @@ All diagrams use matplotlib + Caveat font at DPI=100, rendered as PNG for Reveal
   the top portion of the group (i.e. boxes start >0.5 units below the group top edge).
 
 **Column/section headers**
-- When columns have colored background groups, put column header text as standalone
+- When columns have coloured background groups, put column header text as standalone
   `ax.text(...)` calls in a horizontal band ABOVE the group backgrounds, not inside them.
   See `make_01` for the pattern: headers at a fixed y above the groups, groups without labels.
 
 **Checklist before saving each diagram**
-- [ ] Title center y = `h - 0.55`; nothing has its top edge within 0.5 units of the title center
+- [ ] Title centre y = `h - 0.55`; nothing has its top edge within 0.5 units of the title centre
 - [ ] No `group_bg` label is at a y where a child box top edge also exists
 - [ ] All text labels (section headers, edge annotations) occupy their own horizontal band
 - [ ] Visually inspect the PNG via `Read` tool immediately after generation
@@ -206,3 +206,5 @@ TXT=#e6edf3  MUT=#8b949e  CARD=#1c2128
   actionable "how to" guidance, caveats, or decisions criteria.
 - When in doubt: if removing the text loses zero information (because the diagram
   shows it), remove it.
+
+- **Spelling and punctuation.** Use British spelling in prose (colour, licence, catalogue, artefact) and the Oxford comma in lists of three or more. Leave code, identifiers, file names, URLs, quotations, and proper names (`license` in YAML, `.well-known/api-catalog`) as they are.
