@@ -266,7 +266,7 @@ Mention `Shift+Tab` as the quick keyboard shortcut to toggle modes mid-flight.
 > *"The `/` menu is a launcher. The action type tells you how Claude will execute it."*
 
 ::: {.notes}
-Introduce skills and slash commands as repeatable ways to drive agent behavior.
+Introduce skills and slash commands as repeatable ways to drive agent behaviour.
 :::
 ## [`/` Actions](https://code.claude.com/docs/en/commands) — Know What You Are Running {.smaller}
 
@@ -967,7 +967,7 @@ Source: [Run Claude Code programmatically](https://code.claude.com/docs/en/headl
 Explain headless Claude Code (`claude -p`):
 Run one-shot tasks non-interactively in shell scripts or CI pipelines.
 - Use `--bare` to prevent loading local user settings and hooks.
-- Use `--allowedTools` to whitelist only necessary capabilities.
+- Use `--allowedTools` to pre-approve specific tools without interactive permission prompts (use `--tools` if you need to restrict which tools are available instead).
 - Use `--output-format json` to pipe structured responses into tools like `jq`.
 - Integrate with GitHub Actions to trigger reviews and triage on pull requests.
 :::
