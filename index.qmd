@@ -360,7 +360,7 @@ A repeated multi-step procedure is a candidate for a skill. Its Markdown file de
 | `/clear` | Reset conversation history |
 | `/compact` | Compress history, keep summary |
 | `/context` | Inspect context usage and heavy inputs |
-| `/rewind` | Restore or summarize from a checkpoint |
+| `/rewind` | Restore or summarise from a checkpoint |
 | `/goal` | Keep working until a condition holds |
 | `/usage` | Show usage and limit breakdown |
 

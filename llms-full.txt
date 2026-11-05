@@ -20,7 +20,7 @@ The talk is aimed at software developers who want to use Claude Code for complex
 
 - Understand the difference between chatbots, autocomplete, and CLI agents. On macOS, Linux, and WSL, default searches use find and grep through Bash; Glob and Grep remain in the default Windows tool set.
 - Learn how Claude Code uses tools and why tool access changes the interaction model.
-- Choose permission modes deliberately and combine rules with Bash sandboxing for defense in depth.
+- Choose permission modes deliberately and combine rules with Bash sandboxing for defence in depth.
 - Distinguish built-in commands, reusable skills, and dynamic workflows exposed through the `/` menu.
 - Write a project skill as `.claude/skills/<name>/SKILL.md` and control whether Claude may invoke it automatically.
 - Manage the context window deliberately and avoid filling it with low-signal content.
