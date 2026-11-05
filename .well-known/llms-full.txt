@@ -1,10 +1,61 @@
 # Effective Claude Code Usage
 
-This is the well-known discovery copy for agentic assistants.
-
-Canonical slides: https://www.indrapatil.com/effective-claude-code-usage/
-Root llms.txt: https://www.indrapatil.com/effective-claude-code-usage/llms.txt
-Root llms-full.txt: https://www.indrapatil.com/effective-claude-code-usage/llms-full.txt
+Author: Indrajeet Patil
+Format: Quarto RevealJS presentation
+Canonical URL: https://www.indrapatil.com/effective-claude-code-usage/
 Source: https://github.com/IndrajeetPatil/effective-claude-code-usage/
+License: CC0 1.0 Universal
+Publication date: 2026-06-20
+Last reviewed: 2026-11-05
+Claude Code version reviewed: 2.1.318
+Language: English
 
-Summary: A Quarto RevealJS presentation on using Claude Code effectively as a CLI agent for software engineering. The deck covers tool use, permission modes, sandboxing, skills (using and writing them), workflows, context management, CLAUDE.md, auto memory, subagents, background agents, planning mode, hooks, prompting, MCP, Git worktrees, and non-interactive automation with `claude -p` in scripts and CI.
+## Summary
+
+This slide deck presents practical patterns for using Claude Code effectively as a CLI agent. Its core framing is that Claude Code is not just a chatbot in a terminal: it can read, write, search, execute, use tools, run workflows, and iterate through software engineering tasks.
+
+The talk is aimed at software developers who want to use Claude Code for complex engineering work. It explains how to treat the tool as a capable cognitive partner while keeping workflows auditable, validated, and grounded in project context. It covers skills (reusable playbooks), background agents, multi-agent workflows with deterministic orchestration, and the auto-memory system.
+
+## Learning goals
+
+- Understand the difference between chatbots, autocomplete, and CLI agents. On macOS, Linux, and WSL, default searches use find and grep through Bash; Glob and Grep remain in the default Windows tool set.
+- Learn how Claude Code uses tools and why tool access changes the interaction model.
+- Choose permission modes deliberately and combine rules with Bash sandboxing for defence in depth.
+- Distinguish built-in commands, reusable skills, and dynamic workflows exposed through the `/` menu.
+- Write a project skill as `.claude/skills/<name>/SKILL.md` and control whether Claude may invoke it automatically.
+- Manage the context window deliberately and avoid filling it with low-signal content.
+- Use CLAUDE.md for durable instructions and auto memory for Claude-authored, per-repository learnings.
+- Understand native AGENTS.md support (v2.1.277+), its fallback to project CLAUDE.md files, and the Project instructions setting.
+- Know which instruction files load at launch and which load on demand (subdirectory CLAUDE.md files and path-scoped rules).
+- Apply subagents when parallel exploration or independent subtasks are valuable.
+- Use background agents to hand off independent sessions and monitor them from agent view.
+- Use workflows for deterministic multi-agent orchestration with budget control.
+- Use planning mode to explore before editing source; it can run shell commands and write plan files, and is not an OS sandbox. Bypass-enabled interactive sessions can bypass edit restrictions.
+- Use goals for persistent completion conditions and rewind checkpoints for recovery.
+- Use hooks and validation steps to make agentic work safer. Match Edit and Write for file-tool coverage; shell edits need separate coverage. Policy hooks need explicit denial and failure handling; PostToolUse cannot undo a write.
+- Prompt with intent and constraints rather than brittle step-by-step instructions.
+- Understand when MCP is useful and when CLI tools are more token-efficient.
+- Use Git worktrees for parallel Claude Code sessions.
+- Distinguish /review (an alias for /code-review) from a separate read-only command, and use --fix only when fixes are intended. Ask Claude to manage subagent files; /agents now prints guidance.
+- Run Claude Code non-interactively with `claude -p` for scripts and CI, using `--bare`, narrowly scoped `--allowedTools`, and `--output-format json`. Bare mode requires API or provider credentials rather than subscription login, and disables hooks even when passed through --settings. Use --tools to restrict built-in tool availability; pre-approval alone is not a tool allowlist.
+
+## Core recommendations
+
+- Treat Claude Code as an agent that loops through thinking, acting with tools, and observing results until the task is done.
+- Keep project instructions explicit and close to the codebase.
+- Treat CLAUDE.md and auto memory as context, not enforcement; use hooks or permission deny rules for hard guardrails.
+- Auto mode is the built-in default for interactive terminal and VS Code sessions from v2.1.283, subject to settings and availability.
+- Match the permission mode to the environment; reserve bypass mode for isolated containers or virtual machines.
+- Give agents enough context to make good decisions, but avoid dumping unnecessary context.
+- Prefer validated workflows where commands, tests, linting, and review checks provide feedback.
+- Use subagents for bounded side work that would otherwise clutter the main context.
+- Use background agents for independent tasks you want to dispatch and revisit later; reserve experimental agent teams for workers that must communicate directly.
+- Use workflows when you need deterministic control flow, budget awareness, or structured output across multiple agents.
+- Use planning mode when the cost of premature edits is high.
+- Use worktrees to isolate concurrent agent sessions.
+- Give Claude a check to run (tests, a build, a screenshot) so the agent loop can verify its own work.
+- Use `/clear` between unrelated tasks and keep CLAUDE.md under about 200 lines.
+
+## Retrieval notes
+
+The canonical HTML page is the primary version of the presentation. This text file exists to give search engines, answer engines, and agentic assistants a concise, non-JavaScript-dependent summary of the deck's content and citation metadata.

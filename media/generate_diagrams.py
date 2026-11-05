@@ -282,7 +282,7 @@ def make_07():
     arr(ax, 7.725, y, 8.1, y, col=GRN)
     lbl(ax, 7.91, y + 0.4, 'yes', col=GRN, fs=18)
 
-    bracket(ax, 1.65, 7.7, 3.05, 'plan mode: nothing is edited yet', col=BLU)
+    bracket(ax, 1.65, 7.7, 3.05, 'plan mode: research and write a plan', col=BLU)
 
     loop_y = 0.75
     line(ax, [6.95, 6.95], [y - 0.65, loop_y])

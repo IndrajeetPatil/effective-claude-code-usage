@@ -40,7 +40,7 @@ description-meta: "A comprehensive guide to using Claude Code effectively as a C
 license: "CC0 1.0 Universal"
 pagetitle: "Effective Claude Code Usage"
 author-meta: "Indrajeet Patil"
-date-meta: "2026-10-07"
+date-meta: "2026-11-05"
 lang: "en"
 dir: "ltr"
 image: "media/social-media-card.webp"
@@ -101,11 +101,17 @@ Welcome. Claude Code can work directly in a development environment: reading fil
 
 ::: {.card-subtle .card-compact style="margin-top: 0.5em; font-size: 0.9em;"}
 **Prerequisite** · Claude Code installed; you can run `claude` in a terminal.
+
+Checked against **v2.1.318 · 5 November 2026**. Check `claude --version` and `/help` on your install.
 :::
 
 :::
 
 ::::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Sources: [Release notes](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md) · [Commands](https://code.claude.com/docs/en/commands)
+:::
 
 ::: {.notes}
 We will start with the difference between an agent and a chatbot. Then we will cover tools, permissions, context, project instructions, and more structured workflows. Basic terminal familiarity and an installed copy of Claude Code are enough to follow the examples.
@@ -199,8 +205,8 @@ The tools available to the agent determine what it can inspect and change. Under
 
 | Category | Tools | Enables |
 |----------|-------|---------|
-| **File I/O** | `Read` · `Write` · `Edit` | Read any file; create or surgically modify code |
-| **Search** | `Glob` · `Grep` | Find files by name; search content by regex |
+| **File I/O** | `Read` · `Write` · `Edit` | Read permitted files; create or surgically modify code |
+| **Search** | `Bash` (`find`, `grep`) | Default on macOS/Linux/WSL; `Glob`/`Grep` on Windows |
 | **Shell** | `Bash` | Run tests, git, npm, docker — any terminal command |
 | **Web** | `WebFetch` · `WebSearch` | Fetch docs, read changelogs, search answers |
 | **Agents** | `Agent` · `Workflow` | Spawn subagents, isolate context, orchestrate workflows |
@@ -208,6 +214,10 @@ The tools available to the agent determine what it can inspect and change. Under
 
 ::: {.card-blue .card-compact style="font-size:0.78em;"}
 **Permissions + sandboxing** · prompts depend on the active permission mode and rules. Sandboxed Bash can run automatically inside OS-enforced boundaries; explicit deny rules still apply. Configure both with [`/permissions`](https://code.claude.com/docs/en/permissions) and [`/sandbox`](https://code.claude.com/docs/en/sandboxing).
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Tools reference and platform defaults](https://code.claude.com/docs/en/tools-reference)
 :::
 
 ::: {.notes}
@@ -219,13 +229,13 @@ The tool set includes file reading and editing, repository search, shell command
 |------|----------------------|----------|
 | **Manual** | Reads only | Getting started; sensitive work |
 | **Accept edits** | Reads, file edits, common filesystem commands | Iterating on code you will review |
-| **Plan** | Reads only | Explore before implementation |
-| **Auto** | Classifier-approved actions (still blocks risky ones) | Default in recent versions; long tasks |
+| **Plan** | Reads and, when enabled, classifier-approved commands | Explore before implementation |
+| **Auto** | Actions with background safety checks | Default for terminal and VS Code since v2.1.283 |
 | **Don't ask** | Only pre-approved tools | Locked-down CI and scripts |
 | **Bypass** | Everything | Isolated containers or VMs only |
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Switch with `Shift+Tab`** · it cycles manual → accept edits → plan → auto mid-session. Permission rules decide what Claude may attempt; the sandbox enforces filesystem and network boundaries for Bash. In auto mode a classifier reviews actions in your place — it cuts prompts but does not replace your review of sensitive work.
+**Switch with `Shift+Tab`** · it cycles manual → accept edits → plan, then enabled optional modes. Watch the status bar. Permission rules decide what Claude may attempt; the sandbox enforces filesystem and network boundaries for Bash. In auto mode a classifier reviews actions in your place — it cuts prompts but does not replace your review of sensitive work.
 :::
 
 ::: {style="font-size:0.55em; text-align:center; margin-top:0.35em;"}
@@ -249,7 +259,7 @@ Skills and slash commands capture procedures that would otherwise have to be exp
 ::: {.column width="50%"}
 
 ::: {style="font-size: 0.88em;"}
-The `/` menu combines built-in commands, bundled skills, workflows, plugin actions, and MCP prompts. Skills are reusable instructions that load on demand; many can activate from their description, but `/verify` and `/code-review` run only when you invoke them.
+The `/` menu combines built-in commands, bundled skills, workflows, plugin actions, and MCP prompts. Skills are reusable instructions that load on demand; many can activate from their description, but `/verify` runs only when you invoke it.
 :::
 
 | Action | Kind · purpose |
@@ -268,7 +278,7 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 | `/deep-research` | Workflow · cited research |
 | `/security-review` | Built-in · audit branch diff |
 | `/init` | Built-in · generate CLAUDE.md |
-| `/review` | Built-in · fast, read-only PR review |
+| `/review` | Alias · `/code-review`; `--fix` applies findings |
 
 ::: {.card-green .card-compact style="font-size:0.78em; margin-top:0.8em;"}
 **Install-dependent** · availability varies by version, plan, platform, plugins, and MCP servers. Use `/help` for commands and `/skills` for loaded skills.
@@ -277,6 +287,10 @@ The `/` menu combines built-in commands, bundled skills, workflows, plugin actio
 :::
 
 ::::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Commands and action types](https://code.claude.com/docs/en/commands)
+:::
 
 ::: {.notes}
 The slash menu contains several kinds of action: built-in commands, bundled skills, and workflows. They may look similar in the interface, but they have different implementations and effects. Skills can load their guidance when it is relevant, keeping the initial context smaller.
@@ -315,11 +329,11 @@ The slash menu contains several kinds of action: built-in commands, bundled skil
 :::
 
 ::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.4em;"}
-**Who invokes it** · Claude loads a skill when its `description` matches the task. Set `disable-model-invocation: true` for actions with side effects, so they run only when you type `/name`.
+**Who invokes it** · Claude loads a skill when its `description` matches the task. Set `disable-model-invocation: true` for actions with side effects, so they run when explicitly invoked or permitted in your message.
 :::
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
-**Cheap until used** · only descriptions sit in context; the body loads on invocation. Existing `.claude/commands/*.md` files keep working as skills.
+**Cheap until used** · regular skills load descriptions first, then their body on invocation. User-only skill descriptions stay out of context. Existing `.claude/commands/*.md` files still work.
 :::
 
 :::
@@ -346,7 +360,7 @@ A repeated multi-step procedure is a candidate for a skill. Its Markdown file de
 | `/clear` | Reset conversation history |
 | `/compact` | Compress history, keep summary |
 | `/context` | Inspect context usage and heavy inputs |
-| `/rewind` | Restore or summarize from a checkpoint |
+| `/rewind` | Restore or summarise from a checkpoint |
 | `/goal` | Keep working until a condition holds |
 | `/usage` | Show usage and limit breakdown |
 
@@ -372,6 +386,10 @@ A repeated multi-step procedure is a candidate for a skill. Its Markdown file de
 :::
 
 ::::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Commands](https://code.claude.com/docs/en/commands)
+:::
 
 ::: {.notes}
 Session-control commands help manage context and permissions. Clear starts a new history, compact summarises the current one, and context shows what is consuming the window. The planning, permissions, sandbox, and goal commands control other aspects of how the session proceeds.
@@ -412,7 +430,7 @@ Startup instructions, memory, and tool descriptions occupy part of the window be
 :::
 # CLAUDE.md, Memory & Hooks
 
-> *"CLAUDE.md is durable instruction context; auto memory is Claude's local notebook; hooks are the rules that always run."*
+> *"CLAUDE.md is durable instruction context; auto memory is Claude's local notebook; hooks run checks at configured lifecycle events."*
 
 ::: {.notes}
 Project instructions provide durable context. Hooks add a different kind of support: checks that run at defined points in the workflow.
@@ -431,6 +449,29 @@ Source: [How Claude remembers your project](https://code.claude.com/docs/en/memo
 
 ::: {.notes}
 Claude Code loads instructions from more than one location. User-level guidance, repository instructions, local overrides, and narrower rules can all contribute context. Keeping specialised guidance near the files it concerns avoids loading everything into every task.
+:::
+## Already Use AGENTS.md? {.smaller}
+
+| Project setup | Default behaviour in v2.1.277+ |
+|---------------|-------------------------------|
+| AGENTS.md; no project or ancestor CLAUDE.md files | Loads AGENTS.md directly |
+| Also has CLAUDE.md, .claude/CLAUDE.md, or CLAUDE.local.md in that hierarchy | Loads CLAUDE.md files instead |
+| CLAUDE.md imports `@AGENTS.md` | Loads the imported instructions |
+
+::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.6em;"}
+**Choose deliberately** · `/config` → **Project instructions** can load both formats. User-level and managed CLAUDE.md files do not suppress the default AGENTS.md fallback.
+:::
+
+::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
+**Compatibility** · if native support is unavailable or disabled, keep the CLAUDE.md import. Native AGENTS.md support does not load skills from `.agents/`.
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [AGENTS.md support and exceptions](https://code.claude.com/docs/en/memory#agents-md)
+:::
+
+::: {.notes}
+Recent versions can use AGENTS.md directly when there is no project or ancestor CLAUDE.md or CLAUDE.local.md taking precedence. User-level and managed instructions still load alongside that fallback. Check the Project instructions setting if you want both formats loaded. An existing import remains useful for older installations or sessions where native support is disabled. This support concerns instruction files, not the skills under a dot-agents directory.
 :::
 ## CLAUDE.md Anatomy {.smaller}
 
@@ -526,7 +567,7 @@ An instruction tells the model what it should do; it does not enforce a boundary
 <span style="color:#e6edf3;">{</span>
 <span style="color:#e6edf3;">  </span><span style="color:#a78bfa;">"hooks"</span><span style="color:#e6edf3;">: {</span>
 <span style="color:#e6edf3;">    </span><span style="color:#a78bfa;">"PostToolUse"</span><span style="color:#e6edf3;">: [{</span>
-<span style="color:#a78bfa;">      "matcher"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"Edit"</span><span style="color:#e6edf3;">,</span>
+<span style="color:#a78bfa;">      "matcher"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"Edit|Write"</span><span style="color:#e6edf3;">,</span>
 <span style="color:#a78bfa;">      "hooks"</span><span style="color:#e6edf3;">: [{</span>
 <span style="color:#a78bfa;">        "type"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"command"</span><span style="color:#e6edf3;">,</span>
 <span style="color:#a78bfa;">        "command"</span><span style="color:#e6edf3;">: </span><span style="color:#22c55e;">"pnpm lint"</span>
@@ -554,15 +595,19 @@ An instruction tells the model what it should do; it does not enforce a boundary
 :::
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Keep them scoped** · prefer narrow matchers and non-mutating checks unless automatic edits are truly intentional.
+**Enforcement needs configuration** · this post-edit hook cannot undo a write. Policy hooks should deny explicitly or exit 2; use `onFailure: "block"` (v2.1.295+) to block on hook errors or timeouts.
 :::
 
 :::
 
 ::::
 
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Sources: [Hooks reference](https://code.claude.com/docs/en/hooks) · [Hook coverage](https://code.claude.com/docs/en/hooks-guide#filter-hooks-with-matchers)
+:::
+
 ::: {.notes}
-Hooks run commands at defined lifecycle events. For example, an edit can trigger a formatter or linter without another reminder from the user. A hook makes the check repeatable; the usefulness of the result still depends on what that check actually verifies.
+Hooks run commands at defined lifecycle events. For example, an edit can trigger a formatter or linter without another reminder from the user. This matcher covers Edit and Write, but not changes made through shell commands. A post-edit check cannot undo the edit. For a policy gate, configure the hook decision and failure behaviour explicitly; an ordinary linter failure is not automatically a blocking decision.
 :::
 # Subagents & Workflows
 
@@ -576,7 +621,11 @@ Some tasks benefit from separate workers or explicit coordination. The key is to
 ![](media/diag-06-subagent-orchestration.webp){fig-align="center" fig-alt="The main session, which holds the goal, delegates to three subagents that each get their own context window: Explore finds every auth call site and is read-only; general-purpose updates the API docs and can edit files; a custom code-reviewer reviews the diff with your chosen tools and model. Only their summaries return to the main context."}
 
 ::: {.card-amber .card-compact style="font-size:0.8em; margin-top:0.6em;"}
-**Custom subagents** · a Markdown file in `.claude/agents/` with `name`, `description`, and optional `tools` and `model`. Claude delegates when the description matches; `/agents` manages them.
+**Custom subagents** · a Markdown file in `.claude/agents/` with `name`, `description`, and optional `tools` and `model`. Ask Claude to create or edit one; `/agents` now prints guidance, rather than opening a manager.
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Sources: [Subagents](https://code.claude.com/docs/en/sub-agents) · [Commands](https://code.claude.com/docs/en/commands)
 :::
 
 ::: {.notes}
@@ -633,6 +682,10 @@ Different parallel tools serve different needs. A subagent handles a bounded tas
 **Orchestration as code** · the control flow above lives in a readable JavaScript script that runs in the background. `/workflows` shows live progress; save a run that worked so the team can reuse it.
 :::
 
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Dynamic workflows](https://code.claude.com/docs/en/workflows)
+:::
+
 ::: {.notes}
 A workflow represents a multi-stage procedure as code. It can define phases, checks, and limits that would otherwise be left to conversational coordination. This is useful when the same complex procedure needs to run repeatedly.
 :::
@@ -665,14 +718,18 @@ Planning mode separates investigation from implementation. It gives a user a cha
 :::
 ## [Planning Mode](https://code.claude.com/docs/en/permission-modes) Workflow {.smaller}
 
-![](media/diag-07-planning-mode.webp){fig-align="center" fig-alt="Planning workflow: request, explore the code, draft a plan covering files, steps, and risks, then an approval decision. Explore and draft happen in plan mode where nothing is edited. If revised, the loop returns to the draft; if approved, Claude executes and then verifies."}
+![](media/diag-07-planning-mode.webp){fig-align="center" fig-alt="Planning workflow: request, explore the code, draft a plan covering files, steps, and risks, then an approval decision. Explore and draft happen in plan mode where Claude researches and writes a plan before changing source files. If revised, the loop returns to the draft; if approved, Claude executes and then verifies."}
 
 ::: {.card-green .card-compact style="font-size:0.82em; margin-top:0.6em;"}
-**Enter plan mode** · `/plan`, `Shift+Tab` until the status bar shows plan mode, or `claude --permission-mode plan`. Edit the plan directly or reply with feedback before approving.
+**Enter plan mode** · `/plan`, `Shift+Tab`, or `claude --permission-mode plan`. Review before approving. Planning can run shell commands; it is not an OS sandbox. Avoid enabling bypass permissions when you need edit restrictions.
+:::
+
+::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
+Source: [Plan mode and its limits](https://code.claude.com/docs/en/permission-modes#analyze-before-you-edit-with-plan-mode)
 :::
 
 ::: {.notes}
-In planning mode, the agent explores the code and proposes a route to the requested outcome. The user can then review or amend the plan before implementation. This is most useful when the scope or consequences need to be understood first.
+In planning mode, the agent explores the code and proposes a route to the requested outcome. Planning can write a plan file and run shell commands; it is not a security sandbox. Interactive sessions with bypass permissions available can also bypass edit restrictions. The user can then review or amend the plan before implementation. This is most useful when the scope or consequences need to be understood first.
 :::
 ## When Planning Mode Pays Off {.smaller}
 
@@ -838,9 +895,9 @@ Once a workflow is understood, some tasks can run without an interactive convers
 <span style="color:#38bdf8;">$</span> cat build.log | claude -p \
     <span style="color:#22c55e;">"explain the root cause"</span>
 
-<span style="color:#8b949e;"># Pre-approve only the tools it needs</span>
+<span style="color:#8b949e;"># Pre-approve the project test command</span>
 <span style="color:#38bdf8;">$</span> claude -p <span style="color:#22c55e;">"fix the failing tests"</span> \
-    --allowedTools <span style="color:#22c55e;">"Bash,Read,Edit"</span>
+    --allowedTools <span style="color:#22c55e;">"Read,Edit,Bash(pnpm test *)"</span>
 
 <span style="color:#8b949e;"># Structured output for scripts</span>
 <span style="color:#38bdf8;">$</span> claude -p <span style="color:#22c55e;">"summarise this PR"</span> \
@@ -857,11 +914,11 @@ Once a workflow is understood, some tasks can run without an interactive convers
 :::
 
 ::: {.card-blue .card-compact style="font-size:0.82em; margin-top:0.4em;"}
-**Reproducible in CI** · add `--bare` to skip local hooks, plugins, MCP servers, auto memory, and CLAUDE.md; pass what you need explicitly.
+**Bare CI runs** · `--bare` skips discovered customisations and project instructions. It also skips subscription login: set `ANTHROPIC_API_KEY` or provider credentials. Hooks stay off, even via `--settings`.
 :::
 
 ::: {.card-amber .card-compact style="font-size:0.82em; margin-top:0.4em;"}
-**Locked down** · `--permission-mode dontAsk` denies anything not pre-approved. Keep bypass mode for disposable containers.
+**Tool scope** · `--allowedTools` pre-approves calls; `--tools` restricts built-in availability. With `--permission-mode dontAsk`, calls that would prompt are denied. Keep bypass mode for disposable containers.
 :::
 
 ::: {.card-subtle .card-compact style="font-size:0.78em; margin-top:0.4em;"}
@@ -877,7 +934,7 @@ Source: [Run Claude Code programmatically](https://code.claude.com/docs/en/headl
 :::
 
 ::: {.notes}
-Print mode runs a task non-interactively. The bare option controls loading of local settings and hooks, allowed-tools controls pre-approval, and the tools option controls availability. Structured JSON output lets another program consume the result. These options serve different purposes and should be chosen deliberately.
+Print mode runs a task non-interactively. Bare mode skips discovered customisations and subscription login, so supply API or provider credentials and run required validation outside Claude. Allowed-tools controls pre-approval, while tools controls availability. Structured JSON output lets another program consume the result. These options serve different purposes and should be chosen deliberately.
 :::
 # Summary
 
