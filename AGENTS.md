@@ -8,6 +8,7 @@ GitHub Pages.
 
 ```text
 index.qmd            # All slide content (the only file you usually need to edit)
+DESIGN.md            # Visual design tokens, typography, and styling rules
 _quarto.yml          # Quarto project config (output dir, resources list)
 _quarto-a11y.yml     # Opt-in profile enabling the axe accessibility checker (`just axe`)
 accessibility.html   # Compatibility fixes supplementing the a11y extension
@@ -44,12 +45,14 @@ just axe       # Preview with the axe accessibility checker enabled
   (`:::`), columns (`.columns` / `.column`), raw HTML blocks (`{=html}`), and
   the `{.smaller}` class for dense slides. Follow the layout patterns of
   neighbouring slides.
-- **Theme and colours.** Keep the theme `black` and the format `revealjs`;
-  restyle through `style.css`. Lay out content with the classes in `style.css`
-  rather than inline styles: `.card-green`, `.card-blue`, `.card-amber`,
-  `.card-purple`, `.card-red`, `.card-subtle` (plus `.card-compact`), and
-  `.terminal-box` for terminal output. New widgets follow the naming patterns
-  already in `style.css`.
+- **Design specification.** The visual design follows [DESIGN.md](DESIGN.md).
+  Always respect this document when creating or modifying slides, components,
+  styling, colours, and typography. Keep the theme `black` and the format
+  `revealjs`; restyle through `style.css`. Lay out content with the classes in
+  `style.css` rather than inline styles: `.card-green`, `.card-blue`,
+  `.card-amber`, `.card-purple`, `.card-red`, `.card-subtle` (plus
+  `.card-compact`), and `.terminal-box` for terminal output. New widgets follow
+  the naming patterns already in `style.css`.
 - **Diagrams and text must not restate each other.** If a diagram already
   shows a concept, do not repeat its labels as cards or bullets below it.
   Text below a diagram is for what the diagram does not show: quantitative
