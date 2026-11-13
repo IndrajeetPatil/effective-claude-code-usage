@@ -7,8 +7,9 @@ agent: agent
 
 You are updating this repository's Quarto/RevealJS presentation about using
 Claude Code effectively. The deck lives in `index.qmd`; diagrams are generated
-by `media/generate_diagrams.py` and committed as `.webp`. Read `AGENTS.md` first — it holds the layout rules, colour constants, and diagram
-constraints you must follow.
+by `media/generate_diagrams.py` and committed as `.webp`. Read `AGENTS.md`
+first for the layout rules, and load the `generate-diagrams` skill it lists for
+the colour constants and diagram constraints you must follow.
 
 ## Goal
 
@@ -77,11 +78,11 @@ disconnected shapes, factual errors — but don't restyle for its own sake.
 Workflow:
 
 1. Edit the relevant `make_NN()` function.
-2. Run the generator (it emits PNGs):
-   `QUARTO_PYTHON=.venv/bin/python .venv/bin/python media/generate_diagrams.py`
-3. Convert **only the changed** diagrams to WebP: `cwebp -q 90 in.png -o out.webp`
+2. Run the generator, which writes every `.webp` directly:
+   `uv run python media/generate_diagrams.py`
+3. Keep **only the changed** diagrams; restore any other `.webp` the run
+   rewrote.
 4. Read each changed `.webp` with the image viewer and confirm it looks right.
-5. Delete the PNG intermediates — the repo tracks only `.webp`.
 
 ## Step 5 — Verify and open a PR
 
