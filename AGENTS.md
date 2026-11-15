@@ -84,6 +84,7 @@ pull request.
 
 - `.github/workflows/build-presentation.yaml` calls a reusable workflow from
   `IndrajeetPatil/workflows`. Do not inline or modify that workflow here.
+
 - Reference `IndrajeetPatil/workflows` reusable workflows as `@main`, never a
   commit SHA. The owner maintains them and is the only person who can
   contribute to this repository, so there is no external-contributor risk, and
@@ -91,8 +92,9 @@ pull request.
   `actions/unpinned-tag`, zizmor `unpinned-uses`) flag this by design: do not
   report it or propose a pin; dismiss such alerts as "won't fix" with this
   reason.
+
 - `check-link-rot.yaml` checks external links; list false positives in
-  `.lycheeignore`.
+  `lychee.toml`.
 
 ## Agent skills
 
