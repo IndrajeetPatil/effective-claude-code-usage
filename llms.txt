@@ -4,7 +4,7 @@
 
 This presentation explains how to use Claude Code as an agentic coding partner rather than a terminal chatbot. It covers tools, skills (using and writing them), workflows, context management, CLAUDE.md files, auto memory, subagents, background agents, planning mode, hooks, prompting strategies, MCP, Git worktrees, and non-interactive automation with `claude -p`.
 
-Reviewed against Claude Code v2.1.318 on 5 November 2026. Command availability depends on the installed version and configuration.
+Reviewed against Claude Code v2.1.325 on 15 November 2026. Command availability depends on the installed version and configuration.
 
 ## Primary URL
 
