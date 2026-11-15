@@ -6,8 +6,8 @@ Canonical URL: https://www.indrapatil.com/effective-claude-code-usage/
 Source: https://github.com/IndrajeetPatil/effective-claude-code-usage/
 License: CC0 1.0 Universal
 Publication date: 2026-06-20
-Last reviewed: 2026-11-05
-Claude Code version reviewed: 2.1.318
+Last reviewed: 2026-11-15
+Claude Code version reviewed: 2.1.325
 Language: English
 
 ## Summary

@@ -40,7 +40,7 @@ description-meta: "A comprehensive guide to using Claude Code effectively as a C
 license: "CC0 1.0 Universal"
 pagetitle: "Effective Claude Code Usage"
 author-meta: "Indrajeet Patil"
-date-meta: "2026-11-05"
+date-meta: "2026-11-15"
 lang: "en"
 dir: "ltr"
 image: "media/social-media-card.webp"
@@ -102,7 +102,7 @@ Welcome. Claude Code can work directly in a development environment: reading fil
 ::: {.card-subtle .card-compact style="margin-top: 0.5em; font-size: 0.9em;"}
 **Prerequisite** · Claude Code installed; you can run `claude` in a terminal.
 
-Checked against **v2.1.318 · 5 November 2026**. Check `claude --version` and `/help` on your install.
+Checked against **v2.1.325 · 15 November 2026**. Check `claude --version` and `/help` on your install.
 :::
 
 :::
@@ -213,7 +213,7 @@ The tools available to the agent determine what it can inspect and change. Under
 | **[MCP](https://code.claude.com/docs/en/mcp)** | Server-defined | GitHub PRs, Jira tickets, Postgres, and more |
 
 ::: {.card-blue .card-compact style="font-size:0.78em;"}
-**Permissions + sandboxing** · prompts depend on the active permission mode and rules. Sandboxed Bash can run automatically inside OS-enforced boundaries; explicit deny rules still apply. Configure both with [`/permissions`](https://code.claude.com/docs/en/permissions) and [`/sandbox`](https://code.claude.com/docs/en/sandboxing).
+**Permissions + sandboxing** · prompts depend on the active permission mode and rules. Sandboxed Bash runs inside OS-enforced boundaries but still prompts by default; turn on auto-allow to run it without asking. Explicit deny rules still apply. Configure both with [`/permissions`](https://code.claude.com/docs/en/permissions) and [`/sandbox`](https://code.claude.com/docs/en/sandboxing).
 :::
 
 ::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
@@ -231,7 +231,7 @@ The tool set includes file reading and editing, repository search, shell command
 | **Accept edits** | Reads, file edits, common filesystem commands | Iterating on code you will review |
 | **Plan** | Reads and, when enabled, classifier-approved commands | Explore before implementation |
 | **Auto** | Actions with background safety checks | Default for terminal and VS Code since v2.1.283 |
-| **Don't ask** | Only pre-approved tools | Locked-down CI and scripts |
+| **Don't ask** | Reads in working directories and pre-approved tools | Locked-down CI and scripts |
 | **Bypass** | Everything | Isolated containers or VMs only |
 
 ::: {.card-amber .card-compact style="font-size:0.78em; margin-top:0.4em;"}
