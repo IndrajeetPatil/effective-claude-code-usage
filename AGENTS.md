@@ -102,5 +102,4 @@ Skills live in `.agents/skills/<name>/SKILL.md`. Load one before its task:
 
 | Skill | Load before |
 | --- | --- |
-| `check-accessibility` | Changing slide markup, styles, widgets, menus or the a11y setup; any accessibility audit |
 | `generate-diagrams` | Adding or changing a diagram in `media/generate_diagrams.py` |
