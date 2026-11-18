@@ -40,7 +40,7 @@ description-meta: "A comprehensive guide to using Claude Code effectively as a C
 license: "CC0 1.0 Universal"
 pagetitle: "Effective Claude Code Usage"
 author-meta: "Indrajeet Patil"
-date-meta: "2026-11-15"
+date-meta: "2026-11-18"
 lang: "en"
 dir: "ltr"
 image: "media/social-media-card.webp"
@@ -102,7 +102,7 @@ Welcome. Claude Code can work directly in a development environment: reading fil
 ::: {.card-subtle .card-compact style="margin-top: 0.5em; font-size: 0.9em;"}
 **Prerequisite** · Claude Code installed; you can run `claude` in a terminal.
 
-Checked against **v2.1.325 · 15 November 2026**. Check `claude --version` and `/help` on your install.
+Checked against **v2.1.327 · 18 November 2026**. Check `claude --version` and `/help` on your install.
 :::
 
 :::
@@ -587,7 +587,7 @@ An instruction tells the model what it should do; it does not enforce a boundary
 :::
 
 ::: {.card-subtle .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
-**Key events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit` — and more
+**Key events** · `PreToolUse` · `PostToolUse` · `Stop` · `UserPromptSubmit` — and more. `/status` flags matchers that never match (v2.1.327+).
 :::
 
 ::: {.card-blue .card-compact style="font-size:0.78em; margin-top: 0.4em;"}
@@ -603,11 +603,11 @@ An instruction tells the model what it should do; it does not enforce a boundary
 ::::
 
 ::: {style="font-size:0.55em; text-align:center; margin-top:0.4em;"}
-Sources: [Hooks reference](https://code.claude.com/docs/en/hooks) · [Hook coverage](https://code.claude.com/docs/en/hooks-guide#filter-hooks-with-matchers)
+Sources: [Hooks reference](https://code.claude.com/docs/en/hooks) · [Hook coverage](https://code.claude.com/docs/en/hooks-guide#filter-hooks-with-matchers) · [Release notes](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md)
 :::
 
 ::: {.notes}
-Hooks run commands at defined lifecycle events. For example, an edit can trigger a formatter or linter without another reminder from the user. This matcher covers Edit and Write, but not changes made through shell commands. A post-edit check cannot undo the edit. For a policy gate, configure the hook decision and failure behaviour explicitly; an ordinary linter failure is not automatically a blocking decision.
+Hooks run commands at defined lifecycle events. For example, an edit can trigger a formatter or linter without another reminder from the user. This matcher covers Edit and Write, but not changes made through shell commands. A post-edit check cannot undo the edit. For a policy gate, configure the hook decision and failure behaviour explicitly; an ordinary linter failure is not automatically a blocking decision. After editing hook settings, open the status panel: it lists any matcher that will never fire.
 :::
 # Subagents & Workflows
 
