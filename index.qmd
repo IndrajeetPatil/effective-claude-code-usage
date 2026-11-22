@@ -151,7 +151,7 @@ Source: [Best practices: change a default](https://code.claude.com/docs/en/best-
 :::
 
 ::: {.notes}
-Before you configure anything, know what you already get. Interactive sessions start in auto mode, run a capable model at medium effort, delegate to subagents when there is a reason to, and compact the conversation as it grows. Most advice about micromanaging these is out of date. The setup worth doing is the setup that tells Claude about your project, because no default can know that.
+Before you configure anything, know what you already get. New terminal sessions start in auto mode, run a capable model at medium effort, delegate to subagents when there is a reason to, and compact the conversation as it grows. Most advice about micromanaging these is out of date. The setup worth doing is the setup that tells Claude about your project, because no default can know that.
 :::
 
 # Tell Claude what it can't see {data-eyebrow="Part 1"}
@@ -305,24 +305,24 @@ Claude works in a loop: gather context, act, and check. With a check that return
 
 ::: {.column width="50%"}
 ::: {.card-blue .card-compact}
-**Ask for evidence** · the command and its output, or the screenshot. "All tests pass" alone tells you little.
+**Ask for evidence** · the command and its output, not "all tests pass". Then `/verify` has Claude run the app and look at the result.
 :::
 :::
 
 ::: {.column width="50%"}
 ::: {.card-purple .card-compact}
-**Get a fresh reviewer** · `/code-review` checks the diff in a subagent that never saw your reasoning.
+**Get a fresh reviewer** · a subagent that never saw your reasoning: `/code-review`, or one told to check the diff against `SPEC.md` and report correctness gaps.
 :::
 :::
 
 ::::
 
 ::: {.source}
-Sources: [Best practices](https://code.claude.com/docs/en/best-practices#give-claude-a-check-to-run) · [`/goal`](https://code.claude.com/docs/en/goal) · [`Stop` hook](https://code.claude.com/docs/en/hooks#stop)
+Sources: [Best practices](https://code.claude.com/docs/en/best-practices#give-claude-a-check-to-run) · [Review against your spec](https://code.claude.com/docs/en/best-practices#review-against-your-spec) · [`/verify`](https://code.claude.com/docs/en/skills#run-and-verify-your-app) · [`/goal`](https://code.claude.com/docs/en/goal) · [`Stop` hook](https://code.claude.com/docs/en/hooks#stop)
 :::
 
 ::: {.notes}
-You choose how strict the check is. Asking in the prompt works for any task with no setup, but Claude decides when it is satisfied. A goal has a separate model check the condition after every turn, which matters most for long background runs. A Stop hook is enforced by Claude Code itself: the turn cannot end until the script passes. Whichever you choose, ask for evidence, and for important work get a review from a subagent that did not write the code.
+You choose how strict the check is. Asking in the prompt works for any task with no setup, but Claude decides when it is satisfied. A goal has a separate model check the condition after every turn, which matters most for long background runs. A Stop hook is enforced by Claude Code itself: when the script fails, Claude is sent back to work. Whichever you choose, ask for evidence, and run verify to have Claude try the app itself. For important work, get a review from a subagent that did not write the code, and have it compare the result against your spec and report only gaps that affect correctness.
 :::
 
 ## A `Stop` hook makes the check non-negotiable {data-eyebrow="Part 2 · Check"}
@@ -349,7 +349,7 @@ You choose how strict the check is. Asking in the prompt works for any task with
 
 ::: {.column width="50%"}
 ::: {.card-amber .card-compact}
-**Escape hatch** · after eight blocked stops in a row with no tool call, Claude Code ends the turn anyway.
+**Escape hatch** · after eight blocked stops in a row with no tool call, Claude Code ends the turn anyway. Required CI stays the final gate.
 :::
 :::
 
@@ -360,7 +360,7 @@ Source: [Best practices: enforce the check with a Stop hook](https://code.claude
 :::
 
 ::: {.notes}
-Here is the strictest version for a typecheck. When Claude tries to finish, Claude Code runs the compiler. If it fails, the hook exits with code 2, which blocks the stop, and the compiler output goes back to Claude as the reason. A line in the instructions file saying "always typecheck" works most of the time. This works every time, up to a safety limit on repeated blocks.
+Here is the strictest version for a typecheck. When Claude tries to finish, Claude Code runs the compiler. If it fails, the hook exits with code 2, which blocks the stop, and the compiler output goes back to Claude as the reason. A line in the instructions file saying "always typecheck" works most of the time. This runs every time, up to a safety limit on repeated blocks, so keep required checks in CI as the final gate before merging.
 :::
 
 # Enforce the rules that can't have exceptions {data-eyebrow="Part 3"}
@@ -377,7 +377,7 @@ The third fix is about rules. Some rules can have exceptions, and Claude is usua
 
 ## Guidance or enforcement? {data-eyebrow="Part 3 · Enforce"}
 
-![](media/diag-07-two-kinds.webp){.diagram fig-alt="Two columns. Claude decides: your prompt, CLAUDE.md, skills Claude picks up, and the auto mode classifier; followed almost every time. Claude Code enforces: hooks, permission deny rules, the sandbox in strict mode, and managed settings; applied every time. An arrow moves rules that must never bend to the right; another moves rules that are only preferences to the left."}
+![](media/diag-07-two-kinds.webp){.diagram fig-alt="Two columns. Claude decides: your prompt, CLAUDE.md, skills Claude picks up, and the auto mode classifier; followed almost every time. Claude Code enforces: hooks, permission deny rules, the sandbox in strict mode, and managed settings; applied whatever Claude decides. An arrow moves rules that must never bend to the right; another moves rules that are only preferences to the left."}
 
 ::: {.card-amber .card-compact}
 **The signal** · if you keep adding IMPORTANT to a `CLAUDE.md` line and Claude still misses it, the line belongs in a hook. If a hook only encodes a preference, delete it.
@@ -388,7 +388,7 @@ Source: [Best practices: deterministic and non-deterministic instructions](https
 :::
 
 ::: {.notes}
-Every instruction is one of two kinds. Prompts, the instructions file, and skills are read by the model, which usually follows them but is not guaranteed to. Hooks, deny rules, the sandbox, and managed settings are applied by Claude Code every time, whatever the model decides. Most of the time you want Claude to decide. Move a rule into configuration only when it must never bend, and move it back if it turns out to be a preference.
+Every instruction is one of two kinds. Prompts, the instructions file, and skills are read by the model, which usually follows them but is not guaranteed to. Hooks, deny rules, the sandbox, and managed settings are applied by Claude Code, whatever the model decides. Most of the time you want Claude to decide. Move a rule into configuration only when it must never bend, and move it back if it turns out to be a preference.
 :::
 
 ## Two rules, enforced {data-eyebrow="Part 3 · Enforce"}
@@ -428,7 +428,7 @@ Deny rules hold in every permission mode and also catch `cat .env`. They match t
 ```
 
 ::: {.card-subtle .card-compact}
-Claude isn't the one running it, so whether it remembers the rule no longer matters.
+Claude doesn't have to remember it. A hook that crashes or times out lets the action through unless it sets `"onFailure": "block"`.
 :::
 
 :::
@@ -436,11 +436,11 @@ Claude isn't the one running it, so whether it remembers the rule no longer matt
 ::::
 
 ::: {.source}
-Sources: [Permissions](https://code.claude.com/docs/en/permissions) · [Hooks guide](https://code.claude.com/docs/en/hooks-guide) · [Sandboxing](https://code.claude.com/docs/en/sandboxing)
+Sources: [Permissions](https://code.claude.com/docs/en/permissions) · [Hooks guide](https://code.claude.com/docs/en/hooks-guide) · [Hook failures](https://code.claude.com/docs/en/hooks#block-the-action-when-a-hook-fails) · [Sandboxing](https://code.claude.com/docs/en/sandboxing)
 :::
 
 ::: {.notes}
-On the left, never reading secrets becomes a deny rule. It applies in every permission mode, and Claude Code also recognises common shell commands that read files. Rules match tool calls rather than intent, so for security, add the operating-system sandbox. On the right, always formatting becomes a hook that runs after every edit. You do not have to write these yourself: asking Claude to write a hook that blocks edits to a folder works. Keep the enforced set small, because each rule needs maintenance.
+On the left, never reading secrets becomes a deny rule. It applies in every permission mode, and Claude Code also recognises common shell commands that read files. Rules match tool calls rather than intent, so for security, add the operating-system sandbox. On the right, always formatting becomes a hook that runs after every edit. By default, a hook that crashes or times out lets the action go ahead, so a hook that guards a rule should set on-failure to block. You do not have to write these yourself: asking Claude to write a hook that blocks edits to a folder works. Keep the enforced set small, because each rule needs maintenance.
 :::
 
 # Change a default when it costs too much {data-eyebrow="Part 4"}
@@ -501,7 +501,7 @@ Effort is the main control for how long Claude thinks. Medium is plenty for ever
 
 ## Subagents buy speed and fresh eyes, not intelligence {data-eyebrow="Part 4 · Defaults"}
 
-![](media/diag-10-subagents.webp){.diagram fig-alt="A main session fans out to three uses of subagents: parallel work, where independent pieces finish sooner; noisy output, where test runs and wide searches stay out of the main conversation; and a fresh reviewer that never saw how the code was written. A dashed note: every subagent sends its own requests, and the same model does not give a smarter answer."}
+![](media/diag-10-subagents.webp){.diagram fig-alt="A main session fans out to three uses of subagents: parallel work, where independent pieces finish sooner; noisy output, where test runs and wide searches stay out of the main conversation; and a fresh reviewer that never saw how the code was written. A dashed note: every subagent sends its own requests, and delegating does not by itself give a better answer."}
 
 ::: {.card-green .card-compact}
 **Spend less** · set `model: haiku` for simple jobs, ask for short summaries, and give a reviewer only `tools: Read, Grep, Glob` so it can't edit.
@@ -512,7 +512,7 @@ Source: [Best practices: know what subagents cost](https://code.claude.com/docs/
 :::
 
 ::: {.notes}
-Claude already delegates on its own. Subagents pay off for independent work in parallel, for keeping long output out of your conversation, and for getting a reviewer who did not see the code being written. They cost tokens, and sometimes time, because a fresh subagent must gather context again. Handing the same task to the same model does not make the answer smarter.
+Claude already delegates on its own. Subagents pay off for independent work in parallel, for keeping long output out of your conversation, and for getting a reviewer who did not see the code being written. They cost tokens, and sometimes time, because a fresh subagent must gather context again. Delegation does not guarantee a better answer; use it for parallel work, focused context, and independent review.
 :::
 
 ## Pay only for the context you need {data-eyebrow="Part 4 · Defaults" .fill-tiles}
@@ -683,14 +683,14 @@ Before leaving a task running, answer five questions. Does it know what done loo
 
 ```{.bash filename="migrate.sh"}
 for file in $(cat files.txt); do
-  claude --bare -p "Migrate $file to the new logger API and commit. Reply OK or FAIL." \
-    --allowedTools "Read,Edit,Bash(git add *),Bash(git commit *)" \
+  claude --bare -p "Migrate $file to the new logger API; commit if pnpm test passes. Reply OK or FAIL." \
+    --allowedTools "Read,Edit,Bash(pnpm test *),Bash(git add *),Bash(git commit *)" \
     --permission-mode dontAsk \
     --max-turns 20
 done
 ```
 
-::: {.tiles .tiles-3}
+::: {.tiles}
 
 ::: {.tile}
 ::: {.tile-value}
@@ -719,14 +719,23 @@ Stops a run that loses its way. Try three files first.
 :::
 :::
 
+::: {.tile}
+::: {.tile-value}
+\-\-bare
+:::
+::: {.tile-text}
+Skips hooks and `CLAUDE.md`, so the check lives in the prompt.
+:::
+:::
+
 :::
 
 ::: {.source}
-Source: [Best practices: run Claude from a script](https://code.claude.com/docs/en/best-practices#run-claude-from-a-script)
+Sources: [Best practices: run Claude from a script](https://code.claude.com/docs/en/best-practices#run-claude-from-a-script) · [Bare mode](https://code.claude.com/docs/en/headless#start-faster-with-bare-mode)
 :::
 
 ::: {.notes}
-Here those answers become flags. Allowed tools pre-approves exactly what the task needs, don't-ask mode refuses anything else that would prompt, and the turn cap stops a run that loses its way. Claude replies OK or FAIL for each file. Try it on three files first, fix the prompt, then run the rest. Bare mode starts faster by skipping your local customisations, so it needs an API key or provider credentials.
+Here those answers become flags. Allowed tools pre-approves exactly what the task needs, don't-ask mode refuses anything else that would prompt, and the turn cap stops a run that loses its way. Claude replies OK or FAIL for each file. Try it on three files first, fix the prompt, then run the rest. Bare mode starts faster because it skips your hooks, skills, MCP servers, and every CLAUDE.md file, and it needs an API key or provider credentials. So the check has to live in the prompt and the allowed tools: here Claude may run the tests and commits only when they pass. If the run needs a hook, leave bare mode off.
 :::
 
 ## Parallel sessions need separate checkouts {data-eyebrow="Part 6 · Unattended"}

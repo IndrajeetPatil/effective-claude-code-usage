@@ -226,7 +226,7 @@ def make_two_kinds():
         box(ax, 2.9, y, 4.6, 0.58, CLAY, l, fs=17, mono=l == 'CLAUDE.md')
         box(ax, 9.1, y, 4.6, 0.58, BLU, r, fs=17)
     lbl(ax, 2.9, 0.55, 'followed almost every time', fs=16)
-    lbl(ax, 9.1, 0.55, 'applied every time', fs=16)
+    lbl(ax, 9.1, 0.55, 'applied whatever Claude decides', fs=16)
     arr(ax, 5.5, 2.95, 6.5, 2.95, col=CLAY)
     lbl(ax, 6.0, 3.3, 'must never\nbend', fs=14, col='#A3482A')
     arr(ax, 6.5, 1.6, 5.5, 1.6, col=BLU)
@@ -299,7 +299,7 @@ def make_subagents():
         box(ax, x, 1.95, 3.4, 1.3, col, head, fs=19, sub=sub, sfs=15)
         arr(ax, 6.0 + (x - 6.0) * 0.4, 3.28, x, 2.62)
     box(ax, 6.0, 0.45, 11.0, 0.58, RED,
-        'Cost: every subagent sends its own requests.  Same model, so not a smarter answer.', fs=15, ls='--')
+        'Cost: every subagent sends its own requests.  Delegating alone does not buy a better answer.', fs=15, ls='--')
     save(fig, 'diag-10-subagents.webp')
 
 
