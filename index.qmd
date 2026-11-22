@@ -428,7 +428,7 @@ Deny rules hold in every permission mode and also catch `cat .env`. They match t
 ```
 
 ::: {.card-subtle .card-compact}
-Claude doesn't have to remember it. A hook that crashes or times out lets the action through unless it sets `"onFailure": "block"`.
+Claude doesn't have to remember it. A `PreToolUse` guard that crashes or times out lets the tool run unless it sets `"onFailure": "block"`.
 :::
 
 :::
@@ -440,7 +440,7 @@ Sources: [Permissions](https://code.claude.com/docs/en/permissions) · [Hooks gu
 :::
 
 ::: {.notes}
-On the left, never reading secrets becomes a deny rule. It applies in every permission mode, and Claude Code also recognises common shell commands that read files. Rules match tool calls rather than intent, so for security, add the operating-system sandbox. On the right, always formatting becomes a hook that runs after every edit. By default, a hook that crashes or times out lets the action go ahead, so a hook that guards a rule should set on-failure to block. You do not have to write these yourself: asking Claude to write a hook that blocks edits to a folder works. Keep the enforced set small, because each rule needs maintenance.
+On the left, never reading secrets becomes a deny rule. It applies in every permission mode, and Claude Code also recognises common shell commands that read files. Rules match tool calls rather than intent, so for security, add the operating-system sandbox. On the right, always formatting becomes a hook that runs after every edit. By default, a hook that crashes or times out lets the action go ahead, so a pre-tool-use hook that guards a rule should set on-failure to block. That setting cannot undo a tool that already ran, and it does not apply to Stop hooks. You do not have to write these yourself: asking Claude to write a hook that blocks edits to a folder works. Keep the enforced set small, because each rule needs maintenance.
 :::
 
 # Change a default when it costs too much {data-eyebrow="Part 4"}
