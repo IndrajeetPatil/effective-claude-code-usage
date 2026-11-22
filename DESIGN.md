@@ -1,72 +1,78 @@
 ---
-version: alpha
+version: beta
 name: Effective Claude Code Usage
 description: >-
-  Dark terminal visual identity: GitHub dark-inspired palette (#0d1117),
-  terminal glows, Space Grotesk headings and body, Space Mono code and chrome,
-  and color-accented cards.
+  Light documentation look modelled on the Claude Code docs site: warm cream
+  canvas, serif display titles, Inter body, uppercase eyebrow labels, pastel
+  diagrams with thin accent borders, and hairline cards.
 colors:
-  primary: "{colors.accent-green}"
-  bg-primary: "#0d1117"
-  bg-secondary: "#161b22"
-  bg-card: "#1c2128"
-  bg-card-hover: "#21262d"
-  accent-green: "#22c55e"
-  accent-blue: "#38bdf8"
-  accent-amber: "#f59e0b"
-  accent-purple: "#a78bfa"
-  accent-red: "#f87171"
-  text-primary: "#e6edf3"
-  text-muted: "#8b949e"
-  border-subtle: "#30363d"
+  primary: "{colors.clay}"
+  bg-canvas: "#fdfdf7"
+  bg-panel: "#f6f5ef"
+  bg-surface: "#ffffff"
+  bg-code: "#f0efea"
+  text-primary: "#171717"
+  text-muted: "#5f5f5d"
+  border-subtle: "#e2e1da"
+  border-strong: "#cfcfcb"
+  clay: "#d97757"
+  clay-ink: "#a3482a"
+  tint-clay: "#fbeee6"
+  tint-green: "#eaf1e6"
+  tint-blue: "#e8eff7"
+  tint-amber: "#faf0dc"
+  tint-purple: "#efeaf7"
+  tint-red: "#f8e5e2"
 typography:
   heading-1:
-    fontFamily: Space Grotesk, system-ui, sans-serif
-    fontSize: 1.85em
-    fontWeight: 700
-  heading-2:
-    fontFamily: Space Grotesk, system-ui, sans-serif
-    fontSize: 1.24em
-    fontWeight: 700
-  body:
-    fontFamily: Space Grotesk, system-ui, sans-serif
-    fontSize: 30px
+    fontFamily: Source Serif 4, Georgia, serif
+    fontSize: 3em
     fontWeight: 400
-    lineHeight: 1.34
+  heading-2:
+    fontFamily: Source Serif 4, Georgia, serif
+    fontSize: 1.75em
+    fontWeight: 400
+  eyebrow:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 0.56em
+    fontWeight: 600
+    textTransform: uppercase
+  body:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 31px
+    fontWeight: 400
+    lineHeight: 1.5
   mono:
-    fontFamily: Space Mono, JetBrains Mono, Fira Code, monospace
+    fontFamily: JetBrains Mono, ui-monospace, monospace
 rounded:
-  sm: 4px
-  md: 8px
-glows:
-  green: "0 0 18px rgba(34, 197, 94, 0.28)"
-  purple: "0 0 18px rgba(167, 139, 250, 0.28)"
+  sm: 6px
+  md: 12px
 components:
   page:
-    backgroundColor: "{colors.bg-primary}"
+    backgroundColor: "{colors.bg-canvas}"
     textColor: "{colors.text-primary}"
   card-green:
-    backgroundColor: "color-mix(in srgb, {colors.accent-green} 8%, {colors.bg-card})"
+    backgroundColor: "{colors.tint-green}"
     borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-blue:
-    backgroundColor: "color-mix(in srgb, {colors.accent-blue} 8%, {colors.bg-card})"
+    backgroundColor: "{colors.tint-blue}"
     borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-amber:
-    backgroundColor: "color-mix(in srgb, {colors.accent-amber} 8%, {colors.bg-card})"
+    backgroundColor: "{colors.tint-amber}"
     borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-purple:
-    backgroundColor: "color-mix(in srgb, {colors.accent-purple} 8%, {colors.bg-card})"
+    backgroundColor: "{colors.tint-purple}"
     borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-red:
-    backgroundColor: "color-mix(in srgb, {colors.accent-red} 8%, {colors.bg-card})"
+    backgroundColor: "{colors.tint-red}"
     borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-subtle:
-    backgroundColor: "{colors.bg-card}"
+    backgroundColor: "{colors.bg-surface}"
     borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
 ---
@@ -77,47 +83,60 @@ The visual design specification of the Effective Claude Code Usage presentation 
 
 ## Overview
 
-The visual design is a dark terminal aesthetic inspired by modern developer tooling: a dark slate canvas (`#0d1117`), GitHub dark palette components, terminal glows, Space Grotesk typography for body text and headings, and Space Mono for terminal chrome, code, and slide numbers.
+The deck follows the look and feel of the [Claude Code documentation](https://code.claude.com/docs/en/overview): a warm cream page, large serif titles, a quiet sans-serif body, small uppercase eyebrow labels above titles, light code panels, and pastel diagrams on a slightly darker panel.
 
-The presentation format is Quarto RevealJS (`theme: black`). Custom styling is layered via `style.css` and mirrored in the front matter above.
+The format is Quarto RevealJS (`theme: black` as the base, restyled entirely through `style.css`). Code blocks use Quarto's `github` highlight style, with token colours pinned in `style.css` to the docs' light code palette.
+
+## Content principles
+
+- **Advice, not a feature tour.** Each slide answers "what should I do differently?". Leave out reference material (command lists, tool catalogues) that the docs already cover.
+- **Show, then caption.** Lead with a diagram, comparison, tiles, or a short code block. Add at most one or two short cards for what the visual does not show.
+- **Fill the frame.** No slide should leave a large empty band. Content slides are flex columns: the diagram grows into the free height, fill widgets stretch, and the source line sits on the bottom edge. Prefer cutting or splitting a slide over shrinking text.
+- **Reuse docs illustrations.** When the Claude Code docs already have an illustration of the idea, use it (stored as `media/docs-*.svg`) and credit it in the slide's source line as `Illustration: [Claude Code docs, <page>](url)`. Draw our own only when no docs illustration fits.
 
 ## Colours
 
-- **Canvas & Backgrounds:**
-  - `bg-primary` (`#0d1117`): Slide background.
-  - `bg-secondary` (`#161b22`): Table header rows and darker surfaces.
-  - `bg-card` (`#1c2128`): Default background for cards, code blocks, and callouts.
-  - `bg-card-hover` (`#21262d`): Hover state for interactive table rows and cards.
-- **Accents & Terminal Glows:**
-  - `accent-green` (`#22c55e`): Primary brand accent, title heading (`h1`), inline code, and positive cards (`.card-green`).
-  - `accent-blue` (`#38bdf8`): Section slide titles (`h2`), links, table headers, and info cards (`.card-blue`).
-  - `accent-amber` (`#f59e0b`): Subheadings (`h3`) and warning cards (`.card-amber`).
-  - `accent-purple` (`#a78bfa`): Major section dividers (`level1 h1`) and guidance cards (`.card-purple`).
-  - `accent-red` (`#f87171`): Negative examples and caution cards (`.card-red`).
-- **Text & Borders:**
-  - `text-primary` (`#e6edf3`): Crisp white-grey for high-contrast reading.
-  - `text-muted` (`#8b949e`): Subdued text for footers, citations, and secondary metadata.
-  - `border-subtle` (`#30363d`): Subtle divider lines, card borders, and table borders.
+- **Surfaces:**
+  - `bg-canvas` (`#fdfdf7`): slide background, the docs' page colour.
+  - `bg-panel` (`#f6f5ef`): diagram panels, code-block filename tabs, and terminal title bars.
+  - `bg-surface` (`#ffffff`): code blocks, tiles, and `.card-subtle`.
+  - `bg-code` (`#f0efea`): inline code.
+- **Text and lines:**
+  - `text-primary` (`#171717`): headings, body, and links.
+  - `text-muted` (`#5f5f5d`): lead paragraphs, tile text, and source lines.
+  - `border-subtle` (`#e2e1da`) and `border-strong` (`#cfcfcb`): hairlines on cards, code, and table rows.
+- **Accent:** `clay` (`#d97757`) for the progress bar and decorative marks; `clay-ink` (`#a3482a`) wherever clay must carry text.
+- **Tints:** `tint-clay`, `tint-green`, `tint-blue`, `tint-amber`, `tint-purple`, and `tint-red` are pale backgrounds for cards and diagram boxes. Text on a tint stays `text-primary`.
 
 ## Typography
 
-- **Headings & Body:** `Space Grotesk` (weights 300 to 700). Bold headings: h1 in glowing green, h2 in bright blue with a subtle bottom rule, and h3 in amber.
-- **Code & Terminal:** `Space Mono` (weights 400 and 700). Monospace font used for code blocks, inline code, terminal simulations (`.terminal-box`), and slide numbers.
+- **Titles:** `Source Serif 4`, weight 400, an open stand-in for the docs' serif display face. Slide titles are 1.75em; section titles are 3em.
+- **Eyebrow:** set a slide's `data-eyebrow` attribute (for example `{data-eyebrow="Part 2 · Check"}`) to print a small uppercase Inter label above its title.
+- **Body:** `Inter`, 31px base on a 1280×720 slide with a 0.03 margin, line height 1.5. Bold is weight 600.
+- **Code:** `JetBrains Mono` for inline code, code blocks, terminal boxes, and the slide number. Commands, flags, keys, model names, settings, hook events, and config files are always mono, in slides and diagrams alike.
 
-## Layout & Components
+## Layout and components
 
-- **Cards:** Rounded 8px containers with a 1px `border-subtle` border:
-  - `.card-green`, `.card-blue`, `.card-amber`, `.card-purple`, `.card-red`: a faint 8% accent tint on the card background.
-  - `.card-subtle`: Neutral card with subtle grey border.
-  - `.card-compact`: Reduced padding variant for dense multi-column slides.
-- **Terminal Box:** `.terminal-box` simulating a CLI terminal window with monospace output.
-- **Tables:** Integrated dark card tables with subtle borders, blue headers, and hoverable rows.
-- **Callouts:** Standard Quarto callouts styled to match the dark terminal theme with a uniform `border-subtle` border.
+- **Section slides** (`#` headings): left-aligned docs page header with an eyebrow, a large serif title, one muted lead sentence, and a `.symptom` card ("You'll notice …") naming the problem the part fixes.
+- **Lead** (`.lead`): the muted one-line description below a title.
+- **Diagrams** (`.diagram`): rounded images on the panel colour that grow to fill the height left by the title, cards, and source line.
+- **Cards** (`.card-green`, `.card-blue`, `.card-amber`, `.card-purple`, `.card-red`, `.card-subtle`, plus `.card-compact`): faint tint, neutral hairline, 12px radius. Open each card with a bold lead phrase and a middle dot.
+- **Code blocks:** fenced code with `filename="…"` renders a docs-style filename tab.
+- **Terminal box** (`.terminal-box`, optional `data-title`): a hand-written prompt or transcript, using `.tk-prompt`, `.tk-muted`, and `.tk-ok` for colour.
+- **Compare** (`.compare` with `.compare-head`, `.compare-weak`, `.compare-strong`): "instead of" versus "try" prompts.
+- **Tiles** (`.tiles` with `.tile`, `.tile-heading`, `.tile-value`, `.tile-title`, `.tile-text`, `.tile-num`; set `--tile-cols`): short facts or numbered questions in a grid. `.tile-heading` is a prose heading; `.tile-value` is always mono, for a command or setting. `.tile-clay`, `.tile-green`, `.tile-blue`, and `.tile-amber` tint a tile.
+- **Fill slides** (`.fill-tiles`, `.fill-compare` on the slide heading): stretch the slide's tiles or comparison to the full free height.
+- **Link list** (`.link-list` of `.link-row` blocks): full-width rows with a linked title and a mono URL on the left, a muted description on the right, and a clay arrow. Only the title is a link, so the accessibility extension's underline marks just the title.
+- **Closing slide** (`.closing` on the heading, with `.closing-icons`): centred title, line, and contact icons. `.closing-line` is a centred one-line card.
+- **Retired** (`.retired` with `.retired-head` and `.retired-old`): outdated advice struck through beside the reason.
+- **Source** (`.source`): the small centred citation line at the bottom of a slide.
+- **Tables:** no fill; bold header with a stronger hairline, light row dividers.
 
 ## Do's and Don'ts
 
-- **Do** use predefined CSS classes from `style.css` (`.card-green`, `.card-blue`, etc.) rather than inline styles.
-- **Do** ensure text below diagrams provides non-redundant, quantitative or actionable guidance rather than repeating diagram labels.
-- **Don't** use light-mode backgrounds or unstyled light cards; keep the dark terminal theme intact across all slides.
-- **Don't** hard-code ad-hoc hex colors directly in `index.qmd`.
-- **Don't** give cards, callouts, blockquotes, or other text boxes coloured edges: no accent borders, left accent bars, or coloured glows.
+- **Do** use the classes above rather than inline styles, and keep new widgets in the same naming pattern.
+- **Do** keep diagram text from restating the cards, and vice versa.
+- **Don't** return to dark backgrounds or neon accents; the deck is light throughout.
+- **Don't** hard-code hex colours in `index.qmd`.
+- **Don't** give cards, callouts, blockquotes, or other text boxes coloured edges: no accent borders, left accent bars, or glows. Diagram boxes are the exception, because the docs' own diagrams use a thin accent outline.
+- **Don't** copy Anthropic logos or wordmarks.
