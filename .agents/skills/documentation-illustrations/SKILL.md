@@ -27,8 +27,9 @@ at `https://code.claude.com/docs/llms.txt`) lists its images on
 locally, and credit it in a single line: `Illustration: Claude Code docs,
 <page title>` linked to the page. Generate only what no existing image covers.
 
-Never reproduce Anthropic or Claude logos, the asterisk mark, wordmarks, or
-product screenshots in generated art.
+Never generate, redraw, or imitate Anthropic or Claude logos, the spark mark,
+wordmarks, the Clawd mascot, or product screenshots. If a design needs the
+brand mark, place the official SVG from Anthropic's CDN, unmodified.
 
 ## Family A: technical diagram
 
