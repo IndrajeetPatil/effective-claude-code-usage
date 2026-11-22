@@ -25,20 +25,20 @@ Visual illustrations of the agentic loop and of when features load into context 
 
 ## Core recommendations
 
-- Start with the defaults: auto mode, medium effort, automatic subagent delegation, and automatic compaction.
+- Start with the defaults of new terminal sessions: auto mode, medium effort, automatic subagent delegation, and automatic compaction.
 - Write down only what Claude can't find by reading the code, or wouldn't go and look for. Keep CLAUDE.md short (under about 200 lines); start with `/init` and delete.
 - Put area-specific rules in `.claude/rules/` with a `paths:` glob, procedures in skills, and external systems behind a CLI or MCP server. Disable unused MCP servers.
 - Write specific prompts that name the file, the symptom, and what "fixed" looks like. Say "be ambitious" when you want the fuller version. Hand over files with `@path`, screenshots, or piped output.
 - When unsure what you want, ask Claude to interview you and write SPEC.md, build from it in a fresh session, and review the diff against it.
-- Give Claude something that returns pass or fail. Choose its strictness: in the prompt, with `/goal`, or with a Stop hook that exits with code 2. Ask for evidence and use a fresh reviewer such as `/code-review`.
-- Prompts, CLAUDE.md, skills, and the auto mode classifier are guidance; hooks, deny rules, the strict sandbox, and managed settings are enforcement. Move only rules that must never bend into enforcement.
+- Give Claude something that returns pass or fail. Choose its strictness: in the prompt, with `/goal`, or with a Stop hook that exits with code 2. Ask for evidence, run `/verify`, and use a fresh reviewer such as `/code-review` or a subagent that checks the diff against the spec and reports correctness gaps. A Stop hook gives up after eight blocked stops in a row, so keep required CI as the final gate.
+- Prompts, CLAUDE.md, skills, and the auto mode classifier are guidance; hooks, deny rules, the strict sandbox, and managed settings are enforcement. Move only rules that must never bend into enforcement. A `PreToolUse` guard that crashes or times out lets the tool run unless it sets `"onFailure": "block"`.
 - Deny rules hold in every permission mode but match tool calls, not intent; pair them with the sandbox for security.
 - Manual mode causes prompt fatigue and bypass mode belongs in disposable containers; tune auto mode instead of switching.
 - Use effort levels (`/effort`, `ultrathink`) rather than "think harder" phrasing.
-- Subagents buy parallelism, quieter context, and fresh review, not smarter answers; they cost tokens.
+- Subagents buy parallelism, quieter context, and fresh review, not better answers by themselves; they cost tokens.
 - `/clear` between unrelated tasks, `/compact` with a focus, and `/usage` to see where spend went.
 - Watch the first minute; use Esc, Esc Esc (rewind), and `/clear` after two failed corrections. Checkpoints do not track Bash changes, so keep using git.
-- Before an unattended run, answer five questions: what done looks like, how it checks, what it may touch, what stops it, and who signs off. Use `claude -p` with `--allowedTools`, `--permission-mode dontAsk`, and `--max-turns`.
+- Before an unattended run, answer five questions: what done looks like, how it checks, what it may touch, what stops it, and who signs off. Use `claude -p` with `--allowedTools`, `--permission-mode dontAsk`, and `--max-turns`, allow the test command, and commit only when it passes. `--bare` skips hooks, skills, MCP servers, and `CLAUDE.md`, so the check must live in the prompt.
 - Give parallel sessions separate worktrees (`claude -w`), with `.worktreeinclude` for small gitignored files.
 - Stop managing context aggressively, adding IMPORTANT in capitals, delegating for a better answer, and writing "think hard".
 
