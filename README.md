@@ -7,7 +7,7 @@ Slides with practical advice for getting reliable work out of [Claude Code](http
 The slides can be seen here:<br>
 <https://www.indrapatil.com/effective-claude-code-usage/>
 
-[![Effective Claude Code Usage, a talk by Indrajeet Patil, with four fixes](media/social-media-card.png)](https://www.indrapatil.com/effective-claude-code-usage/)
+[![Effective Claude Code Usage, a talk by Indrajeet Patil, with the Claude spark mark](media/social-media-card.png)](https://www.indrapatil.com/effective-claude-code-usage/)
 
 ## Development
 
@@ -41,7 +41,7 @@ just axe      # Preview with an Accessibility Report slide
 just          # Install dependencies and start live-reload preview
 ```
 
-Diagrams come from `media/generate_diagrams.py` (`uv run python media/generate_diagrams.py`); the social card (`media/social-media-card.png`) is a 1600×900 PNG screenshot of `media/social-card-source.html`. See [DESIGN.md](DESIGN.md) for the visual system.
+Diagrams come from `media/generate_diagrams.py` (`uv run python media/generate_diagrams.py`); the social card (`media/social-media-card.png`) is a 1600×900 PNG screenshot of `media/social-card-source.html`, which shows the official Claude spark mark (`media/claude-spark.svg`, from Anthropic's docs). See [DESIGN.md](DESIGN.md) for the visual system.
 
 `just axe` enables the opt-in `a11y` profile. It accepts preview options, for example `just axe --no-browser --port 8834`. Inspect slide and scroll views, including all fragments and tab panels. Run `just render` for the production deck, which excludes the audit payload and report.
 

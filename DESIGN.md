@@ -139,4 +139,4 @@ The format is Quarto RevealJS (`theme: black` as the base, restyled entirely thr
 - **Don't** return to dark backgrounds or neon accents; the deck is light throughout.
 - **Don't** hard-code hex colours in `index.qmd`.
 - **Don't** give cards, callouts, blockquotes, or other text boxes coloured edges: no accent borders, left accent bars, or glows. Diagram boxes are the exception, because the docs' own diagrams use a thin accent outline.
-- **Don't** copy Anthropic logos or wordmarks.
+- **Don't** redraw or modify Anthropic logos, wordmarks, or the Clawd mascot. The only brand asset in the repository is the official Claude spark mark (`media/claude-spark.svg`), used unmodified on the social card; keep it off the slides.

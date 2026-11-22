@@ -13,7 +13,6 @@
         --text: #171717;
         --muted: #5f5f5d;
         --hairline: #e2e1da;
-        --clay-ink: #a3482a;
       }
 
       * { box-sizing: border-box; }
@@ -31,10 +30,10 @@
 
       .frame {
         display: grid;
-        grid-template-columns: 1fr 640px;
-        gap: 56px;
+        grid-template-columns: 1fr 520px;
+        gap: 64px;
         height: 100%;
-        padding: 88px 96px;
+        padding: 96px 96px 88px;
       }
 
       .copy {
@@ -51,20 +50,20 @@
       }
 
       h1 {
-        margin: 0 0 32px;
+        margin: 0 0 36px;
         font-family: "Source Serif 4", Georgia, serif;
-        font-size: 118px;
+        font-size: 128px;
         font-weight: 400;
-        line-height: 1;
+        line-height: 0.98;
         letter-spacing: -0.015em;
       }
 
       .subtitle {
         margin: 0;
-        max-width: 640px;
+        max-width: 700px;
         color: var(--muted);
-        font-size: 32px;
-        line-height: 1.4;
+        font-size: 34px;
+        line-height: 1.35;
       }
 
       .site {
@@ -76,55 +75,21 @@
         font-size: 21px;
       }
 
-      .panel {
+      /* The official Claude spark mark (media/claude-spark.svg), unmodified. */
+      .mark {
         align-self: center;
+        display: grid;
+        place-items: center;
+        width: 520px;
+        height: 520px;
+        border-radius: 50%;
         background: var(--panel);
         border: 1px solid var(--hairline);
-        border-radius: 28px;
-        padding: 44px 48px 20px;
       }
 
-      .panel-label {
-        margin: 0 0 12px;
-        color: var(--muted);
-        font-size: 18px;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-
-      ol {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-
-      li {
-        display: grid;
-        grid-template-columns: 56px 1fr;
-        align-items: baseline;
-        padding: 26px 0;
-        border-top: 1px solid var(--hairline);
-        font-size: 30px;
-        font-weight: 500;
-        line-height: 1.25;
-      }
-
-      li:first-child { border-top: none; }
-
-      .n {
-        font-family: "Source Serif 4", Georgia, serif;
-        font-size: 34px;
-        color: var(--clay-ink);
-      }
-
-      code {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.86em;
-        font-weight: 400;
-        background: #ebe9e1;
-        border-radius: 6px;
-        padding: 0 6px;
+      .mark img {
+        width: 260px;
+        height: 260px;
       }
     </style>
   </head>
@@ -136,15 +101,9 @@
         <p class="subtitle">Practical habits for reliable work with a coding agent.</p>
         <p class="site">indrapatil.com/effective-claude-code-usage</p>
       </section>
-      <aside class="panel">
-        <p class="panel-label">Four fixes</p>
-        <ol>
-          <li><span class="n">1</span><span>Tell Claude what it can’t see</span></li>
-          <li><span class="n">2</span><span>Give it a check to run</span></li>
-          <li><span class="n">3</span><span>Enforce rules that can’t bend</span></li>
-          <li><span class="n">4</span><span>Change a default that costs you</span></li>
-        </ol>
-      </aside>
+      <div class="mark">
+        <img src="claude-spark.svg" alt="" />
+      </div>
     </main>
   </body>
 </html>

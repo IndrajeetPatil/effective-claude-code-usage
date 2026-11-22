@@ -49,7 +49,7 @@ date-meta: "2026-11-22"
 lang: "en"
 dir: "ltr"
 image: "media/social-media-card.png"
-image-alt: "Effective Claude Code Usage, a talk by Indrajeet Patil, beside a panel of four fixes: tell Claude what it can't see, give it a check to run, enforce rules that can't bend, and change a default that costs you."
+image-alt: "Effective Claude Code Usage, a talk by Indrajeet Patil: practical habits for reliable work with a coding agent, beside the orange Claude spark mark."
 canonical-url: "https://www.indrapatil.com/effective-claude-code-usage/"
 jupyter: python3
 ---
