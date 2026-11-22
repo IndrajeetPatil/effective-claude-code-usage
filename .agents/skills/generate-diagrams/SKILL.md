@@ -2,60 +2,64 @@
 name: generate-diagrams
 description: >
   Add or change the deck's WebP diagrams in media/generate_diagrams.py
-  (matplotlib + Caveat font): legibility and sizing rules, box and label
-  helpers, colour constants, font-glyph limits, and the pre-commit checklist.
-  Use before adding, editing or regenerating any diagram.
+  (matplotlib, Inter and JetBrains Mono, Claude Code docs style): when to reuse
+  a docs illustration instead, legibility and sizing rules, box and label
+  helpers, colour constants, and the pre-commit checklist. Use before adding,
+  editing or regenerating any diagram.
 ---
 
 # Generate diagrams
 
-All diagrams use matplotlib and the Caveat font at DPI=160. `save()` renders
-each figure, crops it to the drawn content plus a small margin, and writes the
-WebP that `index.qmd` references. Regenerate with
+## Reuse the docs first
+
+Before drawing anything, check whether the
+[Claude Code docs](https://code.claude.com/docs/en/overview) already illustrate
+the idea (the `.md` version of a page lists its images). If one fits, save it
+as `media/docs-<name>.svg`, give it the `.diagram` class, and
+credit it in the slide's `.source` line as
+`Illustration: [Claude Code docs, <page title>](<page url>)`.
+
+## Our own diagrams
+
+All diagrams use matplotlib at DPI=160 with `Inter` for labels and
+`JetBrains Mono` for commands and paths (fonts live in `media/`). They mimic
+the docs' diagrams: a warm panel, pastel boxes with a thin accent outline, and
+dark text. `save()` crops each figure to its content plus a margin and writes
+the WebP that `index.qmd` references. Regenerate with
 `uv run python media/generate_diagrams.py`.
 
 ## Legibility rules
 
-- **No in-image titles.** The slide heading is the title. Empty bands are
-  cropped away, so any reserved space would only shrink the diagram.
-- **Design for the slide's width, not its height.** Slide CSS caps images at
-  480px tall and the slide's content width. Aim for width:height of roughly
-  2.3:1 or wider (`w=11`, `h` about 3.4–4.7) so the diagram is width-bound and
-  its text renders at about 20px or more. Tall layouts shrink every label.
-- **Font sizes.** Box labels 19–24 pt, sub-labels and annotations 17–19 pt.
-  Nothing smaller.
-- **Boxes.** Use `box(ax, x, y, w, h, col, label, sub=...)`: accent border,
-  dark tinted fill, accent label, and an optional `TXT` sub-label. Do not use
-  white borders. Leave at least 0.3 units between boxes joined by an arrow, or
-  the arrowhead disappears.
-- **Labels own their space.** Section headers, bracket labels, and edge
-  annotations (`heading()`, `bracket()`, `lbl()`) each sit in their own
-  horizontal band, never on top of an arrow or box. Put column headers above
-  background panels, not inside them.
+- **No in-image titles.** The slide heading is the title.
+- **Design for the slide's width.** A diagram grows to fill the height the
+  slide leaves free, but stays width-bound. Use `w=12` and `h` of about 3–4.5
+  (roughly 2.7:1 to 4:1) and avoid empty bands inside the figure, which waste
+  that height.
+- **Font sizes.** Box labels 17–21 pt, sub-labels and annotations 14–17 pt.
+  Nothing smaller than 14 pt.
+- **Boxes.** Use `box(ax, x, y, w, h, col, label, sub=..., mono=...)`: pastel
+  fill from `FILL[col]`, accent outline, dark semibold label, muted sub-label.
+  Leave at least 0.3 units between boxes joined by an arrow.
+- **Labels own their space.** `heading()` (uppercase eyebrow) and `lbl()` sit
+  in their own band, never on top of an arrow or box.
 
 ## Colours
 
 Always use these constants; never hard-code hex values in diagrams:
 
 ```text
-BG=#0d1117  GRN=#22c55e  BLU=#38bdf8  AMB=#f59e0b  PUR=#a78bfa  RED=#f87171
-TXT=#e6edf3  MUT=#a8b3c1  CARD=#1c2128
+BG=#F6F5EF  TXT=#171717  MUT=#5F5F5D  LINE=#8F8E8A
+CLAY=#D97757  GRN=#6E9E6E  BLU=#6A8FBF  AMB=#D4A24C  PUR=#9C86C4  RED=#D07A70  GRY=#B5B3AC
 ```
 
-Box fills come from `tint(accent)`, which blends 16% of the accent into `BG`.
-These dark fills keep accent-coloured text above WCAG AA contrast; do not
-brighten them.
-
-## Font glyphs
-
-`Caveat.ttf` has no Unicode check marks (✓ U+2713) or other special symbols,
-and no bold weight. Use plain ASCII alternatives: `+`, `-`, `>`, `x`, `ok`.
+Box text is always `TXT` or `MUT`, never an accent colour, so it keeps WCAG
+AA contrast on the pastel fills. Coloured annotation text uses the darker ink
+values already in the script (`#A3482A`, `#2F5C8F`, `#3F6B3F`, `#A83A2E`).
 
 ## Checklist before committing a diagram
 
+- [ ] No docs illustration already covers the idea
 - [ ] No text overlaps a box edge, arrow, or other text
 - [ ] Every arrowhead is visible
-- [ ] Printed size is width-bound (see the aspect rule above)
-- [ ] The WebP is visually inspected (convert with `dwebp` if needed), and so
-      is the rendered slide
+- [ ] The WebP is visually inspected, and so is the rendered slide
 - [ ] The slide's `fig-alt` text describes the new content

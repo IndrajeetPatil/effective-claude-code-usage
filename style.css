@@ -1,557 +1,586 @@
 /* ============================================================
-   EFFECTIVE CLAUDE CODE USAGE — Dark Terminal Theme
-   Fonts: Space Grotesk (body) + Space Mono (code/terminal)
-   Inspired by: loot-drop.io aesthetic
+   EFFECTIVE CLAUDE CODE USAGE — Docs-inspired light theme
+   Mirrors the look of the Claude Code documentation site:
+   warm cream canvas, serif display titles, sans body, uppercase
+   eyebrow labels, hairline cards, and light code panels.
+   Fonts: Source Serif 4 (titles) + Inter (body) + JetBrains Mono (code)
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap');
 
-/* ── CSS Custom Properties ────────────────────────────────── */
+/* ── Design tokens (see DESIGN.md) ────────────────────────── */
 :root {
-  --bg-primary:    #0d1117;
-  --bg-secondary:  #161b22;
-  --bg-card:       #1c2128;
-  --bg-card-hover: #21262d;
-  --accent-green:  #22c55e;
-  --accent-blue:   #38bdf8;
-  --accent-amber:  #f59e0b;
-  --accent-purple: #a78bfa;
-  --accent-red:    #f87171;
-  --text-primary:  #e6edf3;
-  --text-muted:    #8b949e;
-  --border-subtle: #30363d;
-  --glow-green:    0 0 18px rgba(34, 197, 94, 0.28);
-  --glow-purple:   0 0 18px rgba(167, 139, 250, 0.28);
-  --font-body:     'Space Grotesk', system-ui, sans-serif;
-  --font-mono:     'Space Mono', 'JetBrains Mono', 'Fira Code', monospace;
+  --bg-canvas:     #fdfdf7;
+  --bg-panel:      #f6f5ef;
+  --bg-surface:    #ffffff;
+  --bg-code:       #f0efea;
+  --bg-selected:   #e8e6dc;
+  --text-primary:  #171717;
+  --text-muted:    #5f5f5d;
+  --border-subtle: #e2e1da;
+  --border-strong: #cfcfcb;
+  --clay:          #d97757;
+  --clay-ink:      #a3482a;
+  --tint-clay:     #fbeee6;
+  --tint-green:    #eaf1e6;
+  --tint-blue:     #e8eff7;
+  --tint-amber:    #faf0dc;
+  --tint-purple:   #efeaf7;
+  --tint-red:      #f8e5e2;
+  --ink-green:     #3f6b3f;
+  --ink-blue:      #2f5c8f;
+  --ink-amber:     #8a5a0b;
+  --ink-purple:    #5e4691;
+  --ink-red:       #a83a2e;
+  --font-serif:    'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-body:     'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:     'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-sm:     6px;
+  --radius-md:     12px;
 }
 
-/* ── Slide Background & Base ──────────────────────────────── */
+/* ── Canvas & base ───────────────────────────────────────── */
 .reveal-viewport,
 .reveal,
 .reveal .slides {
-  background-color: var(--bg-primary) !important;
+  background-color: var(--bg-canvas) !important;
   color: var(--text-primary) !important;
   font-family: var(--font-body) !important;
 }
 
 .reveal {
-  --r-main-font-size: 30px;
+  --r-main-font-size: 31px;
 }
 
 .reveal .slides section {
-  background-color: var(--bg-primary) !important;
+  background-color: var(--bg-canvas) !important;
   color: var(--text-primary) !important;
   font-family: var(--font-body) !important;
   box-sizing: border-box;
-  padding: 0.45em 0.7em !important;
+  padding: 0.4em 0.6em !important;
 }
 
-/* ── Typography ───────────────────────────────────────────── */
+/* ── Typography ──────────────────────────────────────────── */
 .reveal h1,
 .reveal h2,
 .reveal h3,
 .reveal h4 {
-  font-family: var(--font-body) !important;
+  font-family: var(--font-serif) !important;
   color: var(--text-primary) !important;
   text-shadow: none !important;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1.08;
-}
-
-.reveal h1 {
-  font-size: 1.85em;
-  color: var(--accent-green) !important;
-  text-shadow: var(--glow-green) !important;
-}
-
-/* Section divider slides */
-.reveal .slides section.level1 h1 {
-  color: var(--accent-purple) !important;
-  text-shadow: var(--glow-purple) !important;
-  font-size: 1.65em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  text-transform: none;
 }
 
 .reveal h2 {
-  font-size: 1.24em;
-  color: var(--accent-blue) !important;
-  border-bottom: 2px solid var(--border-subtle);
-  padding-bottom: 0.18em;
-  margin-bottom: 0.42em;
+  font-size: 1.75em;
+  margin: 0 0 0.45em;
 }
 
 .reveal h3 {
-  font-size: 0.96em;
-  color: var(--accent-amber) !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.95em;
   font-weight: 600;
-  margin-top: 0.35em;
-  margin-bottom: 0.25em;
+  margin: 0.3em 0 0.25em;
 }
 
-/* Title slide: an oversized heading beside the terminal workshop. */
-.reveal .slides section.deck-title h2 {
-  width: 44%;
-  margin-top: 1em;
-  margin-bottom: 0.45em;
-  padding-bottom: 0;
-  border: 0;
-  font-size: 2.05em;
-  line-height: 1.06;
-  color: var(--accent-green) !important;
-}
-
-.title-copy {
-  width: 42%;
-}
-
-.title-subtitle {
-  font-size: 0.84em;
+/* Eyebrow: the small uppercase label above a docs page title. */
+.reveal .slides section[data-eyebrow]::before {
+  content: attr(data-eyebrow);
+  display: block;
+  margin-bottom: 0.35em;
+  font-family: var(--font-body);
+  font-size: 0.56em;
   font-weight: 600;
-}
-
-.title-subtitle p {
-  color: var(--accent-blue) !important;
-}
-
-.title-byline {
-  margin-top: 1.5em;
-  font-size: 0.65em;
-}
-
-.title-source {
-  margin-top: 1.2em;
-  font-size: 0.55em;
-}
-
-.title-byline p,
-.title-source p {
-  color: var(--text-muted) !important;
-}
-
-.title-art {
-  position: absolute;
-  top: 75px;
-  right: 0;
-  width: 55%;
-}
-
-.title-art p {
-  margin: 0;
-}
-
-.reveal .slides section.deck-title .title-art img {
-  width: 100%;
-  max-height: 520px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
 }
 
 .reveal p,
 .reveal li {
   color: var(--text-primary);
   font-family: var(--font-body) !important;
-  line-height: 1.34;
+  line-height: 1.5;
 }
 
-.reveal .slides section blockquote {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.65em 1.15em;
-  color: var(--text-muted);
-  font-style: italic;
-  font-family: var(--font-body) !important;
-  box-shadow: none;
-  width: 84%;
-  margin: 0.65em auto;
+/* Lead paragraph: the muted description under a page title. */
+.reveal .lead,
+.reveal .lead p {
+  font-size: 0.86em;
+  color: var(--text-muted) !important;
+  margin-top: -0.2em;
 }
 
-/* ── Links ────────────────────────────────────────────────── */
+.reveal strong {
+  font-weight: 600;
+}
+
+/* ── Links: bold, dark, underlined, as in the docs ───────── */
 .reveal a {
-  color: var(--accent-blue) !important;
+  color: var(--text-primary) !important;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.18em;
 }
 
 .reveal a:hover {
-  color: var(--accent-green) !important;
+  color: var(--clay-ink) !important;
 }
 
-/* ── Progress Bar ─────────────────────────────────────────── */
+.reveal h2 a {
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+/* ── Progress bar & slide number ─────────────────────────── */
 .reveal .progress {
   background: var(--border-subtle);
   height: 3px;
 }
 
 .reveal .progress span {
-  background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
-  box-shadow: var(--glow-green);
+  background: var(--clay);
 }
 
-/* ── Slide Numbers ────────────────────────────────────────── */
 .reveal .slide-number {
-  background: var(--bg-card);
+  background: transparent;
   color: var(--text-muted);
-  border: 1px solid var(--border-subtle);
-  border-radius: 4px;
-  padding: 2px 8px;
   font-family: var(--font-mono) !important;
-  font-size: 0.6em;
+  font-size: 0.55em;
 }
 
-/* ── Footer ───────────────────────────────────────────────── */
 .reveal .footer > p {
   font-size: 13px;
   color: var(--text-muted);
-  font-family: var(--font-body) !important;
 }
 
-/* ── Code & Monospace ─────────────────────────────────────── */
-.reveal code,
-.reveal pre code {
-  background: var(--bg-card) !important;
-  color: var(--accent-green) !important;
-  border: 1px solid var(--border-subtle);
-  border-radius: 5px;
+/* ── Code ────────────────────────────────────────────────── */
+.reveal code {
   font-family: var(--font-mono) !important;
-  font-size: 0.78em;
+  font-size: 0.84em;
+  color: var(--text-primary) !important;
+  background: var(--bg-code) !important;
+  border-radius: var(--radius-sm);
+  padding: 0.08em 0.32em;
 }
 
 .reveal pre {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.7em;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  font-family: var(--font-mono) !important;
-}
-
-.reveal pre code {
-  border: none;
-}
-
-/* ── Image Overflow Prevention ────────────────────────────── */
-.reveal .slides section img {
-  /* RevealJS scales the 720px slide; reserve space for headings and cards. */
-  max-height: 480px;
-  max-width: 100%;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Concept illustrations leave room for practical guidance and citations. */
-.reveal .slides section img.concept-illustration {
-  max-height: 360px;
-}
-
-.reveal .slides section img.concept-illustration-dense {
-  max-height: 300px;
-}
-
-/* Mermaid PNG wrapper */
-.reveal .mermaid img,
-.reveal .cell img {
-  max-height: 54vh;
-  max-width: 100%;
-  object-fit: contain;
-}
-
-/* ── Tables ───────────────────────────────────────────────── */
-.reveal table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8em;
-  font-family: var(--font-body) !important;
-  background: var(--bg-card);
-  border-radius: 8px;
-  overflow: hidden;
+  margin: 0.3em 0;
+  background: var(--bg-surface) !important;
   border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  font-size: 0.6em;
+  line-height: 1.5;
 }
 
-.reveal table thead tr {
-  background: var(--bg-secondary) !important;
-  border-bottom: 2px solid var(--accent-blue);
+.reveal pre code,
+.reveal div.sourceCode pre code {
+  background: transparent !important;
+  padding: 0.85em 1em !important;
+  font-size: 1em;
+  max-height: none;
+  white-space: pre-wrap;
 }
 
-.reveal table thead th {
-  color: var(--accent-blue) !important;
-  font-weight: 700;
-  padding: 0.42em 0.7em;
-  text-align: left;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  font-size: 0.82em;
-  font-family: var(--font-body) !important;
+.reveal div.sourceCode {
+  background: transparent !important;
+  border: none;
+  margin: 0.3em 0;
 }
 
-.reveal table tbody tr {
+/* Code block with a filename tab, as in the docs. */
+.reveal .code-with-filename {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  overflow: hidden;
+  margin: 0.3em 0;
+}
+
+.reveal .code-with-filename .code-with-filename-file {
+  background: var(--bg-panel);
   border-bottom: 1px solid var(--border-subtle);
+  padding: 0.3em 0.9em;
+  margin: 0;
 }
 
-.reveal table tbody tr:hover {
-  background: var(--bg-card-hover) !important;
+.reveal .code-with-filename .code-with-filename-file pre {
+  border: none;
+  margin: 0;
+  background: transparent !important;
+  font-size: 0.55em;
 }
 
-.reveal table tbody td {
-  padding: 0.38em 0.7em;
-  color: var(--text-primary);
-  vertical-align: top;
-  font-family: var(--font-body) !important;
-}
-
-.reveal table tbody tr:last-child {
-  border-bottom: none;
-}
-
-/* ── Callout Blocks ───────────────────────────────────────── */
-.reveal .callout {
-  background: var(--bg-card) !important;
-  border-radius: 8px;
-  border: 1px solid var(--border-subtle);
-  margin: 0.45em 0;
-}
-
-/* ── Card Components ──────────────────────────────────────── */
-.card-green {
-  background: color-mix(in srgb, var(--accent-green) 8%, var(--bg-card));
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.58em 0.85em;
-  margin: 0.28em 0;
-  font-family: var(--font-body);
-}
-
-.card-blue {
-  background: color-mix(in srgb, var(--accent-blue) 8%, var(--bg-card));
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.58em 0.85em;
-  margin: 0.28em 0;
-  font-family: var(--font-body);
-}
-
-.card-amber {
-  background: color-mix(in srgb, var(--accent-amber) 8%, var(--bg-card));
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.58em 0.85em;
-  margin: 0.28em 0;
-  font-family: var(--font-body);
-}
-
-.card-purple {
-  background: color-mix(in srgb, var(--accent-purple) 8%, var(--bg-card));
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.58em 0.85em;
-  margin: 0.28em 0;
-  font-family: var(--font-body);
-}
-
-.card-red {
-  background: color-mix(in srgb, var(--accent-red) 8%, var(--bg-card));
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.58em 0.85em;
-  margin: 0.28em 0;
-  font-family: var(--font-body);
-}
-
-.card-subtle {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.58em 0.85em;
-  margin: 0.28em 0;
-  font-family: var(--font-body);
-}
-
-/* ── Terminal Box ─────────────────────────────────────────── */
-.terminal-box {
-  background: #090d12;
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  overflow: hidden;
+.reveal .code-with-filename-file pre strong,
+.reveal .code-with-filename-file pre {
   font-family: var(--font-mono) !important;
-  font-size: 0.9em;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
-  margin: 0.28em 0;
+  font-weight: 400;
+  color: var(--text-muted) !important;
+}
+
+.reveal .code-with-filename div.sourceCode,
+.reveal .code-with-filename div.sourceCode pre {
+  border: none;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* ── Terminal box: a prompt or terminal transcript ───────── */
+.terminal-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 0.3em 0;
 }
 
 .terminal-box::before {
-  content: "● ● ●";
+  content: attr(data-title);
   display: block;
-  background: #1c2128;
-  color: #58a6ff;
-  padding: 0.28em 0.72em;
-  font-size: 0.82em;
+  min-height: 1.2em;
+  background: var(--bg-panel);
   border-bottom: 1px solid var(--border-subtle);
-  letter-spacing: 0;
-  font-family: var(--font-mono) !important;
+  padding: 0.25em 0.9em;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.5em;
 }
 
-.terminal-box pre,
-.terminal-box code {
-  box-sizing: border-box;
-  display: block;
-  background: transparent !important;
-  color: var(--accent-green) !important;
-  padding: 0.48em 0.62em;
+.reveal .terminal-box pre {
+  border: none;
+  border-radius: 0;
   margin: 0;
-  border: none !important;
+}
+
+.reveal .terminal-box pre code {
+  font-size: 1em;
+}
+
+/* Token classes for hand-written terminal transcripts. */
+.tk-prompt { color: var(--clay-ink); }
+.tk-muted  { color: var(--text-muted); }
+.tk-ok     { color: var(--ink-green); }
+
+/* ── Diagrams ────────────────────────────────────────────── */
+.reveal .slides section img {
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0.2em auto;
+}
+
+/* Content slides fill the full slide height: the diagram takes whatever
+   space the title, cards, and source line leave, so no band stays empty. */
+.reveal .slides section.slide.level2 {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+}
+
+.reveal .slides section.slide.level2 > p:has(> img.diagram) {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  margin: 0.15em 0;
+}
+
+.reveal .slides section.slide.level2 > p > img.diagram {
+  height: 100%;
   width: 100%;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  line-height: 1.24;
-  font-family: var(--font-mono) !important;
-  font-size: 1em !important;
+  max-height: 100%;
+  margin: 0;
 }
 
-/* Wrapped examples grow naturally inside the rounded terminal container. */
-.reveal .terminal-box pre,
-.reveal .terminal-box code {
-  overflow: visible;
-  max-height: none;
+/* Only diagrams and fill widgets flex; everything else keeps its height. */
+.reveal .slides section.slide.level2 > * {
+  flex-shrink: 0;
 }
 
-.terminal-box pre code {
-  font-size: 1em !important;
-  padding: 0 !important;
+/* Push the citation to the bottom edge of every content slide. */
+.reveal .slides section.slide.level2 > .source {
+  margin-top: auto;
+  padding-top: 0.4em;
 }
 
-/* Keep keyboard focus visible inside the clipped terminal container. */
-.terminal-box code:focus-visible {
-  outline: 2px solid var(--accent-blue);
-  outline-offset: -2px;
+.reveal .slides section img.diagram,
+.reveal .slides section .diagram img {
+  border-radius: var(--radius-md);
 }
 
-/* ── Badge/Pill Components ────────────────────────────────── */
-.badge-green {
-  display: inline-block;
-  background: rgba(34, 197, 94, 0.12);
-  color: var(--accent-green);
-  border: 1px solid var(--accent-green);
-  border-radius: 20px;
-  padding: 2px 10px;
+
+
+/* ── Tables: hairline rows, bold header, no fill ─────────── */
+.reveal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.72em;
+  background: transparent;
+}
+
+.reveal table thead th {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.4em 0.6em;
+  border-bottom: 1px solid var(--border-strong);
+  text-transform: none;
+}
+
+.reveal table tbody td {
+  padding: 0.45em 0.6em;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+
+.reveal table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Cards: faint tint, neutral hairline, no coloured edges ─ */
+.card-green,
+.card-blue,
+.card-amber,
+.card-purple,
+.card-red,
+.card-subtle {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.55em 0.85em;
+  margin: 0.3em 0;
+  font-size: 0.8em;
+}
+
+.card-green  { background: var(--tint-green); }
+.card-blue   { background: var(--tint-blue); }
+.card-amber  { background: var(--tint-amber); }
+.card-purple { background: var(--tint-purple); }
+.card-red    { background: var(--tint-red); }
+.card-subtle { background: var(--bg-surface); }
+
+.card-compact {
+  padding: 0.35em 0.75em !important;
+}
+
+.reveal [class^="card-"] p {
+  margin: 0.15em 0;
+}
+
+/* ── Compare: "instead of" versus "try" prompts ──────────── */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 0.5em 0.8em;
+  font-size: 0.72em;
+  margin: 0.3em 0;
+}
+
+.compare-head {
   font-size: 0.78em;
   font-weight: 600;
-  font-family: var(--font-body);
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.badge-blue {
-  display: inline-block;
-  background: rgba(56, 189, 248, 0.12);
-  color: var(--accent-blue);
-  border: 1px solid var(--accent-blue);
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-size: 0.78em;
+.compare-weak,
+.compare-strong {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.55em 0.8em;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  line-height: 1.45;
+}
+
+.compare-weak {
+  background: var(--bg-surface);
+  color: var(--text-muted);
+}
+
+.compare-strong {
+  background: var(--tint-green);
+}
+
+/* ── Tiles: short facts in a grid ────────────────────────── */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6em;
+  margin: 0.5em 0;
+}
+
+.tiles-3 { grid-template-columns: repeat(3, 1fr); }
+.tiles-5 { grid-template-columns: repeat(5, 1fr); }
+
+.tile {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.7em 0.8em;
+}
+
+.tile-value {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
   font-weight: 600;
-  font-family: var(--font-body);
+  margin-bottom: 0.3em;
 }
 
-.badge-amber {
-  display: inline-block;
-  background: rgba(245, 158, 11, 0.12);
-  color: var(--accent-amber);
-  border: 1px solid var(--accent-amber);
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-size: 0.78em;
+.tile-text {
+  font-size: 0.68em;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.tile-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+  background: var(--tint-clay);
+  color: var(--clay-ink);
   font-weight: 600;
-  font-family: var(--font-body);
+  font-size: 0.7em;
+  margin-bottom: 0.45em;
 }
 
-.badge-purple {
-  display: inline-block;
-  background: rgba(167, 139, 250, 0.12);
-  color: var(--accent-purple);
-  border: 1px solid var(--accent-purple);
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-size: 0.78em;
+/* ── Retired advice: old habit struck through, reason beside ─ */
+.retired {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  font-size: 0.62em;
+}
+
+.retired > div {
+  padding: 0.4em 0.6em;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.retired .retired-old {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--clay);
+  text-decoration-thickness: 2px;
+}
+
+.retired .retired-head {
   font-weight: 600;
-  font-family: var(--font-body);
+  border-bottom-color: var(--border-strong);
 }
 
-/* ── Section Divider Slides ───────────────────────────────── */
+/* ── Section divider slides: a docs page header ──────────── */
 .reveal .slides section.level1 {
   display: flex !important;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
+  padding-left: 1.2em !important;
 }
 
-.reveal .slides section.level1 blockquote {
-  font-size: 0.82em;
-  max-width: 68%;
+.reveal .slides section.level1 h1 {
+  font-size: 3em;
+  margin: 0 0 0.3em;
 }
 
-/* ── List Styling ─────────────────────────────────────────── */
-.reveal ul {
-  list-style: none;
-  padding-left: 0.2em;
-  margin-top: 0.35em;
-  margin-bottom: 0.35em;
+.reveal .slides section.level1 p {
+  font-size: 0.95em;
+  color: var(--text-muted);
+  max-width: 78%;
+}
+
+/* ── Title slide ─────────────────────────────────────────── */
+.reveal .slides section.deck-title h2 {
+  width: 52%;
+  margin-top: 1.1em;
+  font-size: 2.7em;
+  line-height: 1.04;
+}
+
+.title-copy {
+  width: 48%;
+}
+
+.title-subtitle p {
+  font-size: 0.95em;
+  color: var(--text-muted) !important;
+}
+
+.title-byline {
+  margin-top: 1.6em;
+  font-size: 0.68em;
+}
+
+.title-art {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0.6em;
+  width: 46%;
+  font-size: 1.1em;
+}
+
+/* Title slide: centre the copy vertically. */
+.reveal .slides section.deck-title {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.reveal .slides section.deck-title h2 {
+  margin-top: 0 !important;
+}
+
+/* ── Lists ───────────────────────────────────────────────── */
+.reveal ul,
+.reveal ol {
+  margin: 0.3em 0 0.3em 1.1em;
+}
+
+.reveal ul > li::marker {
+  color: var(--text-muted);
 }
 
 .reveal li {
-  margin-bottom: 0.1em;
+  margin-bottom: 0.15em;
 }
 
-.reveal ul > li::before {
-  content: "▸ ";
-  color: var(--accent-green);
-  font-weight: bold;
+/* ── Sources: small centred citation line ────────────────── */
+.source {
+  font-size: 0.5em;
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 0.5em;
 }
 
-.reveal ul ul > li::before {
-  content: "◦ ";
-  color: var(--accent-blue);
+.source p {
+  color: var(--text-muted) !important;
 }
 
-.reveal ol > li {
-  color: var(--text-primary);
-  padding-left: 0.18em;
+.reveal .source a {
+  color: var(--text-muted) !important;
+  font-weight: 500;
 }
 
-/* ── Smaller text utility ─────────────────────────────────── */
-.reveal .slides .smaller { font-size: 0.85em; }
-.reveal .slides .small   { font-size: 0.75em; }
+/* ── Utilities ───────────────────────────────────────────── */
 
-/* ── Fragment animations ──────────────────────────────────── */
-.reveal .fragment {
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-.reveal .fragment.visible { opacity: 1; }
-
-/* ── Inline icons ────────────────────────────────────────── */
 .reveal .deck-icon {
-  color: var(--accent-blue);
+  color: var(--text-primary);
 }
 
-/* ── Callout code blocks ──────────────────────────────────── */
-.reveal .slides section div.callout pre.sourceCode {
-  font-size: 0.75em !important;
+/* Keep keyboard focus visible on scrollable code. */
+.reveal pre code:focus-visible,
+.reveal pre:focus-visible {
+  outline: 2px solid var(--clay-ink);
+  outline-offset: -2px;
 }
-
-/* ── Compact card variant ────────────────────────────────── */
-.card-compact {
-  padding: 0.34em 0.7em !important;
-}
-
-/* ── Tight list spacing ─────────────────────────────────── */
-.tight-list li {
-  line-height: 1.22;
-  margin-bottom: 0.06em;
-}
-
-/* ── Scrollbar ────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-secondary); }
-::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
 /* Lightweight SVG masks using Font Awesome Free 6.7.2 paths. Icons: CC BY 4.0; https://fontawesome.com/license/free */
 
@@ -566,11 +595,6 @@
   vertical-align: -0.125em;
 }
 
-.deck-icon-2xl {
-  width: 2em;
-  height: 2em;
-  vertical-align: -0.1875em;
-}
 
 .deck-icon-brands-github {
   --deck-icon-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OTYgNTEyIj48cGF0aCBkPSJNMTY1LjkgMzk3LjRjMCAyLTIuMyAzLjYtNS4yIDMuNi0zLjMuMy01LjYtMS4zLTUuNi0zLjYgMC0yIDIuMy0zLjYgNS4yLTMuNiAzLS4zIDUuNiAxLjMgNS42IDMuNnptLTMxLjEtNC41Yy0uNyAyIDEuMyA0LjMgNC4zIDQuOSAyLjYgMSA1LjYgMCA2LjItMnMtMS4zLTQuMy00LjMtNS4yYy0yLjYtLjctNS41LjMtNi4yIDIuM3ptNDQuMi0xLjdjLTIuOS43LTQuOSAyLjYtNC42IDQuOS4zIDIgMi45IDMuMyA1LjkgMi42IDIuOS0uNyA0LjktMi42IDQuNi00LjYtLjMtMS45LTMtMy4yLTUuOS0yLjl6TTI0NC44IDhDMTA2LjEgOCAwIDExMy4zIDAgMjUyYzAgMTEwLjkgNjkuOCAyMDUuOCAxNjkuNSAyMzkuMiAxMi44IDIuMyAxNy4zLTUuNiAxNy4zLTEyLjEgMC02LjItLjMtNDAuNC0uMy02MS40IDAgMC03MCAxNS04NC43LTI5LjggMCAwLTExLjQtMjkuMS0yNy44LTM2LjYgMCAwLTIyLjktMTUuNyAxLjYtMTUuNCAwIDAgMjQuOSAyIDM4LjYgMjUuOCAyMS45IDM4LjYgNTguNiAyNy41IDcyLjkgMjAuOSAyLjMtMTYgOC44LTI3LjEgMTYtMzMuNy01NS45LTYuMi0xMTIuMy0xNC4zLTExMi4zLTExMC41IDAtMjcuNSA3LjYtNDEuMyAyMy42LTU4LjktMi42LTYuNS0xMS4xLTMzLjMgMi42LTY3LjkgMjAuOS02LjUgNjkgMjcgNjkgMjcgMjAtNS42IDQxLjUtOC41IDYyLjgtOC41czQyLjggMi45IDYyLjggOC41YzAgMCA0OC4xLTMzLjYgNjktMjcgMTMuNyAzNC43IDUuMiA2MS40IDIuNiA2Ny45IDE2IDE3LjcgMjUuOCAzMS41IDI1LjggNTguOSAwIDk2LjUtNTguOSAxMDQuMi0xMTQuOCAxMTAuNSA5LjIgNy45IDE3IDIyLjkgMTcgNDYuNCAwIDMzLjctLjMgNzUuNC0uMyA4My42IDAgNi41IDQuNiAxNC40IDE3LjMgMTIuMUM0MjguMiA0NTcuOCA0OTYgMzYyLjkgNDk2IDI1MiA0OTYgMTEzLjMgMzgzLjUgOCAyNDQuOCA4ek05Ny4yIDM1Mi45Yy0xLjMgMS0xIDMuMy43IDUuMiAxLjYgMS42IDMuOSAyLjMgNS4yIDEgMS4zLTEgMS0zLjMtLjctNS4yLTEuNi0xLjYtMy45LTIuMy01LjItMXptLTEwLjgtOC4xYy0uNyAxLjMuMyAyLjkgMi4zIDMuOSAxLjYgMSAzLjYuNyA0LjMtLjcuNy0xLjMtLjMtMi45LTIuMy0zLjktMi0uNi0zLjYtLjMtNC4zLjd6bTMyLjQgMzUuNmMtMS42IDEuMy0xIDQuMyAxLjMgNi4yIDIuMyAyLjMgNS4yIDIuNiA2LjUgMSAxLjMtMS4zLjctNC4zLTEuMy02LjItMi4yLTIuMy01LjItMi42LTYuNS0xem0tMTEuNC0xNC43Yy0xLjYgMS0xLjYgMy42IDAgNS45IDEuNiAyLjMgNC4zIDMuMyA1LjYgMi4zIDEuNi0xLjMgMS42LTMuOSAwLTYuMi0xLjQtMi4zLTQtMy4zLTUuNi0yeiIvPjwvc3ZnPg==");
@@ -582,4 +606,208 @@
 
 .deck-icon-solid-envelope {
   --deck-icon-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNNDggNjRDMjEuNSA2NCAwIDg1LjUgMCAxMTJjMCAxNS4xIDcuMSAyOS4zIDE5LjIgMzguNEwyMzYuOCAzMTMuNmMxMS40IDguNSAyNyA4LjUgMzguNCAwTDQ5Mi44IDE1MC40YzEyLjEtOS4xIDE5LjItMjMuMyAxOS4yLTM4LjRjMC0yNi41LTIxLjUtNDgtNDgtNDhMNDggNjR6TTAgMTc2TDAgMzg0YzAgMzUuMyAyOC43IDY0IDY0IDY0bDM4NCAwYzM1LjMgMCA2NC0yOC43IDY0LTY0bDAtMjA4TDI5NC40IDMzOS4yYy0yMi44IDE3LjEtNTQgMTcuMS03Ni44IDBMMCAxNzZ6Ii8+PC9zdmc+");
+}
+
+/* Slide menu button in the text colour rather than the theme blue. */
+.slide-menu-button,
+.slide-menu-button * {
+  color: var(--text-primary) !important;
+}
+
+
+/* Syntax colours from the docs' light code theme, for legible tokens. */
+.reveal div.sourceCode pre code,
+.reveal div.sourceCode pre code > span { color: #1f2328 !important; }
+.reveal code span.kw,
+.reveal code span.cf,
+.reveal code span.op { color: #cf222e !important; }
+.reveal code span.st,
+.reveal code span.ss,
+.reveal code span.ch { color: #0a3069 !important; }
+.reveal code span.dv,
+.reveal code span.fl,
+.reveal code span.cn,
+.reveal code span.bu,
+.reveal code span.fu { color: #0550ae !important; }
+.reveal code span.va,
+.reveal code span.at { color: #953800 !important; }
+.reveal code span.co { color: #6e7781 !important; }
+.reveal code span.ot,
+.reveal code span.er,
+.reveal code span.ex { color: #1f2328 !important; }
+
+/* Symptom card on section slides: the problem this part fixes. */
+.symptom {
+  margin-top: 1.2em;
+  max-width: 78%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.7em 1em;
+  font-size: 0.85em;
+}
+
+.symptom::before {
+  content: "You'll notice";
+  display: block;
+  margin-bottom: 0.3em;
+  font-size: 0.62em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.reveal .slides section.level1 .symptom p {
+  color: var(--text-primary);
+  max-width: none;
+  margin: 0;
+}
+
+/* Tiles and comparisons that stretch to fill the free height. */
+.reveal .slides section.fill-tiles > .tiles,
+.reveal .slides section.fill-compare > .compare {
+  flex: 1 1 auto;
+  grid-auto-rows: 1fr;
+  align-content: stretch;
+}
+
+.reveal .slides section.fill-tiles .tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1em;
+}
+
+.reveal .slides section.fill-tiles .tile-value {
+  font-size: 1.1em;
+}
+
+.reveal .slides section.fill-tiles .tile-text {
+  font-size: 0.74em;
+}
+
+.reveal .slides section.fill-compare .compare {
+  font-size: 0.85em;
+  grid-template-rows: auto 1fr 1fr;
+}
+
+.reveal .slides section.fill-compare .compare-weak,
+.reveal .slides section.fill-compare .compare-strong {
+  display: flex;
+  align-items: center;
+}
+
+.tile-heading,
+.reveal .tile-heading p {
+  font-size: 1em;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+}
+
+.reveal .slides section.fill-tiles .tile-heading p {
+  font-size: 1.1em;
+}
+
+/* Tile values are commands or settings, so they always use the mono face. */
+.reveal .tile-value,
+.reveal .tile-value p {
+  font-family: var(--font-mono) !important;
+}
+
+.tile-title {
+  font-size: 0.78em;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 0.35em;
+}
+
+.tile-clay  { background: var(--tint-clay); }
+.tile-green { background: var(--tint-green); }
+.tile-blue  { background: var(--tint-blue); }
+.tile-amber { background: var(--tint-amber); }
+
+.closing-line {
+  text-align: center;
+  font-size: 1em !important;
+}
+
+/* Closing slide: centred, with large contact icons. */
+.reveal .slides section.closing {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.reveal .slides section.closing h2 {
+  font-size: 3em;
+}
+
+.closing-icons {
+  display: flex;
+  gap: 1.2em;
+  justify-content: center;
+  margin-top: 1em;
+  font-size: 1.8em;
+}
+
+/* Resources: full-width link rows, title and URL left, description right.
+   Only the title is a link, so the a11y extension's underline stays on it. */
+.link-list {
+  flex: 1 1 auto;
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: 0.45em;
+  margin: 0.3em 0 1.6em;
+}
+
+.link-row {
+  display: flex;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.reveal .link-row p {
+  flex: 1;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr auto;
+  grid-template-rows: auto auto;
+  align-content: center;
+  column-gap: 1.2em;
+  padding: 0.5em 1em;
+}
+
+.reveal .link-row a {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  font-size: 0.95em;
+}
+
+.reveal .link-row .link-url {
+  grid-column: 1;
+  grid-row: 2;
+  font-family: var(--font-mono);
+  font-size: 0.5em;
+  color: var(--text-muted);
+  margin-top: 0.3em;
+}
+
+.reveal .link-row .link-desc {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font-size: 0.72em;
+  color: var(--text-muted);
+}
+
+.reveal .link-row p::after {
+  content: "→";
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--clay-ink);
+  font-size: 0.9em;
 }

@@ -12,30 +12,51 @@ pull request.
 ## Key conventions
 
 - **Single-file deck.** All slides live in `index.qmd`; do not split it.
-- **Design specification.** The visual design follows [DESIGN.md](DESIGN.md).
-  Respect it when creating or modifying slides, components, styling, colours,
-  and typography. Keep the theme `black` and the format
-  `revealjs`; restyle through `style.css`. Lay out content with the classes in
-  `style.css` rather than inline styles: `.card-green`, `.card-blue`,
-  `.card-amber`, `.card-purple`, `.card-red`, `.card-subtle` (plus
-  `.card-compact`), and `.terminal-box` for terminal output. New widgets follow
-  the naming patterns already in `style.css`.
+- **Design specification.** The visual design follows [DESIGN.md](DESIGN.md),
+  a light look modelled on the Claude Code docs site. Respect it when creating
+  or modifying slides, components, styling, colours, and typography. Keep the
+  base theme `black` and the format `revealjs`; restyle through `style.css`.
+  Lay out content with the classes in `style.css` rather than inline styles:
+  cards (`.card-green`, `.card-blue`, `.card-amber`, `.card-purple`,
+  `.card-red`, `.card-subtle`, plus `.card-compact`), `.terminal-box`,
+  `.compare`, `.tiles`, `.retired`, `.symptom`, `.link-list`, `.lead`,
+  `.source`, and the
+  slide-level `.fill-tiles`, `.fill-compare`, and `.closing`. New widgets
+  follow the naming patterns already in `style.css`.
+- **No empty bands.** Every slide fills the 1280×720 frame: diagrams grow into
+  free height and fill widgets stretch. Check new slides in a browser; cut or
+  split rather than leaving large blank areas or shrinking text.
+- **Advice over reference.** Slides give practical advice, not a tour of the
+  docs. Prefer a visual (diagram, comparison, tiles, short code) over prose,
+  and leave out reference material the docs already cover.
+- **Docs illustrations first.** If the Claude Code docs already illustrate an
+  idea, reuse that image as `media/docs-*.svg` and credit it in the slide's
+  source line (`Illustration: [Claude Code docs, <page>](url)`) instead of
+  drawing a new diagram.
 - **Diagrams and text must not restate each other.** If a diagram already
   shows a concept, do not repeat its labels as cards or bullets below it.
   Text below a diagram is for what the diagram does not show: quantitative
   data, actionable guidance, caveats, or decision criteria. If removing the
   text loses no information, remove it.
 - **Sources.** Every factual claim has a source citation at the bottom of its
-  slide in a small-font centred div. Keep this pattern.
+  slide in a `.source` div. Keep this pattern.
 - **Spelling and punctuation.** Use British spelling in prose (colour, licence,
   catalogue, artefact) and the Oxford comma in lists of three or more. Leave
   code, identifiers, file names, URLs, quotations, and proper names (such as
   `license` in YAML) as they are.
+- **Monospace for Claude Code names.** On slides and in diagrams, set
+  commands (`/clear`, `claude -p`), CLI flags (`--max-turns`), keys and
+  shortcuts (`Esc`, `Shift+Tab`), model names and aliases (`haiku`), setting
+  keys and values (`autoMode`, `dontAsk`, `medium`), hook events (`Stop`), and
+  config files and paths (`CLAUDE.md`, `.claude/settings.json`) in monospace:
+  backticks in Markdown, `mono=True` in `media/generate_diagrams.py`. Keep
+  `.notes` plain, since they are read aloud.
 - **Spoken notes.** The read-aloud control speaks the `.notes` content. Write
   complete, audience-facing narration; keep staging cues, private reminders,
   and delivery checklists outside these blocks.
 - **Accessibility.** Images must have `fig-alt` text; raw HTML widgets use
-  `role="img"` and `aria-label`.
+  `role="img"` and `aria-label`. Never override what the accessibility
+  extension enforces (such as link underlines); design around it.
 - **Icons.** Icons are HTML spans backed by only the required SVG path data in
   `style.css`; no icon font or Quarto icon extension. When adding one, add only
   its mask data, preserve the source licence attribution, and keep an
@@ -121,3 +142,4 @@ Skills live in `.agents/skills/<name>/SKILL.md`. Load one before its task:
 | Skill | Load before |
 | --- | --- |
 | `generate-diagrams` | Adding or changing a diagram in `media/generate_diagrams.py` |
+| `documentation-illustrations` | Generating or drawing any new diagram or illustration in the Claude Code docs or anthropic.com style |
