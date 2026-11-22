@@ -7,7 +7,7 @@ Slides with practical advice for getting reliable work out of [Claude Code](http
 The slides can be seen here:<br>
 <https://www.indrapatil.com/effective-claude-code-usage/>
 
-[![Effective Claude Code Usage, a talk by Indrajeet Patil, with the Claude spark mark](media/social-media-card.png)](https://www.indrapatil.com/effective-claude-code-usage/)
+[![Effective Claude Code Usage, with the Claude spark mark](media/social-media-card.png)](https://www.indrapatil.com/effective-claude-code-usage/)
 
 ## Development
 
