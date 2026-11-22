@@ -57,10 +57,6 @@ jupyter: python3
 
 ::: {.title-copy}
 
-::: {.title-subtitle}
-Give it context it can't find, a check it can run, and rules it can't bend.
-:::
-
 ::: {.title-byline}
 Indrajeet Patil · 2026 · [Source code](https://github.com/IndrajeetPatil/effective-claude-code-usage/)
 :::
@@ -68,20 +64,7 @@ Indrajeet Patil · 2026 · [Source code](https://github.com/IndrajeetPatil/effec
 :::
 
 ::: {.title-art}
-
-::: {.terminal-box data-title="claude"}
-<pre><code><span class="tk-prompt">&gt;</span> users report login fails after the
-  session times out. look at token
-  refresh in src/auth/, write a failing
-  test that reproduces it, then fix it
-
-<span class="tk-muted">● Read src/auth/refresh.ts</span>
-<span class="tk-muted">● Write tests/refresh.test.ts</span>
-<span class="tk-muted">● Bash pnpm vitest run tests/refresh</span>
-<span class="tk-ok">  1 failed → fix → 14 passed</span>
-</code></pre>
-:::
-
+![](media/claude-spark.svg){fig-alt="The orange Claude spark mark."}
 :::
 
 ::: {.notes}
