@@ -124,7 +124,7 @@ The format is Quarto RevealJS (`theme: black` as the base, restyled entirely thr
 - **Code blocks:** fenced code with `filename="…"` renders a docs-style filename tab.
 - **Terminal box** (`.terminal-box`, optional `data-title`): a hand-written prompt or transcript, using `.tk-prompt`, `.tk-muted`, and `.tk-ok` for colour.
 - **Compare** (`.compare` with `.compare-head`, `.compare-weak`, `.compare-strong`): "instead of" versus "try" prompts.
-- **Tiles** (`.tiles` with `.tile`, `.tile-heading`, `.tile-value`, `.tile-title`, `.tile-text`, `.tile-num`; set `--tile-cols`): short facts or numbered questions in a grid. `.tile-heading` is a prose heading; `.tile-value` is always mono, for a command or setting. `.tile-clay`, `.tile-green`, `.tile-blue`, and `.tile-amber` tint a tile.
+- **Tiles** (`.tiles` with `.tile`, `.tile-heading`, `.tile-value`, `.tile-title`, `.tile-text`, `.tile-num`; four columns by default, `.tiles-3` or `.tiles-5` for three or five): short facts or numbered questions in a grid. `.tile-heading` is a prose heading; `.tile-value` is always mono, for a command or setting. `.tile-clay`, `.tile-green`, `.tile-blue`, and `.tile-amber` tint a tile.
 - **Fill slides** (`.fill-tiles`, `.fill-compare` on the slide heading): stretch the slide's tiles or comparison to the full free height.
 - **Link list** (`.link-list` of `.link-row` blocks): full-width rows with a linked title and a mono URL on the left, a muted description on the right, and a clay arrow. Only the title is a link, so the accessibility extension's underline marks just the title.
 - **Closing slide** (`.closing` on the heading, with `.closing-icons`): centred title, line, and contact icons. `.closing-line` is a centred one-line card.

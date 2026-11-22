@@ -410,10 +410,13 @@
 /* ── Tiles: short facts in a grid ────────────────────────── */
 .tiles {
   display: grid;
-  grid-template-columns: repeat(var(--tile-cols, 4), 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.6em;
   margin: 0.5em 0;
 }
+
+.tiles-3 { grid-template-columns: repeat(3, 1fr); }
+.tiles-5 { grid-template-columns: repeat(5, 1fr); }
 
 .tile {
   background: var(--bg-surface);

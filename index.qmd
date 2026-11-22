@@ -48,7 +48,7 @@ author-meta: "Indrajeet Patil"
 date-meta: "2026-11-22"
 lang: "en"
 dir: "ltr"
-image: "media/social-media-card.webp"
+image: "media/social-media-card.png"
 image-alt: "Effective Claude Code Usage, a talk by Indrajeet Patil, beside a panel of four fixes: tell Claude what it can't see, give it a check to run, enforce rules that can't bend, and change a default that costs you."
 canonical-url: "https://www.indrapatil.com/effective-claude-code-usage/"
 jupyter: python3
@@ -517,7 +517,7 @@ Claude already delegates on its own. Subagents pay off for independent work in p
 
 ## Pay only for the context you need {data-eyebrow="Part 4 · Defaults" .fill-tiles}
 
-::: {.tiles style="--tile-cols: 3;"}
+::: {.tiles .tiles-3}
 
 ::: {.tile}
 ::: {.tile-value}
@@ -602,7 +602,7 @@ The same ideas apply to unattended runs, with higher stakes: if Claude builds on
 
 ## Five questions before you walk away {data-eyebrow="Part 6 · Unattended" .fill-tiles}
 
-::: {.tiles style="--tile-cols: 5;"}
+::: {.tiles .tiles-5}
 
 ::: {.tile}
 ::: {.tile-num}
@@ -690,7 +690,7 @@ for file in $(cat files.txt); do
 done
 ```
 
-::: {.tiles style="--tile-cols: 3;"}
+::: {.tiles .tiles-3}
 
 ::: {.tile}
 ::: {.tile-value}
