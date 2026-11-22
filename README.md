@@ -2,12 +2,12 @@
 
 [![Build and Deploy Presentation](https://github.com/IndrajeetPatil/effective-claude-code-usage/actions/workflows/build-presentation.yaml/badge.svg)](https://github.com/IndrajeetPatil/effective-claude-code-usage/actions/workflows/build-presentation.yaml)
 
-Slides summarising patterns for using [Claude Code](https://code.claude.com/docs/en/overview) effectively as a CLI agent — from tools, skills, and workflows to subagents, planning mode, and context management.
+Slides with practical advice for getting reliable work out of [Claude Code](https://code.claude.com/docs/en/overview): tell it what it can't see, give it a check to run, enforce the rules that can't bend, and change a default only when it costs too much. The deck then covers steering a session, unattended runs, and advice you can stop following. Its look follows the Claude Code documentation site, and a few slides reuse the docs' own illustrations with attribution.
 
 The slides can be seen here:<br>
 <https://www.indrapatil.com/effective-claude-code-usage/>
 
-[![Effective Claude Code Usage, with the orange Anthropic symbol in a terminal workshop](media/social-media-card.webp)](https://www.indrapatil.com/effective-claude-code-usage/)
+[![Effective Claude Code Usage, a talk by Indrajeet Patil, with four fixes](media/social-media-card.webp)](https://www.indrapatil.com/effective-claude-code-usage/)
 
 ## Development
 
@@ -40,6 +40,8 @@ just check    # Check the Quarto and Python setup
 just axe      # Preview with an Accessibility Report slide
 just          # Install dependencies and start live-reload preview
 ```
+
+Diagrams come from `media/generate_diagrams.py` (`uv run python media/generate_diagrams.py`); the social card is a screenshot of `media/social-card-source.html` at 1600×900. See [DESIGN.md](DESIGN.md) for the visual system.
 
 `just axe` enables the opt-in `a11y` profile. It accepts preview options, for example `just axe --no-browser --port 8834`. Inspect slide and scroll views, including all fragments and tab panels. Run `just render` for the production deck, which excludes the audit payload and report.
 

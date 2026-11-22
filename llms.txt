@@ -1,10 +1,10 @@
 # Effective Claude Code Usage
 
-> A Quarto RevealJS presentation by Indrajeet Patil about using Claude Code effectively as a CLI agent for software engineering work.
+> A Quarto RevealJS presentation by Indrajeet Patil with practical advice for getting reliable work out of Claude Code.
 
-This presentation explains how to use Claude Code as an agentic coding partner rather than a terminal chatbot. It covers tools, skills (using and writing them), workflows, context management, CLAUDE.md files, auto memory, subagents, background agents, planning mode, hooks, prompting strategies, MCP, Git worktrees, and non-interactive automation with `claude -p`.
+The talk is organised around the four reasons a Claude Code session usually goes wrong, and the fix for each: tell Claude what it can't see, give it a check to run, enforce the rules that can't have exceptions, and change a default only when it costs too much. It then covers steering a session (Esc, rewind, `/clear`), unattended runs with `claude -p` and Git worktrees, and advice that current models have made unnecessary.
 
-Reviewed against Claude Code v2.1.327 on 18 November 2026. Command availability depends on the installed version and configuration.
+Reviewed against Claude Code v2.1.330 on 22 November 2026. Command availability depends on the installed version and configuration.
 
 ## Primary URL
 
@@ -16,21 +16,15 @@ Reviewed against Claude Code v2.1.327 on 18 November 2026. Command availability 
 
 ## Topics
 
-- Claude Code
-- Agentic coding
-- CLI-based AI agents
-- Tool use and slash commands
-- Permission modes and Bash sandboxing
-- Skills (reusable prompt playbooks) and writing your own SKILL.md
-- Background agents, workflows, and multi-agent orchestration
-- Context window management
-- CLAUDE.md and AGENTS.md durable instructions and per-repository auto memory
-- Subagents and planning mode
-- Goals and rewind checkpoints
-- Hooks and validation workflows
-- Model Context Protocol
-- Git worktrees for parallel agent sessions
-- Non-interactive runs with `claude -p` in scripts and CI
+- Diagnosing why a Claude Code session went wrong
+- What belongs in CLAUDE.md, path-scoped rules, skills, and MCP
+- Specific prompts, and interview-driven specs
+- Pass/fail checks, `/goal`, Stop hooks, and independent review
+- Guidance versus enforcement: hooks, deny rules, sandbox, and managed settings
+- Permission modes, effort levels, subagent cost, and context cost
+- Steering with Esc, rewind, and `/clear`
+- Unattended runs with `claude -p` and parallel sessions in Git worktrees
+- Outdated advice to stop following
 
 ## Machine-readable companion
 
