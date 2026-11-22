@@ -507,11 +507,6 @@
   width: 48%;
 }
 
-.title-subtitle p {
-  font-size: 0.95em;
-  color: var(--text-muted) !important;
-}
-
 .title-byline {
   margin-top: 1.6em;
   font-size: 0.68em;
@@ -521,9 +516,14 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 0.6em;
-  width: 46%;
-  font-size: 1.1em;
+  right: 1.6em;
+  width: 36%;
+}
+
+.reveal .slides section .title-art img {
+  width: 62%;
+  height: auto;
+  margin: 0 auto;
 }
 
 /* Title slide: centre the copy vertically. */
