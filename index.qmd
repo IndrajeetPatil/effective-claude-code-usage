@@ -524,7 +524,7 @@ Claude already delegates on its own. Subagents pay off for independent work in p
 /clear
 :::
 ::: {.tile-text}
-Between unrelated tasks. Every request re-sends the whole conversation, so old tasks keep costing. `/clear oauth-migration` names the session to resume later.
+Between unrelated tasks. Each request re-sends the whole conversation, discounted only while cached. `/clear oauth-migration` names the session to resume later.
 :::
 :::
 
@@ -553,11 +553,11 @@ Running out of context is now rare: most models have a 1M-token window and compa
 :::
 
 ::: {.source}
-Source: [Best practices: keep cost and context down](https://code.claude.com/docs/en/best-practices#keep-cost-and-context-down)
+Sources: [Best practices: keep cost and context down](https://code.claude.com/docs/en/best-practices#keep-cost-and-context-down) · [Prompt caching](https://code.claude.com/docs/en/prompt-caching)
 :::
 
 ::: {.notes}
-With large context windows and automatic compaction, you will rarely run out of context. You can still pay for context you do not need, because each request sends the whole conversation. Clear between unrelated tasks, give compaction a focus, and look at the usage breakdown before guessing where tokens went.
+With large context windows and automatic compaction, you will rarely run out of context. You can still pay for context you do not need, because each request sends the whole conversation. Prompt caching bills the repeated part at a reduced rate while the cache is warm, and at full price once it expires. Clear between unrelated tasks, give compaction a focus, and look at the usage breakdown before guessing where tokens went.
 :::
 
 # Steer the session {data-eyebrow="Part 5"}
@@ -790,7 +790,7 @@ Use subagents to protect context
 :::
 
 ::: {}
-Use them for parallel work, noisy output, and fresh review, and budget the tokens.
+Overflow is rare. Use them for parallel work, keeping noisy output out of context, and fresh review, and budget the tokens.
 :::
 
 ::: {.retired-old}
