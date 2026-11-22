@@ -40,38 +40,30 @@ rounded:
   md: 8px
 glows:
   green: "0 0 18px rgba(34, 197, 94, 0.28)"
-  blue: "0 0 18px rgba(56, 189, 248, 0.28)"
-  amber: "0 0 18px rgba(245, 158, 11, 0.22)"
   purple: "0 0 18px rgba(167, 139, 250, 0.28)"
-  red: "0 0 18px rgba(248, 113, 113, 0.22)"
 components:
   page:
     backgroundColor: "{colors.bg-primary}"
     textColor: "{colors.text-primary}"
   card-green:
-    backgroundColor: "{colors.bg-card}"
-    borderColor: "{colors.accent-green}"
-    boxShadow: "{glows.green}"
+    backgroundColor: "color-mix(in srgb, {colors.accent-green} 8%, {colors.bg-card})"
+    borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-blue:
-    backgroundColor: "{colors.bg-card}"
-    borderColor: "{colors.accent-blue}"
-    boxShadow: "{glows.blue}"
+    backgroundColor: "color-mix(in srgb, {colors.accent-blue} 8%, {colors.bg-card})"
+    borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-amber:
-    backgroundColor: "{colors.bg-card}"
-    borderColor: "{colors.accent-amber}"
-    boxShadow: "{glows.amber}"
+    backgroundColor: "color-mix(in srgb, {colors.accent-amber} 8%, {colors.bg-card})"
+    borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-purple:
-    backgroundColor: "{colors.bg-card}"
-    borderColor: "{colors.accent-purple}"
-    boxShadow: "{glows.purple}"
+    backgroundColor: "color-mix(in srgb, {colors.accent-purple} 8%, {colors.bg-card})"
+    borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-red:
-    backgroundColor: "{colors.bg-card}"
-    borderColor: "{colors.accent-red}"
-    boxShadow: "{glows.red}"
+    backgroundColor: "color-mix(in srgb, {colors.accent-red} 8%, {colors.bg-card})"
+    borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
   card-subtle:
     backgroundColor: "{colors.bg-card}"
@@ -100,7 +92,7 @@ The presentation format is Quarto RevealJS (`theme: black`). Custom styling is l
   - `accent-green` (`#22c55e`): Primary brand accent, title heading (`h1`), inline code, and positive cards (`.card-green`).
   - `accent-blue` (`#38bdf8`): Section slide titles (`h2`), links, table headers, and info cards (`.card-blue`).
   - `accent-amber` (`#f59e0b`): Subheadings (`h3`) and warning cards (`.card-amber`).
-  - `accent-purple` (`#a78bfa`): Major section dividers (`level1 h1`), blockquotes, and guidance cards (`.card-purple`).
+  - `accent-purple` (`#a78bfa`): Major section dividers (`level1 h1`) and guidance cards (`.card-purple`).
   - `accent-red` (`#f87171`): Negative examples and caution cards (`.card-red`).
 - **Text & Borders:**
   - `text-primary` (`#e6edf3`): Crisp white-grey for high-contrast reading.
@@ -114,13 +106,13 @@ The presentation format is Quarto RevealJS (`theme: black`). Custom styling is l
 
 ## Layout & Components
 
-- **Cards:** Rounded 8px containers with a 1px border and a 4px left accent bar:
-  - `.card-green`, `.card-blue`, `.card-amber`, `.card-purple`, `.card-red`.
+- **Cards:** Rounded 8px containers with a 1px `border-subtle` border:
+  - `.card-green`, `.card-blue`, `.card-amber`, `.card-purple`, `.card-red`: a faint 8% accent tint on the card background.
   - `.card-subtle`: Neutral card with subtle grey border.
   - `.card-compact`: Reduced padding variant for dense multi-column slides.
 - **Terminal Box:** `.terminal-box` simulating a CLI terminal window with monospace output.
 - **Tables:** Integrated dark card tables with subtle borders, blue headers, and hoverable rows.
-- **Callouts:** Standard Quarto callouts styled to match the dark terminal theme with colored left accent borders.
+- **Callouts:** Standard Quarto callouts styled to match the dark terminal theme with a uniform `border-subtle` border.
 
 ## Do's and Don'ts
 
@@ -128,3 +120,4 @@ The presentation format is Quarto RevealJS (`theme: black`). Custom styling is l
 - **Do** ensure text below diagrams provides non-redundant, quantitative or actionable guidance rather than repeating diagram labels.
 - **Don't** use light-mode backgrounds or unstyled light cards; keep the dark terminal theme intact across all slides.
 - **Don't** hard-code ad-hoc hex colors directly in `index.qmd`.
+- **Don't** give cards, callouts, blockquotes, or other text boxes coloured edges: no accent borders, left accent bars, or coloured glows.

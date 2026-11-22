@@ -38,6 +38,10 @@ execute:
 keywords: ["claude-code", "ai-agents", "cli", "anthropic", "software-engineering", "workflows", "skills", "multi-platform"]
 description-meta: "A comprehensive guide to using Claude Code effectively as a CLI agent. Learn about tools, skills, workflows, context management, subagents, planning mode, and more."
 license: "CC0 1.0 Universal"
+title: "Effective Claude Code Usage"
+# The first slide is the custom title slide; hide the generated one.
+title-slide-attributes:
+  data-visibility: hidden
 pagetitle: "Effective Claude Code Usage"
 author-meta: "Indrajeet Patil"
 date-meta: "2026-11-18"
