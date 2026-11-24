@@ -6,37 +6,37 @@
    Fonts: Source Serif 4 (titles) + Inter (body) + JetBrains Mono (code)
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap");
 
 /* ── Design tokens (see DESIGN.md) ────────────────────────── */
 :root {
-  --bg-canvas:     #fdfdf7;
-  --bg-panel:      #f6f5ef;
-  --bg-surface:    #ffffff;
-  --bg-code:       #f0efea;
-  --bg-selected:   #e8e6dc;
-  --text-primary:  #171717;
-  --text-muted:    #5f5f5d;
+  --bg-canvas: #fdfdf7;
+  --bg-panel: #f6f5ef;
+  --bg-surface: #ffffff;
+  --bg-code: #f0efea;
+  --bg-selected: #e8e6dc;
+  --text-primary: #171717;
+  --text-muted: #5f5f5d;
   --border-subtle: #e2e1da;
   --border-strong: #cfcfcb;
-  --clay:          #d97757;
-  --clay-ink:      #a3482a;
-  --tint-clay:     #fbeee6;
-  --tint-green:    #eaf1e6;
-  --tint-blue:     #e8eff7;
-  --tint-amber:    #faf0dc;
-  --tint-purple:   #efeaf7;
-  --tint-red:      #f8e5e2;
-  --ink-green:     #3f6b3f;
-  --ink-blue:      #2f5c8f;
-  --ink-amber:     #8a5a0b;
-  --ink-purple:    #5e4691;
-  --ink-red:       #a83a2e;
-  --font-serif:    'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --font-body:     'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono:     'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --radius-sm:     6px;
-  --radius-md:     12px;
+  --clay: #d97757;
+  --clay-ink: #a3482a;
+  --tint-clay: #fbeee6;
+  --tint-green: #eaf1e6;
+  --tint-blue: #e8eff7;
+  --tint-amber: #faf0dc;
+  --tint-purple: #efeaf7;
+  --tint-red: #f8e5e2;
+  --ink-green: #3f6b3f;
+  --ink-blue: #2f5c8f;
+  --ink-amber: #8a5a0b;
+  --ink-purple: #5e4691;
+  --ink-red: #a83a2e;
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-sm: 6px;
+  --radius-md: 12px;
 }
 
 /* ── Canvas & base ───────────────────────────────────────── */
@@ -263,9 +263,15 @@
 }
 
 /* Token classes for hand-written terminal transcripts. */
-.tk-prompt { color: var(--clay-ink); }
-.tk-muted  { color: var(--text-muted); }
-.tk-ok     { color: var(--ink-green); }
+.tk-prompt {
+  color: var(--clay-ink);
+}
+.tk-muted {
+  color: var(--text-muted);
+}
+.tk-ok {
+  color: var(--ink-green);
+}
 
 /* ── Diagrams ────────────────────────────────────────────── */
 .reveal .slides section img {
@@ -314,8 +320,6 @@
   border-radius: var(--radius-md);
 }
 
-
-
 /* ── Tables: hairline rows, bold header, no fill ─────────── */
 .reveal table {
   width: 100%;
@@ -357,12 +361,24 @@
   font-size: 0.8em;
 }
 
-.card-green  { background: var(--tint-green); }
-.card-blue   { background: var(--tint-blue); }
-.card-amber  { background: var(--tint-amber); }
-.card-purple { background: var(--tint-purple); }
-.card-red    { background: var(--tint-red); }
-.card-subtle { background: var(--bg-surface); }
+.card-green {
+  background: var(--tint-green);
+}
+.card-blue {
+  background: var(--tint-blue);
+}
+.card-amber {
+  background: var(--tint-amber);
+}
+.card-purple {
+  background: var(--tint-purple);
+}
+.card-red {
+  background: var(--tint-red);
+}
+.card-subtle {
+  background: var(--bg-surface);
+}
 
 .card-compact {
   padding: 0.35em 0.75em !important;
@@ -415,8 +431,12 @@
   margin: 0.5em 0;
 }
 
-.tiles-3 { grid-template-columns: repeat(3, 1fr); }
-.tiles-5 { grid-template-columns: repeat(5, 1fr); }
+.tiles-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.tiles-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
 
 .tile {
   background: var(--bg-surface);
@@ -595,7 +615,6 @@
   vertical-align: -0.125em;
 }
 
-
 .deck-icon-brands-github {
   --deck-icon-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OTYgNTEyIj48cGF0aCBkPSJNMTY1LjkgMzk3LjRjMCAyLTIuMyAzLjYtNS4yIDMuNi0zLjMuMy01LjYtMS4zLTUuNi0zLjYgMC0yIDIuMy0zLjYgNS4yLTMuNiAzLS4zIDUuNiAxLjMgNS42IDMuNnptLTMxLjEtNC41Yy0uNyAyIDEuMyA0LjMgNC4zIDQuOSAyLjYgMSA1LjYgMCA2LjItMnMtMS4zLTQuMy00LjMtNS4yYy0yLjYtLjctNS41LjMtNi4yIDIuM3ptNDQuMi0xLjdjLTIuOS43LTQuOSAyLjYtNC42IDQuOS4zIDIgMi45IDMuMyA1LjkgMi42IDIuOS0uNyA0LjktMi42IDQuNi00LjYtLjMtMS45LTMtMy4yLTUuOS0yLjl6TTI0NC44IDhDMTA2LjEgOCAwIDExMy4zIDAgMjUyYzAgMTEwLjkgNjkuOCAyMDUuOCAxNjkuNSAyMzkuMiAxMi44IDIuMyAxNy4zLTUuNiAxNy4zLTEyLjEgMC02LjItLjMtNDAuNC0uMy02MS40IDAgMC03MCAxNS04NC43LTI5LjggMCAwLTExLjQtMjkuMS0yNy44LTM2LjYgMCAwLTIyLjktMTUuNyAxLjYtMTUuNCAwIDAgMjQuOSAyIDM4LjYgMjUuOCAyMS45IDM4LjYgNTguNiAyNy41IDcyLjkgMjAuOSAyLjMtMTYgOC44LTI3LjEgMTYtMzMuNy01NS45LTYuMi0xMTIuMy0xNC4zLTExMi4zLTExMC41IDAtMjcuNSA3LjYtNDEuMyAyMy42LTU4LjktMi42LTYuNS0xMS4xLTMzLjMgMi42LTY3LjkgMjAuOS02LjUgNjkgMjcgNjkgMjcgMjAtNS42IDQxLjUtOC41IDYyLjgtOC41czQyLjggMi45IDYyLjggOC41YzAgMCA0OC4xLTMzLjYgNjktMjcgMTMuNyAzNC43IDUuMiA2MS40IDIuNiA2Ny45IDE2IDE3LjcgMjUuOCAzMS41IDI1LjggNTguOSAwIDk2LjUtNTguOSAxMDQuMi0xMTQuOCAxMTAuNSA5LjIgNy45IDE3IDIyLjkgMTcgNDYuNCAwIDMzLjctLjMgNzUuNC0uMyA4My42IDAgNi41IDQuNiAxNC40IDE3LjMgMTIuMUM0MjguMiA0NTcuOCA0OTYgMzYyLjkgNDk2IDI1MiA0OTYgMTEzLjMgMzgzLjUgOCAyNDQuOCA4ek05Ny4yIDM1Mi45Yy0xLjMgMS0xIDMuMy43IDUuMiAxLjYgMS42IDMuOSAyLjMgNS4yIDEgMS4zLTEgMS0zLjMtLjctNS4yLTEuNi0xLjYtMy45LTIuMy01LjItMXptLTEwLjgtOC4xYy0uNyAxLjMuMyAyLjkgMi4zIDMuOSAxLjYgMSAzLjYuNyA0LjMtLjcuNy0xLjMtLjMtMi45LTIuMy0zLjktMi0uNi0zLjYtLjMtNC4zLjd6bTMyLjQgMzUuNmMtMS42IDEuMy0xIDQuMyAxLjMgNi4yIDIuMyAyLjMgNS4yIDIuNiA2LjUgMSAxLjMtMS4zLjctNC4zLTEuMy02LjItMi4yLTIuMy01LjItMi42LTYuNS0xem0tMTEuNC0xNC43Yy0xLjYgMS0xLjYgMy42IDAgNS45IDEuNiAyLjMgNC4zIDMuMyA1LjYgMi4zIDEuNi0xLjMgMS42LTMuOSAwLTYuMi0xLjQtMi4zLTQtMy4zLTUuNi0yeiIvPjwvc3ZnPg==");
 }
@@ -614,27 +633,40 @@
   color: var(--text-primary) !important;
 }
 
-
 /* Syntax colours from the docs' light code theme, for legible tokens. */
 .reveal div.sourceCode pre code,
-.reveal div.sourceCode pre code > span { color: #1f2328 !important; }
+.reveal div.sourceCode pre code > span {
+  color: #1f2328 !important;
+}
 .reveal code span.kw,
 .reveal code span.cf,
-.reveal code span.op { color: #cf222e !important; }
+.reveal code span.op {
+  color: #cf222e !important;
+}
 .reveal code span.st,
 .reveal code span.ss,
-.reveal code span.ch { color: #0a3069 !important; }
+.reveal code span.ch {
+  color: #0a3069 !important;
+}
 .reveal code span.dv,
 .reveal code span.fl,
 .reveal code span.cn,
 .reveal code span.bu,
-.reveal code span.fu { color: #0550ae !important; }
+.reveal code span.fu {
+  color: #0550ae !important;
+}
 .reveal code span.va,
-.reveal code span.at { color: #953800 !important; }
-.reveal code span.co { color: #6e7781 !important; }
+.reveal code span.at {
+  color: #953800 !important;
+}
+.reveal code span.co {
+  color: #6e7781 !important;
+}
 .reveal code span.ot,
 .reveal code span.er,
-.reveal code span.ex { color: #1f2328 !important; }
+.reveal code span.ex {
+  color: #1f2328 !important;
+}
 
 /* Symptom card on section slides: the problem this part fixes. */
 .symptom {
@@ -722,10 +754,18 @@
   margin-bottom: 0.35em;
 }
 
-.tile-clay  { background: var(--tint-clay); }
-.tile-green { background: var(--tint-green); }
-.tile-blue  { background: var(--tint-blue); }
-.tile-amber { background: var(--tint-amber); }
+.tile-clay {
+  background: var(--tint-clay);
+}
+.tile-green {
+  background: var(--tint-green);
+}
+.tile-blue {
+  background: var(--tint-blue);
+}
+.tile-amber {
+  background: var(--tint-amber);
+}
 
 .closing-line {
   text-align: center;

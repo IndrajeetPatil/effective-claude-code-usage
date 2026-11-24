@@ -53,7 +53,7 @@ exact command, flag, or status. Two real examples from past runs:
 
 - An agent reported `/rewind` and `/stats` as nonexistent. Both are real
   (`/stats` is an alias for `/usage`). Editing on the agent's word would have
-  *introduced* an error.
+  _introduced_ an error.
 - The deck deliberately never hardcodes model version names, so a flurry of new
   model releases required **zero** content changes. Don't invent work.
 
@@ -102,7 +102,7 @@ factual errors — but don't restyle for its own sake. Workflow:
 
 - Run `just render` and confirm `Output created: _site/index.html`.
 - `git status` should show only the files you intended to change.
-- Work on a branch; write a commit message explaining the *why*.
+- Work on a branch; write a commit message explaining the _why_.
 - Open a PR whose body lists what changed, and — just as important — what you
   **verified as still accurate and intentionally left unchanged**, so the author
   can trust the audit was thorough. Flag any out-of-scope new features as
