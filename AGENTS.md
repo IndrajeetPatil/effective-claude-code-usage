@@ -139,7 +139,7 @@ repository:
 
 Skills live in `.agents/skills/<name>/SKILL.md`. Load one before its task:
 
-| Skill | Load before |
-| --- | --- |
-| `generate-diagrams` | Adding or changing a diagram in `media/generate_diagrams.py` |
+| Skill                         | Load before                                                                                          |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `generate-diagrams`           | Adding or changing a diagram in `media/generate_diagrams.py`                                         |
 | `documentation-illustrations` | Generating or drawing any new diagram or illustration in the Claude Code docs or anthropic.com style |

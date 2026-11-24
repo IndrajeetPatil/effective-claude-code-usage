@@ -14,9 +14,9 @@ description: >
 Anthropic's sites use two illustration families. Pick one per image and never
 mix them.
 
-| Family | Use for | Looks like |
-| --- | --- | --- |
-| **Technical diagram** | Flows, loops, architectures, precedence, "what loads when" | Flat boxes and arrows on a warm off-white panel, small sans labels |
+| Family                | Use for                                                          | Looks like                                                                 |
+| --------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Technical diagram** | Flows, loops, architectures, precedence, "what loads when"       | Flat boxes and arrows on a warm off-white panel, small sans labels         |
 | **Editorial collage** | Title slides, section openers, blog-style heroes, abstract ideas | Flat muted field, grid-paper shapes, engraving cut-outs, ink line drawings |
 
 ## Step 0: reuse before you generate
@@ -35,18 +35,18 @@ brand mark, place the official SVG from Anthropic's CDN, unmodified.
 
 ### Palette
 
-| Role | Hex |
-| --- | --- |
-| Panel background | `#F9F9F7` (page behind it `#FDFDF7`) |
-| Neutral box fill | `#E8E8E4` (secondary `#EDEDEB`, `#F0F0EC`) |
-| Primary text | `#1E1E1E` |
-| Secondary text, arrows, connectors | `#757575` (light lines `#B0B0B0`, `#D0D0CC`) |
-| Green "active / Claude does this" box | fill `#D4E4D8`, stroke or text `#4A8C5C` |
-| Clay "you / external input" box | fill `#FDF6F2` or `#FCEEE0`, stroke `#D4A27F` |
-| Lavender "service / gateway" box | fill `#EDE8F4`, text `#6B5A88` |
-| Butter "note / verification" box | fill `#FFF8E1` |
-| Rose "blocked / stop" box | fill `#F8D7D7`-ish, stroke `#D07A70` |
-| Steel blue (rare emphasis) | `#6AA8D0` fill or `#7A8BA8` line |
+| Role                                  | Hex                                           |
+| ------------------------------------- | --------------------------------------------- |
+| Panel background                      | `#F9F9F7` (page behind it `#FDFDF7`)          |
+| Neutral box fill                      | `#E8E8E4` (secondary `#EDEDEB`, `#F0F0EC`)    |
+| Primary text                          | `#1E1E1E`                                     |
+| Secondary text, arrows, connectors    | `#757575` (light lines `#B0B0B0`, `#D0D0CC`)  |
+| Green "active / Claude does this" box | fill `#D4E4D8`, stroke or text `#4A8C5C`      |
+| Clay "you / external input" box       | fill `#FDF6F2` or `#FCEEE0`, stroke `#D4A27F` |
+| Lavender "service / gateway" box      | fill `#EDE8F4`, text `#6B5A88`                |
+| Butter "note / verification" box      | fill `#FFF8E1`                                |
+| Rose "blocked / stop" box             | fill `#F8D7D7`-ish, stroke `#D07A70`          |
+| Steel blue (rare emphasis)            | `#6AA8D0` fill or `#7A8BA8` line              |
 
 Most boxes are neutral grey. Use colour only to encode meaning, at most three
 accent hues per diagram, and keep text dark (`#1E1E1E`) on every fill.
@@ -111,17 +111,17 @@ Wide 3:1 aspect ratio.
 
 ### Palette
 
-| Role | Hex |
-| --- | --- |
+| Role                    | Hex                           |
+| ----------------------- | ----------------------------- |
 | Olive field (signature) | `#75855B` (lighter `#899A6B`) |
-| Cream paper | `#E9DFC8`, `#D6CFBF` |
-| Ink black | `#23292A` |
-| Coral / pink | `#E8857A`, `#E9A3A8` |
-| Cobalt blue | `#1F6FC0`, `#4881BA` |
-| Marigold | `#E8A23A` |
-| Teal | `#4D7478`, `#599082` |
-| Lavender field | `#CFC6E6` |
-| Lemon accent | `#F2E640` |
+| Cream paper             | `#E9DFC8`, `#D6CFBF`          |
+| Ink black               | `#23292A`                     |
+| Coral / pink            | `#E8857A`, `#E9A3A8`          |
+| Cobalt blue             | `#1F6FC0`, `#4881BA`          |
+| Marigold                | `#E8A23A`                     |
+| Teal                    | `#4D7478`, `#599082`          |
+| Lavender field          | `#CFC6E6`                     |
+| Lemon accent            | `#F2E640`                     |
 
 ### Ingredients
 
